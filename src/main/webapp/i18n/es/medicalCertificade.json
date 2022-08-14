@@ -1,0 +1,40 @@
+{
+  "medicalServicesApp": {
+    "medicalCertificade": {
+      "home": {
+        "title": "Medical Certificades",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Medical Certificade",
+        "createOrEditLabel": "Crear o editar Medical Certificade",
+        "notFound": "Ningún Medical Certificades encontrado"
+      },
+      "created": "Un nuevo Medical Certificade ha sido creado con el identificador {{ param }}",
+      "updated": "Un Medical Certificade ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Medical Certificade ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Medical Certificade {{ id }}?"
+      },
+      "detail": {
+        "title": "Medical Certificade"
+      },
+      "id": "ID",
+      "emissionDate": "Emission Date",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "address": "Address",
+      "clinicHistoryNumber": "Clinic History Number",
+      "identificationType": "Identification Type",
+      "identification": "Identification",
+      "phone": "Phone",
+      "mobilePhone": "Mobile Phone",
+      "attentionDate": "Attention Date",
+      "diagnosis": "Diagnosis",
+      "restType": "Rest Type",
+      "fromDate": "From Date",
+      "untilDate": "Until Date",
+      "total": "Total",
+      "observation": "Observation",
+      "symptom": "Symptom"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "medicalServicesApp": {
+    "IdentificationType": {
+      "null": "",
+      "DNI": "DNI",
+      "PASSPORT": "PASSPORT"
+    }
+  }
+}
