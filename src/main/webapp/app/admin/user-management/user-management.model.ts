@@ -1,3 +1,5 @@
+import { IdentificationType } from 'app/entities/enumerations/identification-type.model';
+
 export interface IUser {
   id?: number;
   login?: string;
@@ -7,6 +9,12 @@ export interface IUser {
   activated?: boolean;
   langKey?: string;
   authorities?: string[];
+  address?: string;
+  contactPhoneNumber?: string;
+  occupation?: string;
+  dni?: string;
+  identificationType?: IdentificationType;
+  medicalHistoryNumber?: string;
   createdBy?: string;
   createdDate?: Date;
   lastModifiedBy?: string;
@@ -23,6 +31,12 @@ export class User implements IUser {
     public activated?: boolean,
     public langKey?: string,
     public authorities?: string[],
+    public address?: string,
+    public contactPhoneNumber?: string,
+    public occupation?: string,
+    public dni?: string,
+    public identificationType?: IdentificationType,
+    public medicalHistoryNumber?: string,
     public createdBy?: string,
     public createdDate?: Date,
     public lastModifiedBy?: string,

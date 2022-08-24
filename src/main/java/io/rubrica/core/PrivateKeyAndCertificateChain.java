@@ -20,8 +20,6 @@ import java.security.cert.Certificate;
 /**
  * Objeto para almacenar un PrivateKey y un Certificate chain a la vez.
  *
- * @author Ricardo Arguello <ricardo.arguello@soportelibre.com>
- * @deprecated
  */
 public class PrivateKeyAndCertificateChain {
 

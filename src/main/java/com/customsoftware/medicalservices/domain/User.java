@@ -1,6 +1,7 @@
 package com.customsoftware.medicalservices.domain;
 
 import com.customsoftware.medicalservices.config.Constants;
+import com.customsoftware.medicalservices.domain.enumeration.IdentificationType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.time.Instant;
@@ -45,16 +46,16 @@ public class User extends AbstractAuditingEntity implements Serializable {
     private String password;
 
     @Size(max = 50)
-    @Column(name = "first_name", length = 50)
+    @Column(name = "first_name", length = 50, nullable = false)
     private String firstName;
 
     @Size(max = 50)
-    @Column(name = "last_name", length = 50)
+    @Column(name = "last_name", length = 50, nullable = false)
     private String lastName;
 
     @Email
     @Size(min = 5, max = 254)
-    @Column(length = 254, unique = true)
+    @Column(length = 254, unique = true, nullable = false)
     private String email;
 
     @NotNull
@@ -92,6 +93,30 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
+
+    @Size(min = 1, max = 100)
+    @Column(length = 100, nullable = false)
+    private String address;
+
+    @Size(min = 1, max = 10)
+    @Column(name = "contact_phone_number", length = 10, nullable = false)
+    private String contactPhoneNumber;
+
+    @Size(min = 1, max = 100)
+    @Column(length = 100, nullable = false)
+    private String occupation;
+
+    @Size(min = 1, max = 10)
+    @Column(length = 10, unique = true, nullable = false)
+    private String dni;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "identification_type", length = 10, nullable = false)
+    private IdentificationType identificationType;
+
+    @Size(min = 1, max = 10)
+    @Column(name = "medical_history_number", length = 10, nullable = false)
+    private String medicalHistoryNumber;
 
     public Long getId() {
         return id;
@@ -196,6 +221,54 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getContactPhoneNumber() {
+        return contactPhoneNumber;
+    }
+
+    public void setContactPhoneNumber(String contactPhoneNumber) {
+        this.contactPhoneNumber = contactPhoneNumber;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    public IdentificationType getIdentificationType() {
+        return identificationType;
+    }
+
+    public void setIdentificationType(IdentificationType identificationType) {
+        this.identificationType = identificationType;
+    }
+
+    public String getMedicalHistoryNumber() {
+        return medicalHistoryNumber;
+    }
+
+    public void setMedicalHistoryNumber(String medicalHistoryNumber) {
+        this.medicalHistoryNumber = medicalHistoryNumber;
     }
 
     @Override

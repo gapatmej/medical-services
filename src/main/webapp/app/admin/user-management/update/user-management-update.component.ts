@@ -18,18 +18,15 @@ export class UserManagementUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    login: [
-      '',
-      [
-        Validators.required,
-        Validators.minLength(1),
-        Validators.maxLength(50),
-        Validators.pattern('^[a-zA-Z0-9!$&*+=?^_`{|}~.-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^[_.@A-Za-z0-9-]+$'),
-      ],
-    ],
-    firstName: ['', [Validators.maxLength(50)]],
-    lastName: ['', [Validators.maxLength(50)]],
-    email: ['', [Validators.minLength(5), Validators.maxLength(254), Validators.email]],
+    identificationType: ['', [Validators.required]],
+    dni: ['', [Validators.required, Validators.maxLength(10)]],
+    firstName: ['', [Validators.required, Validators.maxLength(50)]],
+    lastName: ['', [Validators.required, Validators.maxLength(50)]],
+    email: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email]],
+    address: ['', [Validators.required, Validators.maxLength(100)]],
+    contactPhoneNumber: ['', [Validators.required, Validators.maxLength(10)]],
+    occupation: ['', [Validators.required, Validators.maxLength(100)]],
+    medicalHistoryNumber: ['', [Validators.required, Validators.maxLength(10)]],
     activated: [],
     langKey: [],
     authorities: [],
@@ -73,7 +70,6 @@ export class UserManagementUpdateComponent implements OnInit {
   private updateForm(user: User): void {
     this.editForm.patchValue({
       id: user.id,
-      login: user.login,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
@@ -84,7 +80,6 @@ export class UserManagementUpdateComponent implements OnInit {
   }
 
   private updateUser(user: User): void {
-    user.login = this.editForm.get(['login'])!.value;
     user.firstName = this.editForm.get(['firstName'])!.value;
     user.lastName = this.editForm.get(['lastName'])!.value;
     user.email = this.editForm.get(['email'])!.value;

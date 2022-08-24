@@ -35,8 +35,6 @@ import java.util.logging.Logger;
 /**
  * Clase utilitaria para firmar PDFs.
  *
- * @author Ricardo Arguello <ricardo.arguello@soportelibre.com>
- * @deprecated
  */
 public class PDFUtils {
 

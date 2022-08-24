@@ -86,7 +86,20 @@
     "ribbon": {
       "dev": "Development"
     },
-    "item-count": "Mostrando {{first}} - {{second}} de {{total}} elementos."
+    "item-count": "Mostrando {{first}} - {{second}} de {{total}} elementos.",
+    "inputValidations": {
+      "required": "Este campo es obligatorio.",
+      "minlength": "Este campo requiere al menos {{min}} caracteres.",
+      "maxlength": "Este campo no puede superar más de {{max}} caracteres.",
+      "min": "Este campo debe ser mayor que {{min}}.",
+      "max": "Este campo no puede ser mayor que {{max}}.",
+      "minbytes": "Este campo debe tener como mínimo {{min}} bytes.",
+      "maxbytes": "Este campo no puede tener más de {{max}} bytes.",
+      "pattern": "Este campo no cumple con el patrón especificado.",
+      "number": "Este campo debe ser un número.",
+      "datetimelocal": "Este campo debe ser una fecha y hora.",
+      "email": "Este campo no es un email válido."
+    }
   },
   "entity": {
     "action": {
@@ -97,8 +110,7 @@
       "delete": "Eliminar",
       "edit": "Editar",
       "open": "Abrir",
-      "save": "Guardar",
-      "view": "Vista"
+      "save": "Guardar"
     },
     "detail": {
       "field": "Campo",
@@ -106,18 +118,6 @@
     },
     "delete": {
       "title": "Confirmar operación de borrado"
-    },
-    "validation": {
-      "required": "Este campo es obligatorio.",
-      "minlength": "Este campo requiere al menos {{min}} caracteres.",
-      "maxlength": "Este campo no puede superar más de {{max}} caracteres.",
-      "min": "Este campo debe ser mayor que {{min}}.",
-      "max": "Este campo no puede ser mayor que {{max}}.",
-      "minbytes": "Este campo debe tener como mínimo {{min}} bytes.",
-      "maxbytes": "Este campo no puede tener más de {{max}} bytes.",
-      "pattern": "Este campo debe seguir el patrón {{pattern}}.",
-      "number": "Este campo debe ser un número.",
-      "datetimelocal": "Este campo debe ser una fecha y hora."
     }
   },
   "error": {
@@ -128,6 +128,7 @@
     "Size": "¡El campo {{fieldName}} no cumple con los requisitos de tamaño mínimo/máximo!",
     "userexists": "¡El nombre de usuario ya existe!",
     "emailexists": "¡La cuenta de correo ya está en uso!",
+    "dniExists": "¡La identificación ya está en uso!",
     "idexists": "Un/a nuevo/a {{entityName}} no puede tener ID",
     "idnull": "ID inválido",
     "idinvalid": "Invalid Id",

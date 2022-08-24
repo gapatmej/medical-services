@@ -101,7 +101,7 @@ public class UserService {
 
     public User registerUser(AdminUserDTO userDTO, String password) {
         userRepository
-            .findOneByLogin(userDTO.getLogin().toLowerCase())
+            .findOneByLogin(userDTO.getEmail().toLowerCase())
             .ifPresent(
                 existingUser -> {
                     boolean removed = removeNonActivatedUser(existingUser);
@@ -122,7 +122,7 @@ public class UserService {
             );
         User newUser = new User();
         String encryptedPassword = passwordEncoder.encode(password);
-        newUser.setLogin(userDTO.getLogin().toLowerCase());
+        newUser.setLogin(userDTO.getEmail().toLowerCase());
         // new user gets initially a generated password
         newUser.setPassword(encryptedPassword);
         newUser.setFirstName(userDTO.getFirstName());
@@ -137,7 +137,7 @@ public class UserService {
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
         Set<Authority> authorities = new HashSet<>();
-        authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
+        authorityRepository.findById(AuthoritiesConstants.DOCTOR).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
         this.clearUserCaches(newUser);
@@ -157,7 +157,7 @@ public class UserService {
 
     public User createUser(AdminUserDTO userDTO) {
         User user = new User();
-        user.setLogin(userDTO.getLogin().toLowerCase());
+        user.setLogin(userDTO.getAddress().toLowerCase());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         if (userDTO.getEmail() != null) {
@@ -184,6 +184,12 @@ public class UserService {
                 .collect(Collectors.toSet());
             user.setAuthorities(authorities);
         }
+        user.setAddress(userDTO.getAddress());
+        user.setContactPhoneNumber(userDTO.getContactPhoneNumber());
+        user.setOccupation(userDTO.getOccupation());
+        user.setDni(userDTO.getDni());
+        user.setIdentificationType(userDTO.getIdentificationType());
+        user.setMedicalHistoryNumber(userDTO.getMedicalHistoryNumber());
         userRepository.save(user);
         this.clearUserCaches(user);
         log.debug("Created Information for User: {}", user);
@@ -204,7 +210,7 @@ public class UserService {
             .map(
                 user -> {
                     this.clearUserCaches(user);
-                    user.setLogin(userDTO.getLogin().toLowerCase());
+                    user.setLogin(userDTO.getEmail().toLowerCase());
                     user.setFirstName(userDTO.getFirstName());
                     user.setLastName(userDTO.getLastName());
                     if (userDTO.getEmail() != null) {

@@ -28,6 +28,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findOneByEmailIgnoreCase(String email);
 
+    Optional<User> findOneByDni(String dni);
+
     Optional<User> findOneByLogin(String login);
 
     @EntityGraph(attributePaths = "authorities")

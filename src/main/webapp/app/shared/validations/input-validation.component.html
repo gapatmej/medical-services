@@ -1,0 +1,46 @@
+<div *ngIf="control!.invalid && (control!.dirty || (enableTouched && control!.touched))">
+  <small
+    class="form-text text-danger"
+    *ngIf="control?.errors?.required && showRequired"
+    jhiTranslate="global.inputinputValidations.required"
+  >
+  </small>
+
+  <small
+    class="form-text text-danger"
+    *ngIf="control?.errors?.minlength"
+    jhiTranslate="global.inputValidations.minlength"
+    [translateValues]="{ min: control?.errors?.minlength?.requiredLength }"
+  >
+  </small>
+
+  <small
+    class="form-text text-danger"
+    *ngIf="control?.errors?.maxlength"
+    jhiTranslate="global.inputValidations.maxlength"
+    [translateValues]="{ max: control?.errors?.maxlength?.requiredLength }"
+  >
+  </small>
+
+  <small
+    class="form-text text-danger"
+    *ngIf="control?.errors?.min"
+    jhiTranslate="global.inputValidations.min"
+    [translateValues]="{ min: control?.errors?.min?.requiredLength }"
+  >
+  </small>
+
+  <small
+    class="form-text text-danger"
+    *ngIf="control?.errors?.max"
+    jhiTranslate="global.inputValidations.max"
+    [translateValues]="{ max: control?.errors?.max?.requiredLength }"
+  >
+  </small>
+
+  <small class="form-text text-danger" *ngIf="control?.errors?.email" jhiTranslate="global.inputValidations.email"> </small>
+
+  <small class="form-text text-danger" *ngIf="control?.errors?.forbiddenOnlyNumbers" jhiTranslate="global.inputValidations.number"> </small>
+
+  <small class="form-text text-danger" *ngIf="control?.errors?.pattern" jhiTranslate="global.inputValidations.pattern"> </small>
+</div>

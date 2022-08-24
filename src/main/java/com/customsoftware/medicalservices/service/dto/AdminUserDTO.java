@@ -3,9 +3,13 @@ package com.customsoftware.medicalservices.service.dto;
 import com.customsoftware.medicalservices.config.Constants;
 import com.customsoftware.medicalservices.domain.Authority;
 import com.customsoftware.medicalservices.domain.User;
+import com.customsoftware.medicalservices.domain.enumeration.IdentificationType;
 import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.*;
 
 /**
@@ -48,6 +52,24 @@ public class AdminUserDTO {
 
     private Set<String> authorities;
 
+    @Size(min = 1, max = 100)
+    private String address;
+
+    @Size(min = 1, max = 10)
+    private String contactPhoneNumber;
+
+    @Size(min = 1, max = 100)
+    private String occupation;
+
+    @Size(min = 1, max = 10)
+    private String dni;
+
+    @Enumerated(EnumType.STRING)
+    private IdentificationType identificationType;
+
+    @Size(min = 1, max = 10)
+    private String medicalHistoryNumber;
+
     public AdminUserDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -66,6 +88,12 @@ public class AdminUserDTO {
         this.lastModifiedBy = user.getLastModifiedBy();
         this.lastModifiedDate = user.getLastModifiedDate();
         this.authorities = user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet());
+        this.address = user.getAddress();
+        this.contactPhoneNumber = user.getContactPhoneNumber();
+        this.occupation = user.getOccupation();
+        this.dni = user.getDni();
+        this.identificationType = user.getIdentificationType();
+        this.medicalHistoryNumber = user.getMedicalHistoryNumber();
     }
 
     public Long getId() {
@@ -170,6 +198,54 @@ public class AdminUserDTO {
 
     public void setAuthorities(Set<String> authorities) {
         this.authorities = authorities;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getContactPhoneNumber() {
+        return contactPhoneNumber;
+    }
+
+    public void setContactPhoneNumber(String contactPhoneNumber) {
+        this.contactPhoneNumber = contactPhoneNumber;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    public IdentificationType getIdentificationType() {
+        return identificationType;
+    }
+
+    public void setIdentificationType(IdentificationType identificationType) {
+        this.identificationType = identificationType;
+    }
+
+    public String getMedicalHistoryNumber() {
+        return medicalHistoryNumber;
+    }
+
+    public void setMedicalHistoryNumber(String medicalHistoryNumber) {
+        this.medicalHistoryNumber = medicalHistoryNumber;
     }
 
     // prettier-ignore
