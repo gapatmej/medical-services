@@ -1,5 +1,5 @@
+import { IdentificationType } from 'app/config/enumeration/identification-type.model';
 import * as dayjs from 'dayjs';
-import { IdentificationType } from 'app/entities/enumerations/identification-type.model';
 
 export interface IMedicalCertificade {
   id?: number;

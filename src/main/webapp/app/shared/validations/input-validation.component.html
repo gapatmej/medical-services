@@ -1,9 +1,5 @@
 <div *ngIf="control!.invalid && (control!.dirty || (enableTouched && control!.touched))">
-  <small
-    class="form-text text-danger"
-    *ngIf="control?.errors?.required && showRequired"
-    jhiTranslate="global.inputinputValidations.required"
-  >
+  <small class="form-text text-danger" *ngIf="control?.errors?.required && showRequired" jhiTranslate="global.inputValidations.required">
   </small>
 
   <small
@@ -41,6 +37,8 @@
   <small class="form-text text-danger" *ngIf="control?.errors?.email" jhiTranslate="global.inputValidations.email"> </small>
 
   <small class="form-text text-danger" *ngIf="control?.errors?.forbiddenOnlyNumbers" jhiTranslate="global.inputValidations.number"> </small>
+
+  <small class="form-text text-danger" *ngIf="control?.errors?.forbiddenDni" jhiTranslate="global.inputValidations.dni"> </small>
 
   <small class="form-text text-danger" *ngIf="control?.errors?.pattern" jhiTranslate="global.inputValidations.pattern"> </small>
 </div>

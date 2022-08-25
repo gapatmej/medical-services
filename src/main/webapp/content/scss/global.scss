@@ -201,3 +201,22 @@ ui bootstrap tweaks
 }
 
 /* jhipster-needle-scss-add-main JHipster will add new css style */
+
+/* Here modify the angular material css */
+
+.mat-form-field,
+.mat-select {
+  border-left: none !important;
+}
+
+.mat-form-field-flex {
+  padding-top: 0px !important;
+}
+
+.mat-form-field {
+  height: 50px !important;
+}
+
+.mat-form-field {
+  width: 100%;
+}

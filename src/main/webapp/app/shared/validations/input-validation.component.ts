@@ -23,3 +23,38 @@ export function onlyNumbers(): ValidatorFn {
     return forbidden ? { forbiddenOnlyNumbers: { value: control.value } } : null;
   };
 }
+
+export function validateDni(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const cedula = control.value;
+    const array = cedula.split('');
+    const num = array.length;
+    let forbidden = true;
+    if (num === 10) {
+      let total = 0;
+      const digito = array[9] * 1;
+      for (let i = 0; i < num - 1; i++) {
+        let mult = 0;
+        if (i % 2 !== 0) {
+          total = total + array[i] * 1;
+        } else {
+          mult = array[i] * 2;
+          if (mult > 9) {
+            total = total + (mult - 9);
+          } else {
+            total = total + mult;
+          }
+        }
+      }
+      let decena = total / 10;
+      decena = Math.floor(decena);
+      decena = (decena + 1) * 10;
+      const final = decena - total;
+      if ((final === 10 && digito === 0) || final === digito) {
+        forbidden = false;
+      }
+    }
+
+    return forbidden ? { forbiddenDni: { value: control.value } } : null;
+  };
+}

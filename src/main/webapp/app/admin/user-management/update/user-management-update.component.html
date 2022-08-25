@@ -7,6 +7,30 @@
         <jhi-alert-error></jhi-alert-error>
 
         <div class="form-group">
+          <label class="form-control-label" jhiTranslate="userManagement.identificationType"></label>
+          <div>
+            <mat-form-field appearance="fill">
+              <mat-select name="identificationType" formControlName="identificationType">
+                <mat-option
+                  *ngFor="let identificationType of identificationTypes"
+                  [value]="identificationType"
+                  (click)="onIdentificationTypeChange()"
+                >
+                  {{ identificationType }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <jhi-input-validation [control]="editForm.get('identificationType')"></jhi-input-validation>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="userManagement.dni"></label>
+          <input type="text" class="form-control" name="dni" formControlName="dni" />
+          <jhi-input-validation [control]="editForm.get('dni')"></jhi-input-validation>
+        </div>
+
+        <div class="form-group">
           <label class="form-control-label" jhiTranslate="userManagement.firstName"></label>
           <input type="text" class="form-control" name="firstName" formControlName="firstName" />
           <jhi-input-validation [control]="editForm.get('firstName')"></jhi-input-validation>
@@ -19,9 +43,33 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="userManagement.email">Email</label>
+          <label class="form-control-label" jhiTranslate="userManagement.email"></label>
           <input type="email" class="form-control" name="email" formControlName="email" />
           <jhi-input-validation [control]="editForm.get('email')"></jhi-input-validation>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="userManagement.address"></label>
+          <input type="text" class="form-control" name="address" formControlName="address" />
+          <jhi-input-validation [control]="editForm.get('address')"></jhi-input-validation>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="userManagement.contactPhoneNumber"></label>
+          <input type="text" class="form-control" name="contactPhoneNumber" formControlName="contactPhoneNumber" />
+          <jhi-input-validation [control]="editForm.get('contactPhoneNumber')"></jhi-input-validation>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="userManagement.occupation"></label>
+          <input type="text" class="form-control" name="occupation" formControlName="occupation" />
+          <jhi-input-validation [control]="editForm.get('occupation')"></jhi-input-validation>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="userManagement.medicalHistoryNumber"></label>
+          <input type="text" class="form-control" name="medicalHistoryNumber" formControlName="medicalHistoryNumber" />
+          <jhi-input-validation [control]="editForm.get('medicalHistoryNumber')"></jhi-input-validation>
         </div>
 
         <div class="form-check">
@@ -34,22 +82,36 @@
               name="activated"
               formControlName="activated"
             />
-            <span jhiTranslate="userManagement.activated">Activated</span>
+            <span jhiTranslate="userManagement.activated"></span>
           </label>
         </div>
 
-        <div class="form-group" *ngIf="languages && languages.length > 0">
-          <label jhiTranslate="userManagement.langKey">Lang Key</label>
-          <select class="form-control" id="langKey" name="langKey" formControlName="langKey">
-            <option *ngFor="let language of languages" [value]="language">{{ language | findLanguageFromKey }}</option>
-          </select>
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="userManagement.langKey"></label>
+          <div>
+            <mat-form-field appearance="fill">
+              <mat-select name="langKey" formControlName="langKey">
+                <mat-option *ngFor="let language of languages" [value]="language">
+                  {{ language | findLanguageFromKey }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <jhi-input-validation [control]="editForm.get('identificationType')"></jhi-input-validation>
         </div>
 
         <div class="form-group">
-          <label jhiTranslate="userManagement.profiles">Profiles</label>
-          <select class="form-control" multiple name="authority" formControlName="authorities">
-            <option *ngFor="let authority of authorities" [value]="authority">{{ authority }}</option>
-          </select>
+          <label class="form-control-label" jhiTranslate="userManagement.profiles"></label>
+          <div>
+            <mat-form-field appearance="fill">
+              <mat-select name="authorities" formControlName="authorities" multiple>
+                <mat-option *ngFor="let authority of authorities" [value]="authority" (click)="onSelectAuthority()">
+                  <span [jhiTranslate]="autorityName(authority)"></span>
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <jhi-input-validation [control]="editForm.get('identificationType')"></jhi-input-validation>
         </div>
       </div>
 

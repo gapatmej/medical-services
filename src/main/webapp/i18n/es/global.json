@@ -98,7 +98,13 @@
       "pattern": "Este campo no cumple con el patrón especificado.",
       "number": "Este campo debe ser un número.",
       "datetimelocal": "Este campo debe ser una fecha y hora.",
-      "email": "Este campo no es un email válido."
+      "email": "Este campo no es un email válido.",
+      "dni": "Este campo no tiene una identificación válida"
+    },
+    "authorities": {
+      "admin": "Administrador",
+      "doctor": "Doctor",
+      "patient": "Pasciente"
     }
   },
   "entity": {
