@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/config/error.constants';
 import { RegisterService } from './register.service';
+import { ROUTES } from 'app/config/routes.constants';
 
 @Component({
   selector: 'jhi-register',
@@ -60,6 +61,10 @@ export class RegisterComponent implements AfterViewInit {
         response => this.processError(response)
       );
     }
+  }
+
+  get ROUTES(): typeof ROUTES {
+    return ROUTES;
   }
 
   private processError(response: HttpErrorResponse): void {

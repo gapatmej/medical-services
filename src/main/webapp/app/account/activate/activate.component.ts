@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ROUTES } from 'app/config/routes.constants';
 import { mergeMap } from 'rxjs/operators';
 
 import { ActivateService } from './activate.service';
@@ -19,5 +20,9 @@ export class ActivateComponent implements OnInit {
       () => (this.success = true),
       () => (this.error = true)
     );
+  }
+
+  get ROUTES(): typeof ROUTES {
+    return ROUTES;
   }
 }

@@ -42,7 +42,7 @@
     "clientPackageManager": "npm",
     "clientThemeVariant": "",
     "languages": ["es", "en"],
-    "entities": ["MedicalCertificade"],
+    "entities": ["MedicalCertificate"],
     "lastLiquibaseTimestamp": 1660505465000
   }
 }

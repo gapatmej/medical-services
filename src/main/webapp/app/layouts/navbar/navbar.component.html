@@ -26,36 +26,49 @@
           </span>
         </a>
       </li>
-      <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
       <li
-        *ngSwitchCase="true"
+        *jhiHasAnyAuthority="'ROLE_DOCTOR'"
         ngbDropdown
         class="nav-item dropdown pointer"
         display="dynamic"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
       >
-        <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu" data-cy="entity">
+        <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu" data-cy="adminMenu">
           <span>
-            <fa-icon icon="th-list"></fa-icon>
-            <span jhiTranslate="global.menu.entities.main">Entities</span>
+            <fa-icon icon="users-cog"></fa-icon>
+            <span jhiTranslate="global.menu.doctor.main"></span>
           </span>
         </a>
-        <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
+        <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="admin-menu">
           <li>
             <a
               class="dropdown-item"
-              routerLink="medical-certificade"
+              routerLink="doctor/medical-certificate"
               routerLinkActive="active"
               [routerLinkActiveOptions]="{ exact: true }"
               (click)="collapseNavbar()"
             >
               <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-              <span jhiTranslate="global.menu.entities.medicalCertificade">Medical Certificade</span>
+              <span jhiTranslate="global.menu.doctor.medicalCertificate"></span>
             </a>
           </li>
-          <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
         </ul>
+      </li>
+      <li
+        *jhiHasAnyAuthority="'ROLE_PATIENT'"
+        ngbDropdown
+        class="nav-item dropdown pointer"
+        display="dynamic"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu" data-cy="adminMenu">
+          <span>
+            <fa-icon icon="users-cog"></fa-icon>
+            <span jhiTranslate="global.menu.patient.main"></span>
+          </span>
+        </a>
       </li>
       <li
         *jhiHasAnyAuthority="'ROLE_ADMIN'"

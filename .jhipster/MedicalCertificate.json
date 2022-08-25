@@ -1,0 +1,85 @@
+{
+  "name": "MedicalCertificate",
+  "fields": [
+    {
+      "fieldName": "emissionDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "firstName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "address",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "clinicHistoryNumber",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "identificationType",
+      "fieldType": "IdentificationType",
+      "fieldValues": "DNI,PASSPORT"
+    },
+    {
+      "fieldName": "identification",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "phone",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "mobilePhone",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "attentionDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "diagnosis",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "restType",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "fromDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "untilDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "total",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "observation",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "symptom",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [],
+  "entityTableName": "medical_certificate",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20220814193105"
+}

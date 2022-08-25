@@ -5,10 +5,12 @@
     "menu": {
       "home": "Home",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
-      "entities": {
-        "main": "Entities",
-        "medicalCertificade": "Medical Certificade",
-        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+      "doctor": {
+        "main": "Doctor",
+        "medicalCertificate": "Medical Certificate"
+      },
+      "patient": {
+        "main": "Patient"
       },
       "account": {
         "main": "Account",

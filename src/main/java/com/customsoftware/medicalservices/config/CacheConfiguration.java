@@ -48,7 +48,7 @@ public class CacheConfiguration {
             createCache(cm, com.customsoftware.medicalservices.domain.User.class.getName());
             createCache(cm, com.customsoftware.medicalservices.domain.Authority.class.getName());
             createCache(cm, com.customsoftware.medicalservices.domain.User.class.getName() + ".authorities");
-            createCache(cm, com.customsoftware.medicalservices.domain.MedicalCertificade.class.getName());
+            createCache(cm, com.customsoftware.medicalservices.domain.MedicalCertificate.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

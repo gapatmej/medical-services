@@ -22,6 +22,22 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
           loadChildren: () => import('./admin/admin-routing.module').then(m => m.AdminRoutingModule),
         },
         {
+          path: 'doctor',
+          data: {
+            authorities: [Authority.DOCTOR],
+          },
+          canActivate: [UserRouteAccessService],
+          loadChildren: () => import('app/doctor/doctor-routing.module').then(m => m.DoctorRoutingModule),
+        },
+        {
+          path: 'patient',
+          data: {
+            authorities: [Authority.PATIENT],
+          },
+          canActivate: [UserRouteAccessService],
+          loadChildren: () => import('app/patient/patient-routing.module').then(m => m.PatientRoutingModule),
+        },
+        {
           path: 'account',
           loadChildren: () => import('./account/account.module').then(m => m.AccountModule),
         },

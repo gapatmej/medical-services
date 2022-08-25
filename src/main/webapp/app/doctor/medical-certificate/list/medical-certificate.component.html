@@ -1,0 +1,156 @@
+<div>
+  <h2 id="page-heading" data-cy="MedicalCertificateHeading">
+    <span jhiTranslate="medicalServicesApp.medicalCertificate.home.title">Medical Certificates</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="medicalServicesApp.medicalCertificate.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-medical-certificate"
+        [routerLink]="[ROUTES.DOCTOR.MEDICAL_CERTIFICATE, 'new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="medicalServicesApp.medicalCertificate.home.createLabel"> Create a new Medical Certificate </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="medicalCertificates?.length === 0">
+    <span jhiTranslate="medicalServicesApp.medicalCertificate.home.notFound">No medicalCertificates found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="medicalCertificates && medicalCertificates.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="emissionDate">
+            <span jhiTranslate="medicalServicesApp.medicalCertificate.emissionDate">Emission Date</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="firstName">
+            <span jhiTranslate="medicalServicesApp.medicalCertificate.firstName">First Name</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="lastName">
+            <span jhiTranslate="medicalServicesApp.medicalCertificate.lastName">Last Name</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="address">
+            <span jhiTranslate="medicalServicesApp.medicalCertificate.address">Address</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="clinicHistoryNumber">
+            <span jhiTranslate="medicalServicesApp.medicalCertificate.clinicHistoryNumber">Clinic History Number</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="identificationType">
+            <span jhiTranslate="medicalServicesApp.medicalCertificate.identificationType">Identification Type</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="identification">
+            <span jhiTranslate="medicalServicesApp.medicalCertificate.identification">Identification</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="phone">
+            <span jhiTranslate="medicalServicesApp.medicalCertificate.phone">Phone</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="mobilePhone">
+            <span jhiTranslate="medicalServicesApp.medicalCertificate.mobilePhone">Mobile Phone</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="attentionDate">
+            <span jhiTranslate="medicalServicesApp.medicalCertificate.attentionDate">Attention Date</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="diagnosis">
+            <span jhiTranslate="medicalServicesApp.medicalCertificate.diagnosis">Diagnosis</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="restType">
+            <span jhiTranslate="medicalServicesApp.medicalCertificate.restType">Rest Type</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="fromDate">
+            <span jhiTranslate="medicalServicesApp.medicalCertificate.fromDate">From Date</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="untilDate">
+            <span jhiTranslate="medicalServicesApp.medicalCertificate.untilDate">Until Date</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="total">
+            <span jhiTranslate="medicalServicesApp.medicalCertificate.total">Total</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="observation">
+            <span jhiTranslate="medicalServicesApp.medicalCertificate.observation">Observation</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="symptom">
+            <span jhiTranslate="medicalServicesApp.medicalCertificate.symptom">Symptom</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let medicalCertificate of medicalCertificates; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a>{{ medicalCertificate.id }}</a>
+          </td>
+          <td>{{ medicalCertificate.emissionDate | formatMediumDatetime }}</td>
+          <td>{{ medicalCertificate.firstName }}</td>
+          <td>{{ medicalCertificate.lastName }}</td>
+          <td>{{ medicalCertificate.address }}</td>
+          <td>{{ medicalCertificate.clinicHistoryNumber }}</td>
+          <td jhiTranslate="{{ 'medicalServicesApp.IdentificationType.' + medicalCertificate.identificationType }}">
+            {{ medicalCertificate.identificationType }}
+          </td>
+          <td>{{ medicalCertificate.identification }}</td>
+          <td>{{ medicalCertificate.phone }}</td>
+          <td>{{ medicalCertificate.mobilePhone }}</td>
+          <td>{{ medicalCertificate.attentionDate | formatMediumDatetime }}</td>
+          <td>{{ medicalCertificate.diagnosis }}</td>
+          <td>{{ medicalCertificate.restType }}</td>
+          <td>{{ medicalCertificate.fromDate | formatMediumDatetime }}</td>
+          <td>{{ medicalCertificate.untilDate | formatMediumDatetime }}</td>
+          <td>{{ medicalCertificate.total }}</td>
+          <td>{{ medicalCertificate.observation }}</td>
+          <td>{{ medicalCertificate.symptom }}</td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="[ROUTES.DOCTOR.MEDICAL_CERTIFICATE, medicalCertificate.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(medicalCertificate)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="medicalCertificates && medicalCertificates.length > 0">
+    <div class="row justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="row justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

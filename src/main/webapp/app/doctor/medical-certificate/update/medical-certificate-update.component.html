@@ -1,0 +1,233 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-medical-certificate-heading"
+        data-cy="MedicalCertificateCreateUpdateHeading"
+        jhiTranslate="medicalServicesApp.medicalCertificate.home.createOrEditLabel"
+      >
+        Create or edit a Medical Certificate
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.emissionDate" for="field_emissionDate"
+            >Emission Date</label
+          >
+          <div class="d-flex">
+            <input
+              id="field_emissionDate"
+              data-cy="emissionDate"
+              type="datetime-local"
+              class="form-control"
+              name="emissionDate"
+              formControlName="emissionDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.firstName" for="field_firstName"
+            >First Name</label
+          >
+          <input type="text" class="form-control" name="firstName" id="field_firstName" data-cy="firstName" formControlName="firstName" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.lastName" for="field_lastName"
+            >Last Name</label
+          >
+          <input type="text" class="form-control" name="lastName" id="field_lastName" data-cy="lastName" formControlName="lastName" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.address" for="field_address">Address</label>
+          <input type="text" class="form-control" name="address" id="field_address" data-cy="address" formControlName="address" />
+        </div>
+
+        <div class="form-group">
+          <label
+            class="form-control-label"
+            jhiTranslate="medicalServicesApp.medicalCertificate.clinicHistoryNumber"
+            for="field_clinicHistoryNumber"
+            >Clinic History Number</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="clinicHistoryNumber"
+            id="field_clinicHistoryNumber"
+            data-cy="clinicHistoryNumber"
+            formControlName="clinicHistoryNumber"
+          />
+        </div>
+
+        <div class="form-group">
+          <label
+            class="form-control-label"
+            jhiTranslate="medicalServicesApp.medicalCertificate.identificationType"
+            for="field_identificationType"
+            >Identification Type</label
+          >
+          <select
+            class="form-control"
+            name="identificationType"
+            formControlName="identificationType"
+            id="field_identificationType"
+            data-cy="identificationType"
+          >
+            <option [ngValue]="null">{{ 'medicalServicesApp.IdentificationType.null' | translate }}</option>
+            <option value="DNI">{{ 'medicalServicesApp.IdentificationType.DNI' | translate }}</option>
+            <option value="PASSPORT">{{ 'medicalServicesApp.IdentificationType.PASSPORT' | translate }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.identification" for="field_identification"
+            >Identification</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="identification"
+            id="field_identification"
+            data-cy="identification"
+            formControlName="identification"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.phone" for="field_phone">Phone</label>
+          <input type="text" class="form-control" name="phone" id="field_phone" data-cy="phone" formControlName="phone" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.mobilePhone" for="field_mobilePhone"
+            >Mobile Phone</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="mobilePhone"
+            id="field_mobilePhone"
+            data-cy="mobilePhone"
+            formControlName="mobilePhone"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.attentionDate" for="field_attentionDate"
+            >Attention Date</label
+          >
+          <div class="d-flex">
+            <input
+              id="field_attentionDate"
+              data-cy="attentionDate"
+              type="datetime-local"
+              class="form-control"
+              name="attentionDate"
+              formControlName="attentionDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.diagnosis" for="field_diagnosis"
+            >Diagnosis</label
+          >
+          <input type="text" class="form-control" name="diagnosis" id="field_diagnosis" data-cy="diagnosis" formControlName="diagnosis" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.restType" for="field_restType"
+            >Rest Type</label
+          >
+          <input type="text" class="form-control" name="restType" id="field_restType" data-cy="restType" formControlName="restType" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.fromDate" for="field_fromDate"
+            >From Date</label
+          >
+          <div class="d-flex">
+            <input
+              id="field_fromDate"
+              data-cy="fromDate"
+              type="datetime-local"
+              class="form-control"
+              name="fromDate"
+              formControlName="fromDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.untilDate" for="field_untilDate"
+            >Until Date</label
+          >
+          <div class="d-flex">
+            <input
+              id="field_untilDate"
+              data-cy="untilDate"
+              type="datetime-local"
+              class="form-control"
+              name="untilDate"
+              formControlName="untilDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.total" for="field_total">Total</label>
+          <input type="number" class="form-control" name="total" id="field_total" data-cy="total" formControlName="total" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.observation" for="field_observation"
+            >Observation</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="observation"
+            id="field_observation"
+            data-cy="observation"
+            formControlName="observation"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.symptom" for="field_symptom">Symptom</label>
+          <input type="text" class="form-control" name="symptom" id="field_symptom" data-cy="symptom" formControlName="symptom" />
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { ROUTES } from 'app/config/routes.constants';
 
 import { PasswordResetFinishService } from './password-reset-finish.service';
 
@@ -55,5 +56,9 @@ export class PasswordResetFinishComponent implements OnInit, AfterViewInit {
         () => (this.error = true)
       );
     }
+  }
+
+  get ROUTES(): typeof ROUTES {
+    return ROUTES;
   }
 }
