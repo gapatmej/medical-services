@@ -1,40 +1,33 @@
 {
-  "medicalServicesApp": {
-    "medicalCertificate": {
-      "home": {
-        "title": "Medical Certificates",
-        "refreshListLabel": "Refrescar lista",
-        "createLabel": "Crear nuevo Medical Certificate",
-        "createOrEditLabel": "Crear o editar Medical Certificate",
-        "notFound": "Ningún Medical Certificates encontrado"
-      },
-      "created": "Un nuevo Medical Certificate ha sido creado con el identificador {{ param }}",
-      "updated": "Un Medical Certificate ha sido actualizado con el identificador {{ param }}",
-      "deleted": "Un Medical Certificate ha sido eliminado con el identificador {{ param }}",
-      "delete": {
-        "question": "¿Seguro que quiere eliminar Medical Certificate {{ id }}?"
-      },
-      "detail": {
-        "title": "Medical Certificate"
-      },
-      "id": "ID",
-      "emissionDate": "Emission Date",
-      "firstName": "First Name",
-      "lastName": "Last Name",
-      "address": "Address",
-      "clinicHistoryNumber": "Clinic History Number",
-      "identificationType": "Identification Type",
-      "identification": "Identification",
-      "phone": "Phone",
-      "mobilePhone": "Mobile Phone",
-      "attentionDate": "Attention Date",
-      "diagnosis": "Diagnosis",
-      "restType": "Rest Type",
-      "fromDate": "From Date",
-      "untilDate": "Until Date",
-      "total": "Total",
-      "observation": "Observation",
-      "symptom": "Symptom"
-    }
+  "medicalCertificate": {
+    "home": {
+      "title": "Medical Certificates",
+      "refreshListLabel": "Refrescar lista",
+      "createLabel": "Crear nuevo Medical Certificate",
+      "createOrEditLabel": "Crear o editar Medical Certificate",
+      "notFound": "Ningún Medical Certificates encontrado"
+    },
+    "created": "Un nuevo Medical Certificate ha sido creado con el identificador {{ param }}",
+    "updated": "Un Medical Certificate ha sido actualizado con el identificador {{ param }}",
+    "deleted": "Un Medical Certificate ha sido eliminado con el identificador {{ param }}",
+    "delete": {
+      "question": "¿Seguro que quiere eliminar Medical Certificate {{ id }}?"
+    },
+    "detail": {
+      "title": "Medical Certificate"
+    },
+    "emissionDate": "Fecha de emisión",
+    "patient": "Pasciente",
+    "emissionPlace": "Lugar de emisión",
+    "diagnosis": "Diagnóstico",
+    "cie10Cod": "Código CIE10",
+    "symptoms": "Presenta síntomas",
+    "disease": "Enfermedad",
+    "diseaseDescription": "Descripción de la enfermedad",
+    "insulation": "Aislamiento",
+    "insulationDescription": "Descripción del aislamiento",
+    "totalDaysOff": "Total de días concedidos",
+    "fromDate": "Fecha desde",
+    "untilDate": "Fecha hasta"
   }
 }

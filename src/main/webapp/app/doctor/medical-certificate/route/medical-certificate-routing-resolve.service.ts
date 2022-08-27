@@ -14,7 +14,7 @@ export class MedicalCertificateRoutingResolveService implements Resolve<IMedical
   resolve(route: ActivatedRouteSnapshot): Observable<IMedicalCertificate> | Observable<never> {
     const id = route.params['id'];
     if (id) {
-      return this.service.find(id).pipe(
+      return this.service.searchById(id).pipe(
         mergeMap((medicalCertificate: HttpResponse<MedicalCertificate>) => {
           if (medicalCertificate.body) {
             return of(medicalCertificate.body);

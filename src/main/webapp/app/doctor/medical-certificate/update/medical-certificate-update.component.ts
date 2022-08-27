@@ -1,16 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-
-import * as dayjs from 'dayjs';
-import { DATE_TIME_FORMAT } from 'app/config/input.constants';
-
 import { IMedicalCertificate, MedicalCertificate } from '../medical-certificate.model';
 import { MedicalCertificateService } from '../service/medical-certificate.service';
-
+import { IUser } from 'app/admin/user-management/user-management.model';
+import { UserManagementService } from 'app/admin/user-management/service/user-management.service';
+import { Pagination } from 'app/core/request/pagination.model';
+import { SearchUser } from 'app/admin/user-management/search-user.model';
+import { Authority } from 'app/config/authority.constants';
+import { patientLabel } from 'app/core/util/selectors-util';
+import { onlyNumbers } from 'app/shared/validations/input-validation.component';
+import _ from 'lodash';
+import { ITEMS_SEARCH } from 'app/config/pagination.constants';
 @Component({
   selector: 'jhi-medical-certificate-update',
   templateUrl: './medical-certificate-update.component.html',
@@ -18,44 +22,39 @@ import { MedicalCertificateService } from '../service/medical-certificate.servic
 export class MedicalCertificateUpdateComponent implements OnInit {
   isSaving = false;
 
+  patients: IUser[] = [];
+  selectedPatient: IUser | null = null;
+
   editForm = this.fb.group({
     id: [],
-    emissionDate: [],
-    firstName: [],
-    lastName: [],
-    address: [],
-    clinicHistoryNumber: [],
-    identificationType: [],
-    identification: [],
-    phone: [],
-    mobilePhone: [],
-    attentionDate: [],
-    diagnosis: [],
-    restType: [],
-    fromDate: [],
-    untilDate: [],
-    total: [],
-    observation: [],
-    symptom: [],
+    emissionDate: [new Date(), [Validators.required]],
+    emissionPlace: [null, [Validators.required, Validators.maxLength(50)]],
+    patient: [null, [Validators.required]],
+    diagnosis: [null, [Validators.required, Validators.maxLength(255)]],
+    cie10Cod: [null, [Validators.required, Validators.maxLength(10)]],
+    symptoms: [false, [Validators.required]],
+    disease: [false, [Validators.required]],
+    diseaseDescription: [null, [Validators.required, Validators.maxLength(255)]],
+    insulation: [false, [Validators.required]],
+    insulationDescription: [null, [Validators.required, Validators.maxLength(255)]],
+    totalDaysOff: ['', [Validators.required, onlyNumbers]],
+    fromDate: [new Date(), [Validators.required]],
+    untilDate: [new Date(), [Validators.required]],
   });
 
   constructor(
     protected medicalCertificateService: MedicalCertificateService,
     protected activatedRoute: ActivatedRoute,
-    protected fb: FormBuilder
+    protected fb: FormBuilder,
+    protected userManagementService: UserManagementService
   ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ medicalCertificate }) => {
-      if (medicalCertificate.id === undefined) {
-        const today = dayjs().startOf('day');
-        medicalCertificate.emissionDate = today;
-        medicalCertificate.attentionDate = today;
-        medicalCertificate.fromDate = today;
-        medicalCertificate.untilDate = today;
+      console.error('ngo', medicalCertificate);
+      if (!_.isNil(medicalCertificate.id)) {
+        this.updateForm(medicalCertificate);
       }
-
-      this.updateForm(medicalCertificate);
     });
   }
 
@@ -66,26 +65,47 @@ export class MedicalCertificateUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const medicalCertificate = this.createFromForm();
-    if (medicalCertificate.id !== undefined) {
+    if (!_.isNil(medicalCertificate.id)) {
       this.subscribeToSaveResponse(this.medicalCertificateService.update(medicalCertificate));
     } else {
       this.subscribeToSaveResponse(this.medicalCertificateService.create(medicalCertificate));
     }
   }
 
+  searchPatient(): void {
+    const { patient } = this.editForm.value;
+    const pagination = {
+      ...new Pagination(),
+      size: ITEMS_SEARCH,
+    };
+    const searchUser = {
+      ...new SearchUser(),
+      query: patient,
+      roles: [Authority.PATIENT],
+    };
+
+    this.userManagementService.search(pagination, searchUser).subscribe(resp => {
+      this.patients = resp.body!;
+    });
+  }
+
+  displayPatient(patient: any): string {
+    if (patient) {
+      return patientLabel(patient);
+    }
+    return '';
+  }
+
+  patientLabelSelector(patient: IUser): string {
+    return patientLabel(patient);
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IMedicalCertificate>>): void {
-    result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError()
-    );
+    result.pipe(finalize(() => this.onSaveFinalize())).subscribe(() => this.onSaveSuccess());
   }
 
   protected onSaveSuccess(): void {
     this.previousState();
-  }
-
-  protected onSaveError(): void {
-    // Api for inheritance.
   }
 
   protected onSaveFinalize(): void {
@@ -95,23 +115,19 @@ export class MedicalCertificateUpdateComponent implements OnInit {
   protected updateForm(medicalCertificate: IMedicalCertificate): void {
     this.editForm.patchValue({
       id: medicalCertificate.id,
-      emissionDate: medicalCertificate.emissionDate ? medicalCertificate.emissionDate.format(DATE_TIME_FORMAT) : null,
-      firstName: medicalCertificate.firstName,
-      lastName: medicalCertificate.lastName,
-      address: medicalCertificate.address,
-      clinicHistoryNumber: medicalCertificate.clinicHistoryNumber,
-      identificationType: medicalCertificate.identificationType,
-      identification: medicalCertificate.identification,
-      phone: medicalCertificate.phone,
-      mobilePhone: medicalCertificate.mobilePhone,
-      attentionDate: medicalCertificate.attentionDate ? medicalCertificate.attentionDate.format(DATE_TIME_FORMAT) : null,
+      patient: medicalCertificate.patient,
+      emissionDate: medicalCertificate.emissionDate,
+      emissionPlace: medicalCertificate.emissionPlace,
       diagnosis: medicalCertificate.diagnosis,
-      restType: medicalCertificate.restType,
-      fromDate: medicalCertificate.fromDate ? medicalCertificate.fromDate.format(DATE_TIME_FORMAT) : null,
-      untilDate: medicalCertificate.untilDate ? medicalCertificate.untilDate.format(DATE_TIME_FORMAT) : null,
-      total: medicalCertificate.total,
-      observation: medicalCertificate.observation,
-      symptom: medicalCertificate.symptom,
+      cie10Cod: medicalCertificate.cie10Cod,
+      symptoms: medicalCertificate.symptoms,
+      disease: medicalCertificate.disease,
+      diseaseDescription: medicalCertificate.diseaseDescription,
+      insulation: medicalCertificate.insulation,
+      insulationDescription: medicalCertificate.insulationDescription,
+      totalDaysOff: medicalCertificate.totalDaysOff,
+      fromDate: medicalCertificate.fromDate,
+      untilDate: medicalCertificate.untilDate,
     });
   }
 
@@ -119,27 +135,19 @@ export class MedicalCertificateUpdateComponent implements OnInit {
     return {
       ...new MedicalCertificate(),
       id: this.editForm.get(['id'])!.value,
-      emissionDate: this.editForm.get(['emissionDate'])!.value
-        ? dayjs(this.editForm.get(['emissionDate'])!.value, DATE_TIME_FORMAT)
-        : undefined,
-      firstName: this.editForm.get(['firstName'])!.value,
-      lastName: this.editForm.get(['lastName'])!.value,
-      address: this.editForm.get(['address'])!.value,
-      clinicHistoryNumber: this.editForm.get(['clinicHistoryNumber'])!.value,
-      identificationType: this.editForm.get(['identificationType'])!.value,
-      identification: this.editForm.get(['identification'])!.value,
-      phone: this.editForm.get(['phone'])!.value,
-      mobilePhone: this.editForm.get(['mobilePhone'])!.value,
-      attentionDate: this.editForm.get(['attentionDate'])!.value
-        ? dayjs(this.editForm.get(['attentionDate'])!.value, DATE_TIME_FORMAT)
-        : undefined,
+      patient: this.editForm.get(['patient'])!.value,
+      emissionDate: this.editForm.get(['emissionDate'])!.value,
+      emissionPlace: this.editForm.get(['emissionPlace'])!.value,
       diagnosis: this.editForm.get(['diagnosis'])!.value,
-      restType: this.editForm.get(['restType'])!.value,
-      fromDate: this.editForm.get(['fromDate'])!.value ? dayjs(this.editForm.get(['fromDate'])!.value, DATE_TIME_FORMAT) : undefined,
-      untilDate: this.editForm.get(['untilDate'])!.value ? dayjs(this.editForm.get(['untilDate'])!.value, DATE_TIME_FORMAT) : undefined,
-      total: this.editForm.get(['total'])!.value,
-      observation: this.editForm.get(['observation'])!.value,
-      symptom: this.editForm.get(['symptom'])!.value,
+      cie10Cod: this.editForm.get(['cie10Cod'])!.value,
+      symptoms: this.editForm.get(['symptoms'])!.value,
+      disease: this.editForm.get(['disease'])!.value,
+      diseaseDescription: this.editForm.get(['diseaseDescription'])!.value,
+      insulation: this.editForm.get(['insulation'])!.value,
+      insulationDescription: this.editForm.get(['insulationDescription'])!.value,
+      totalDaysOff: this.editForm.get(['totalDaysOff'])!.value,
+      fromDate: this.editForm.get(['fromDate'])!.value,
+      untilDate: this.editForm.get(['untilDate'])!.value,
     };
   }
 }

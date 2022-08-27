@@ -45,7 +45,9 @@
       "confirmpassword.label": "New password confirmation",
       "confirmpassword.placeholder": "Confirm the new password",
       "email.label": "Email",
-      "email.placeholder": "Your email"
+      "email.placeholder": "Your email",
+      "yes": "Si",
+      "no": "No"
     },
     "messages": {
       "info": {
@@ -61,6 +63,10 @@
       },
       "error": {
         "dontmatch": "The password and its confirmation do not match!"
+      },
+      "delete": {
+        "title": "Confirm delete operation",
+        "question": "Are you sure to delete this register?"
       },
       "validate": {
         "newpassword": {
@@ -103,10 +109,8 @@
       "patternLogin": "This field can only contain letters, digits and e-mail addresses.",
       "email": "This field is not a valid email.",
       "dni": "This field is not a valid identification."
-    }
-  },
-  "entity": {
-    "action": {
+    },
+    "actions": {
       "addblob": "Add blob",
       "addimage": "Add image",
       "back": "Back",
@@ -114,14 +118,8 @@
       "delete": "Delete",
       "edit": "Edit",
       "open": "Open",
-      "save": "Save"
-    },
-    "detail": {
-      "field": "Field",
-      "value": "Value"
-    },
-    "delete": {
-      "title": "Confirm delete operation"
+      "save": "Save",
+      "create": "Create"
     }
   },
   "error": {

@@ -7,9 +7,13 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IMedicalCertificate } from '../medical-certificate.model';
 
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
-import { ROUTES } from 'app/config/routes.constants.ts';
+import { ROUTES } from 'app/config/routes.constants';
 import { MedicalCertificateService } from '../service/medical-certificate.service';
 import { MedicalCertificateDeleteDialogComponent } from '../delete/medical-certificate-delete-dialog.component';
+import { Pagination } from 'app/core/request/pagination.model';
+import { SearchMedicalCertificate } from '../search-medical-certificate.model';
+import { patientLabel } from 'app/core/util/selectors-util';
+import { IUser } from 'app/admin/user-management/user-management.model';
 
 @Component({
   selector: 'jhi-medical-certificate',
@@ -36,22 +40,21 @@ export class MedicalCertificateComponent implements OnInit {
     this.isLoading = true;
     const pageToLoad: number = page ?? this.page ?? 1;
 
-    this.medicalCertificateService
-      .query({
-        page: pageToLoad - 1,
-        size: this.itemsPerPage,
-        sort: this.sort(),
-      })
-      .subscribe(
-        (res: HttpResponse<IMedicalCertificate[]>) => {
-          this.isLoading = false;
-          this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
-        },
-        () => {
-          this.isLoading = false;
-          this.onError();
-        }
-      );
+    const pagination = new Pagination();
+    const searchMedicalCertificate = {
+      ...new SearchMedicalCertificate(),
+      query: '',
+    };
+    this.medicalCertificateService.searchDoctor(pagination, searchMedicalCertificate).subscribe(
+      (res: HttpResponse<IMedicalCertificate[]>) => {
+        this.isLoading = false;
+        this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+      },
+      () => {
+        this.isLoading = false;
+        this.onError();
+      }
+    );
   }
 
   ngOnInit(): void {
@@ -71,6 +74,10 @@ export class MedicalCertificateComponent implements OnInit {
         this.loadPage();
       }
     });
+  }
+
+  patientLabel(patient: IUser): string {
+    return patientLabel(patient);
   }
 
   get ROUTES(): typeof ROUTES {

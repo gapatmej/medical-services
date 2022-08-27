@@ -9,9 +9,13 @@ import com.customsoftware.medicalservices.security.AuthoritiesConstants;
 import com.customsoftware.medicalservices.security.SecurityUtils;
 import com.customsoftware.medicalservices.service.dto.AdminUserDTO;
 import com.customsoftware.medicalservices.service.dto.UserDTO;
+import com.customsoftware.medicalservices.service.dto.search.SearchUserDTO;
+import com.customsoftware.medicalservices.web.rest.errors.MedicalServicesRuntimeException;
+import io.micrometer.core.instrument.search.Search;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +44,8 @@ public class UserService {
     private final AuthorityRepository authorityRepository;
 
     private final CacheManager cacheManager;
+
+    public static final Supplier<RuntimeException> SUPPLIER_NOT_FOUND = () -> new MedicalServicesRuntimeException("Post not Found");
 
     public UserService(
         UserRepository userRepository,
@@ -316,30 +322,22 @@ public class UserService {
     }
 
     /**
-     * Not activated users should be automatically deleted after 3 days.
-     * <p>
-     * This is scheduled to get fired everyday, at 01:00 (am).
-     */
-    @Scheduled(cron = "0 0 1 * * ?")
-    public void removeNotActivatedUsers() {
-        userRepository
-            .findAllByActivatedIsFalseAndActivationKeyIsNotNullAndCreatedDateBefore(Instant.now().minus(3, ChronoUnit.DAYS))
-            .forEach(
-                user -> {
-                    log.debug("Deleting not activated user {}", user.getLogin());
-                    userRepository.delete(user);
-                    this.clearUserCaches(user);
-                }
-            );
-    }
-
-    /**
      * Gets a list of all the authorities.
      * @return a list of all the authorities.
      */
     @Transactional(readOnly = true)
     public List<String> getAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AdminUserDTO> search(SearchUserDTO searchUserDTO, Pageable pageable) {
+        return userRepository.search(searchUserDTO, pageable).map(AdminUserDTO::new);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<User> findOneByLogin(String login) {
+        return userRepository.findOneByLogin(login);
     }
 
     private void clearUserCaches(User user) {

@@ -36,6 +36,15 @@ public class UserMapper {
         return new AdminUserDTO(user);
     }
 
+    public AdminUserDTO toDTOBasicData(User user) {
+        AdminUserDTO adminUserDTO = new AdminUserDTO();
+        adminUserDTO.setId(user.getId());
+        adminUserDTO.setFirstName(user.getFirstName());
+        adminUserDTO.setLastName(user.getLastName());
+        adminUserDTO.setDni(user.getDni());
+        return adminUserDTO;
+    }
+
     public List<User> userDTOsToUsers(List<AdminUserDTO> userDTOs) {
         return userDTOs.stream().filter(Objects::nonNull).map(this::userDTOToUser).collect(Collectors.toList());
     }
@@ -98,6 +107,18 @@ public class UserMapper {
         UserDTO userDto = new UserDTO();
         userDto.setId(user.getId());
         return userDto;
+    }
+
+    @Named("id")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    public AdminUserDTO toDtoIdAdmin(User user) {
+        if (user == null) {
+            return null;
+        }
+        AdminUserDTO adminUserDTO = new AdminUserDTO();
+        adminUserDTO.setId(user.getId());
+        return adminUserDTO;
     }
 
     @Named("idSet")

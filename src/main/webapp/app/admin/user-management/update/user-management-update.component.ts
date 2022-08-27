@@ -33,7 +33,7 @@ export class UserManagementUpdateComponent implements OnInit {
     medicalHistoryNumber: ['', [Validators.required, Validators.maxLength(10)]],
     activated: [],
     langKey: [],
-    authorities: [],
+    authorities: [[], [Validators.required]],
   });
 
   constructor(private userService: UserManagementService, private route: ActivatedRoute, private fb: FormBuilder) {}

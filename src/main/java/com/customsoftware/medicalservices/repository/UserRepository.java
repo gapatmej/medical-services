@@ -1,6 +1,7 @@
 package com.customsoftware.medicalservices.repository;
 
 import com.customsoftware.medicalservices.domain.User;
+import com.customsoftware.medicalservices.repository.custom.CustomUserRepository;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Repository;
  * Spring Data JPA repository for the {@link User} entity.
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long>, CustomUserRepository {
     String USERS_BY_LOGIN_CACHE = "usersByLogin";
 
     String USERS_BY_EMAIL_CACHE = "usersByEmail";

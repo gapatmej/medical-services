@@ -1,50 +1,40 @@
-import { IdentificationType } from 'app/config/enumeration/identification-type.model';
+import { User } from 'app/admin/user-management/user-management.model';
 import * as dayjs from 'dayjs';
 
 export interface IMedicalCertificate {
   id?: number;
+  doctor?: User;
+  patient?: User | null;
   emissionDate?: dayjs.Dayjs | null;
-  firstName?: string | null;
-  lastName?: string | null;
-  address?: string | null;
-  clinicHistoryNumber?: string | null;
-  identificationType?: IdentificationType | null;
-  identification?: string | null;
-  phone?: string | null;
-  mobilePhone?: string | null;
-  attentionDate?: dayjs.Dayjs | null;
+  emissionPlace?: string | null;
   diagnosis?: string | null;
-  restType?: string | null;
+  cie10Cod?: string | null;
+  symptoms?: boolean;
+  disease?: boolean;
+  diseaseDescription?: string | null;
+  insulation?: boolean;
+  insulationDescription?: string | null;
+  totalDaysOff?: number;
   fromDate?: dayjs.Dayjs | null;
   untilDate?: dayjs.Dayjs | null;
-  total?: number | null;
-  observation?: string | null;
-  symptom?: string | null;
 }
 
 export class MedicalCertificate implements IMedicalCertificate {
   constructor(
     public id?: number,
+    public doctor?: User,
+    public patient?: User | null,
     public emissionDate?: dayjs.Dayjs | null,
-    public firstName?: string | null,
-    public lastName?: string | null,
-    public address?: string | null,
-    public clinicHistoryNumber?: string | null,
-    public identificationType?: IdentificationType | null,
-    public identification?: string | null,
-    public phone?: string | null,
-    public mobilePhone?: string | null,
-    public attentionDate?: dayjs.Dayjs | null,
+    public emissionPlace?: string | null,
     public diagnosis?: string | null,
-    public restType?: string | null,
+    public cie10Cod?: string | null,
+    public symptoms?: boolean,
+    public disease?: boolean,
+    public diseaseDescription?: string | null,
+    public insulation?: boolean,
+    public insulationDescription?: string | null,
+    public totalDaysOff?: number,
     public fromDate?: dayjs.Dayjs | null,
-    public untilDate?: dayjs.Dayjs | null,
-    public total?: number | null,
-    public observation?: string | null,
-    public symptom?: string | null
+    public untilDate?: dayjs.Dayjs | null
   ) {}
-}
-
-export function getMedicalCertificateIdentifier(medicalCertificate: IMedicalCertificate): number | undefined {
-  return medicalCertificate.id;
 }

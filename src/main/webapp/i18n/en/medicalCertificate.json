@@ -17,24 +17,19 @@
       "detail": {
         "title": "Medical Certificate"
       },
-      "id": "ID",
-      "emissionDate": "Emission Date",
-      "firstName": "First Name",
-      "lastName": "Last Name",
-      "address": "Address",
-      "clinicHistoryNumber": "Clinic History Number",
-      "identificationType": "Identification Type",
-      "identification": "Identification",
-      "phone": "Phone",
-      "mobilePhone": "Mobile Phone",
-      "attentionDate": "Attention Date",
+      "emissionDate": "Emission date",
+      "patient": "Patient",
+      "emissionPlace": "Emission place",
       "diagnosis": "Diagnosis",
-      "restType": "Rest Type",
-      "fromDate": "From Date",
-      "untilDate": "Until Date",
-      "total": "Total",
-      "observation": "Observation",
-      "symptom": "Symptom"
+      "cie10Cod": "Code CIE10",
+      "symptoms": "Symptoms",
+      "disease": "Disease",
+      "diseaseDescription": "Disease description",
+      "insulation": "Insulation",
+      "insulationDescription": "Insulation description",
+      "totalDaysOff": "Total days off",
+      "fromDate": "From date",
+      "untilDate": "Until date"
     }
   }
 }

@@ -1,6 +1,6 @@
 package com.customsoftware.medicalservices.security;
 
-public class PageAccessConstants {
+public class AccessConstants {
 
     public static final String ADMIN = "hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")";
     public static final String DOCTOR = "hasAuthority(\"" + AuthoritiesConstants.DOCTOR + "\")";

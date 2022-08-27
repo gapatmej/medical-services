@@ -1,12 +1,12 @@
 package com.customsoftware.medicalservices.web.rest;
 
-import com.customsoftware.medicalservices.config.Constants;
 import com.customsoftware.medicalservices.domain.User;
 import com.customsoftware.medicalservices.repository.UserRepository;
-import com.customsoftware.medicalservices.security.PageAccessConstants;
+import com.customsoftware.medicalservices.security.AccessConstants;
 import com.customsoftware.medicalservices.service.MailService;
 import com.customsoftware.medicalservices.service.UserService;
 import com.customsoftware.medicalservices.service.dto.AdminUserDTO;
+import com.customsoftware.medicalservices.service.dto.search.SearchUserDTO;
 import com.customsoftware.medicalservices.web.rest.errors.BadRequestAlertException;
 import com.customsoftware.medicalservices.web.rest.errors.EmailAlreadyUsedException;
 import com.customsoftware.medicalservices.web.rest.errors.LoginAlreadyUsedException;
@@ -17,7 +17,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,7 +58,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * Another option would be to have a specific JPA entity graph to handle this case.
  */
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/api")
 public class UserResource {
 
     private static final List<String> ALLOWED_ORDERED_PROPERTIES = Collections.unmodifiableList(
@@ -92,8 +91,8 @@ public class UserResource {
      * @throws URISyntaxException       if the Location URI syntax is incorrect.
      * @throws BadRequestAlertException {@code 400 (Bad Request)} if the login or email is already in use.
      */
-    @PostMapping("/users")
-    @PreAuthorize(PageAccessConstants.ADMIN)
+    @PostMapping("/admin/users")
+    @PreAuthorize(AccessConstants.ADMIN)
     public ResponseEntity<User> createUser(@Valid @RequestBody AdminUserDTO userDTO) throws URISyntaxException {
         log.debug("REST request to save User : {}", userDTO);
         userDTO.setLogin(userDTO.getDni());
@@ -122,8 +121,8 @@ public class UserResource {
      * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already in use.
      * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already in use.
      */
-    @PutMapping("/users")
-    @PreAuthorize(PageAccessConstants.ADMIN)
+    @PutMapping("/admin/users")
+    @PreAuthorize(AccessConstants.ADMIN)
     public ResponseEntity<AdminUserDTO> updateUser(@Valid @RequestBody AdminUserDTO userDTO) {
         log.debug("REST request to update User : {}", userDTO);
         userDTO.setLogin(userDTO.getDni());
@@ -149,8 +148,8 @@ public class UserResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body all users.
      */
-    @GetMapping("/users")
-    @PreAuthorize(PageAccessConstants.ADMIN)
+    @GetMapping("/admin/users")
+    @PreAuthorize(AccessConstants.ADMIN)
     public ResponseEntity<List<AdminUserDTO>> getAllUsers(Pageable pageable) {
         log.debug("REST request to get all User for an admin");
         if (!onlyContainsAllowedProperties(pageable)) {
@@ -172,8 +171,8 @@ public class UserResource {
      * @param login the login of the user to find.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the "login" user, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/users/{login}")
-    @PreAuthorize(PageAccessConstants.ADMIN)
+    @GetMapping("/admin/users/{login}")
+    @PreAuthorize(AccessConstants.ADMIN)
     public ResponseEntity<AdminUserDTO> getUser(@PathVariable String login) {
         log.debug("REST request to get User : {}", login);
         return ResponseUtil.wrapOrNotFound(userService.getUserWithAuthoritiesByLogin(login).map(AdminUserDTO::new));
@@ -185,11 +184,20 @@ public class UserResource {
      * @param login the login of the user to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/users/{login}")
-    @PreAuthorize(PageAccessConstants.ADMIN)
+    @DeleteMapping("/admin/users/{login}")
+    @PreAuthorize(AccessConstants.ADMIN)
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
         log.debug("REST request to delete User: {}", login);
         userService.deleteUser(login);
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName, "userManagement.deleted", login)).build();
+    }
+
+    @PostMapping("/users/search")
+    @PreAuthorize(AccessConstants.ADMIN_DOCTOR)
+    public ResponseEntity<List<AdminUserDTO>> findMedicalCertificates(Pageable pageable, @RequestBody SearchUserDTO searchUserDTO) {
+        log.debug("REST request to get a page of users");
+        Page<AdminUserDTO> page = userService.search(searchUserDTO, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 }

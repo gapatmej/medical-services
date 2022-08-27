@@ -1,67 +1,38 @@
-package com.customsoftware.medicalservices.domain;
+package com.customsoftware.medicalservices.service.dto;
 
+import java.io.Serializable;
 import java.time.Instant;
-import javax.persistence.*;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-/**
- * A MedicalCertificate.
- */
-@Entity
-@Table(name = "medical_certificate")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class MedicalCertificate extends AbstractAuditingEntity {
+public class MedicalCertificateDTO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doctor_id", nullable = false)
-    private User doctor;
+    private AdminUserDTO doctor;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_id", nullable = false)
-    private User patient;
+    private AdminUserDTO patient;
 
-    @Column(name = "emission_date", nullable = false)
     private Instant emissionDate;
 
-    @Column(name = "emission_place", nullable = false, length = 50)
     private String emissionPlace;
 
-    @Column(name = "diagnosis", nullable = false)
     private String diagnosis;
 
-    @Column(name = "cie10_cod", nullable = false, length = 10)
     private String cie10Cod;
 
-    @Column(nullable = false)
     private boolean symptoms;
 
-    @Column(nullable = false)
     private boolean disease;
 
-    @Column(name = "disease_description")
     private String diseaseDescription;
 
-    @Column(nullable = false)
     private boolean insulation;
 
-    @Column(name = "insulation_description")
     private String insulationDescription;
 
-    @Column(name = "total_days_off", nullable = false)
     private Integer totalDaysOff;
 
-    @Column(name = "from_date", nullable = false)
     private Instant fromDate;
 
-    @Column(name = "until_date", nullable = false)
     private Instant untilDate;
 
     public Long getId() {
@@ -72,19 +43,19 @@ public class MedicalCertificate extends AbstractAuditingEntity {
         this.id = id;
     }
 
-    public User getDoctor() {
+    public AdminUserDTO getDoctor() {
         return doctor;
     }
 
-    public void setDoctor(User doctor) {
+    public void setDoctor(AdminUserDTO doctor) {
         this.doctor = doctor;
     }
 
-    public User getPatient() {
+    public AdminUserDTO getPatient() {
         return patient;
     }
 
-    public void setPatient(User patient) {
+    public void setPatient(AdminUserDTO patient) {
         this.patient = patient;
     }
 

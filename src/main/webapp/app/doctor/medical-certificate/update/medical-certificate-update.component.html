@@ -1,231 +1,143 @@
 <div class="row justify-content-center">
   <div class="col-8">
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-      <h2
-        id="jhi-medical-certificate-heading"
-        data-cy="MedicalCertificateCreateUpdateHeading"
-        jhiTranslate="medicalServicesApp.medicalCertificate.home.createOrEditLabel"
-      >
-        Create or edit a Medical Certificate
-      </h2>
+      <h2 jhiTranslate="medicalCertificate.home.createOrEditLabel"></h2>
 
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
-          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
-          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.emissionDate" for="field_emissionDate"
-            >Emission Date</label
-          >
-          <div class="d-flex">
-            <input
-              id="field_emissionDate"
-              data-cy="emissionDate"
-              type="datetime-local"
-              class="form-control"
-              name="emissionDate"
-              formControlName="emissionDate"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
+        <div class="row">
+          <div class="col-6 form-group">
+            <label class="form-control-label" jhiTranslate="medicalCertificate.emissionDate"></label>
+            <div class="d-flex">
+              <input
+                name="emissionDate"
+                class="form-control"
+                formControlName="emissionDate"
+                matInput
+                [matDatepicker]="emissionDatePicker"
+              />
+              <mat-datepicker-toggle matSuffix [for]="emissionDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #emissionDatePicker></mat-datepicker>
+            </div>
+          </div>
+          <div class="col-6 form-group">
+            <label class="form-control-label" jhiTranslate="medicalCertificate.emissionPlace"></label>
+            <input type="text" class="form-control" name="emissionPlace" formControlName="emissionPlace" />
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.firstName" for="field_firstName"
-            >First Name</label
-          >
-          <input type="text" class="form-control" name="firstName" id="field_firstName" data-cy="firstName" formControlName="firstName" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.lastName" for="field_lastName"
-            >Last Name</label
-          >
-          <input type="text" class="form-control" name="lastName" id="field_lastName" data-cy="lastName" formControlName="lastName" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.address" for="field_address">Address</label>
-          <input type="text" class="form-control" name="address" id="field_address" data-cy="address" formControlName="address" />
-        </div>
-
-        <div class="form-group">
-          <label
-            class="form-control-label"
-            jhiTranslate="medicalServicesApp.medicalCertificate.clinicHistoryNumber"
-            for="field_clinicHistoryNumber"
-            >Clinic History Number</label
-          >
+          <label class="form-control-label" jhiTranslate="medicalCertificate.patient"></label>
           <input
+            class="form-control"
             type="text"
-            class="form-control"
-            name="clinicHistoryNumber"
-            id="field_clinicHistoryNumber"
-            data-cy="clinicHistoryNumber"
-            formControlName="clinicHistoryNumber"
+            aria-label="Number"
+            matInput
+            name="patient"
+            (keyup)="searchPatient()"
+            formControlName="patient"
+            [matAutocomplete]="auto"
           />
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayPatient">
+            <mat-option *ngFor="let patient of patients" [value]="patient">
+              {{ patientLabelSelector(patient) }}
+            </mat-option>
+          </mat-autocomplete>
         </div>
 
         <div class="form-group">
-          <label
-            class="form-control-label"
-            jhiTranslate="medicalServicesApp.medicalCertificate.identificationType"
-            for="field_identificationType"
-            >Identification Type</label
-          >
-          <select
-            class="form-control"
-            name="identificationType"
-            formControlName="identificationType"
-            id="field_identificationType"
-            data-cy="identificationType"
-          >
-            <option [ngValue]="null">{{ 'medicalServicesApp.IdentificationType.null' | translate }}</option>
-            <option value="DNI">{{ 'medicalServicesApp.IdentificationType.DNI' | translate }}</option>
-            <option value="PASSPORT">{{ 'medicalServicesApp.IdentificationType.PASSPORT' | translate }}</option>
-          </select>
+          <label class="form-control-label" jhiTranslate="medicalCertificate.diagnosis"></label>
+          <textarea type="text" class="form-control" rows="4" cols="50" name="diagnosis" formControlName="diagnosis"></textarea>
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.identification" for="field_identification"
-            >Identification</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="identification"
-            id="field_identification"
-            data-cy="identification"
-            formControlName="identification"
-          />
+          <label class="form-control-label" jhiTranslate="medicalCertificate.cie10Cod"></label>
+          <input type="text" class="form-control" name="cie10Cod" formControlName="cie10Cod" />
         </div>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.phone" for="field_phone">Phone</label>
-          <input type="text" class="form-control" name="phone" id="field_phone" data-cy="phone" formControlName="phone" />
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" jhiTranslate="medicalCertificate.symptoms"></label>
+          <div class="col-sm-10">
+            <span jhiTranslate="global.form.no"></span>
+            <mat-slide-toggle name="symptoms" formControlName="symptoms"></mat-slide-toggle>
+            <span jhiTranslate="global.form.yes"></span>
+          </div>
         </div>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.mobilePhone" for="field_mobilePhone"
-            >Mobile Phone</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="mobilePhone"
-            id="field_mobilePhone"
-            data-cy="mobilePhone"
-            formControlName="mobilePhone"
-          />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.attentionDate" for="field_attentionDate"
-            >Attention Date</label
-          >
-          <div class="d-flex">
-            <input
-              id="field_attentionDate"
-              data-cy="attentionDate"
-              type="datetime-local"
-              class="form-control"
-              name="attentionDate"
-              formControlName="attentionDate"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" jhiTranslate="medicalCertificate.disease"></label>
+          <div class="col-sm-10">
+            <span jhiTranslate="global.form.no"></span>
+            <mat-slide-toggle name="disease" formControlName="disease"></mat-slide-toggle>
+            <span jhiTranslate="global.form.yes"></span>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.diagnosis" for="field_diagnosis"
-            >Diagnosis</label
-          >
-          <input type="text" class="form-control" name="diagnosis" id="field_diagnosis" data-cy="diagnosis" formControlName="diagnosis" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.restType" for="field_restType"
-            >Rest Type</label
-          >
-          <input type="text" class="form-control" name="restType" id="field_restType" data-cy="restType" formControlName="restType" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.fromDate" for="field_fromDate"
-            >From Date</label
-          >
-          <div class="d-flex">
-            <input
-              id="field_fromDate"
-              data-cy="fromDate"
-              type="datetime-local"
-              class="form-control"
-              name="fromDate"
-              formControlName="fromDate"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.untilDate" for="field_untilDate"
-            >Until Date</label
-          >
-          <div class="d-flex">
-            <input
-              id="field_untilDate"
-              data-cy="untilDate"
-              type="datetime-local"
-              class="form-control"
-              name="untilDate"
-              formControlName="untilDate"
-              placeholder="YYYY-MM-DD HH:mm"
-            />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.total" for="field_total">Total</label>
-          <input type="number" class="form-control" name="total" id="field_total" data-cy="total" formControlName="total" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.observation" for="field_observation"
-            >Observation</label
-          >
-          <input
+          <label class="form-control-label" jhiTranslate="medicalCertificate.diseaseDescription"></label>
+          <textarea
             type="text"
             class="form-control"
-            name="observation"
-            id="field_observation"
-            data-cy="observation"
-            formControlName="observation"
-          />
+            rows="4"
+            cols="50"
+            name="diseaseDescription"
+            formControlName="diseaseDescription"
+          ></textarea>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" jhiTranslate="medicalCertificate.insulation"></label>
+          <div class="col-sm-10">
+            <span jhiTranslate="global.form.no"></span>
+            <mat-slide-toggle name="insulation" formControlName="insulation"></mat-slide-toggle>
+            <span jhiTranslate="global.form.yes"></span>
+          </div>
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="medicalServicesApp.medicalCertificate.symptom" for="field_symptom">Symptom</label>
-          <input type="text" class="form-control" name="symptom" id="field_symptom" data-cy="symptom" formControlName="symptom" />
+          <label class="form-control-label" jhiTranslate="medicalCertificate.insulationDescription"></label>
+          <textarea
+            type="text"
+            class="form-control"
+            rows="4"
+            cols="50"
+            name="insulationDescription"
+            formControlName="insulationDescription"
+          ></textarea>
+        </div>
+
+        <div class="row">
+          <div class="col-4 form-group">
+            <label class="form-control-label" jhiTranslate="medicalCertificate.fromDate"></label>
+            <div class="d-flex">
+              <input name="fromDate" class="form-control" formControlName="fromDate" matInput [matDatepicker]="fromDatePicker" />
+              <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #fromDatePicker></mat-datepicker>
+            </div>
+          </div>
+          <div class="col-4 form-group">
+            <label class="form-control-label" jhiTranslate="medicalCertificate.untilDate"></label>
+            <div class="d-flex">
+              <input name="untilDate" class="form-control" formControlName="untilDate" matInput [matDatepicker]="untilDatePicker" />
+              <mat-datepicker-toggle matSuffix [for]="untilDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #untilDatePicker></mat-datepicker>
+            </div>
+          </div>
+          <div class="col-4 form-group">
+            <label class="form-control-label" jhiTranslate="medicalCertificate.totalDaysOff"></label>
+            <input type="number" class="form-control" name="totalDaysOff" formControlName="totalDaysOff" />
+          </div>
         </div>
       </div>
 
       <div>
         <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="global.actions.cancel"></span>
         </button>
 
-        <button
-          type="submit"
-          id="save-entity"
-          data-cy="entityCreateSaveButton"
-          [disabled]="editForm.invalid || isSaving"
-          class="btn btn-primary"
-        >
-          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        <button type="submit" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="global.actions.save"></span>
         </button>
       </div>
     </form>

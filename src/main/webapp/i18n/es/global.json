@@ -45,7 +45,9 @@
       "confirmpassword.label": "Confirmación de la nueva contraseña",
       "confirmpassword.placeholder": "Confirmación de la nueva contraseña",
       "email.label": "Correo electrónico",
-      "email.placeholder": "Su correo electrónico"
+      "email.placeholder": "Su correo electrónico",
+      "yes": "Si",
+      "no": "No"
     },
     "messages": {
       "info": {
@@ -61,6 +63,10 @@
       },
       "error": {
         "dontmatch": "¡La contraseña y la confirmación de contraseña no coinciden!"
+      },
+      "delete": {
+        "title": "Confirmar operación de borrado",
+        "question": "¿Seguro que desea borrar el registro?"
       },
       "validate": {
         "newpassword": {
@@ -107,10 +113,8 @@
       "admin": "Administrador",
       "doctor": "Doctor",
       "patient": "Pasciente"
-    }
-  },
-  "entity": {
-    "action": {
+    },
+    "actions": {
       "addblob": "Añadir fichero",
       "addimage": "Añadir imagen",
       "back": "Volver",
@@ -118,14 +122,8 @@
       "delete": "Eliminar",
       "edit": "Editar",
       "open": "Abrir",
-      "save": "Guardar"
-    },
-    "detail": {
-      "field": "Campo",
-      "value": "Valor"
-    },
-    "delete": {
-      "title": "Confirmar operación de borrado"
+      "save": "Guardar",
+      "create": "Crear"
     }
   },
   "error": {

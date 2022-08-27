@@ -39,10 +39,6 @@
       "fieldType": "String"
     },
     {
-      "fieldName": "attentionDate",
-      "fieldType": "Instant"
-    },
-    {
       "fieldName": "diagnosis",
       "fieldType": "String"
     },

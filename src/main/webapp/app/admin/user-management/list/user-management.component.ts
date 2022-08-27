@@ -10,6 +10,7 @@ import { Account } from 'app/core/auth/account.model';
 import { UserManagementService } from '../service/user-management.service';
 import { User } from '../user-management.model';
 import { UserManagementDeleteDialogComponent } from '../delete/user-management-delete-dialog.component';
+import { Pagination } from 'app/core/request/pagination.model';
 
 @Component({
   selector: 'jhi-user-mgmt',
@@ -61,8 +62,7 @@ export class UserManagementComponent implements OnInit {
     this.isLoading = true;
     this.userService
       .query({
-        page: this.page - 1,
-        size: this.itemsPerPage,
+        ...new Pagination(),
         sort: this.sort(),
       })
       .subscribe(

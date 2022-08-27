@@ -1,5 +1,6 @@
 package com.customsoftware.medicalservices.security;
 
+import com.customsoftware.medicalservices.web.rest.errors.MedicalServicesRuntimeException;
 import java.util.Optional;
 import java.util.stream.Stream;
 import org.springframework.security.core.Authentication;
@@ -23,6 +24,15 @@ public final class SecurityUtils {
     public static Optional<String> getCurrentUserLogin() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         return Optional.ofNullable(extractPrincipal(securityContext.getAuthentication()));
+    }
+
+    public static String currentUserLogin() {
+        return getCurrentUserLogin()
+            .orElseThrow(
+                () -> {
+                    throw new MedicalServicesRuntimeException("Current User Login Session not found");
+                }
+            );
     }
 
     private static String extractPrincipal(Authentication authentication) {
