@@ -3,8 +3,7 @@ package com.customsoftware.medicalservices.service.impl;
 import com.customsoftware.medicalservices.domain.MedicalCertificate;
 import com.customsoftware.medicalservices.repository.MedicalCertificateRepository;
 import com.customsoftware.medicalservices.security.SecurityUtils;
-import com.customsoftware.medicalservices.service.MedicalCertificateService;
-import com.customsoftware.medicalservices.service.UserService;
+import com.customsoftware.medicalservices.service.*;
 import com.customsoftware.medicalservices.service.dto.MedicalCertificateDTO;
 import com.customsoftware.medicalservices.service.dto.search.SearchMedicalCertificateDTO;
 import com.customsoftware.medicalservices.service.mapper.MedicalCertificateMapper;
@@ -31,17 +30,24 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
 
     private final MedicalCertificateRepository medicalCertificateRepository;
 
+    private final ReportService reportService;
+    private final SignService signService;
+
     public MedicalCertificateServiceImpl(
         MedicalCertificateMapper medicalCertificateMapper,
         UserMapper userMapper,
         UserService userService,
-        MedicalCertificateRepository medicalCertificateRepository
+        MedicalCertificateRepository medicalCertificateRepository,
+        ReportService reportService,
+        SignService signService
     ) {
         super(MedicalCertificateServiceImpl.class);
         this.medicalCertificateMapper = medicalCertificateMapper;
         this.userMapper = userMapper;
         this.userService = userService;
         this.medicalCertificateRepository = medicalCertificateRepository;
+        this.reportService = reportService;
+        this.signService = signService;
     }
 
     @Override
@@ -53,6 +59,8 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
         );
         medicalCertificate.setPatient(userMapper.userDTOToUser(medicalCertificateDTO.getPatient()));
         medicalCertificate = medicalCertificateRepository.save(medicalCertificate);
+
+        reportService.generateMedicalCertificate(medicalCertificate);
         return medicalCertificateMapper.toDto(medicalCertificate);
     }
 
@@ -93,5 +101,16 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
     public void delete(Long id) {
         log.debug("Request to delete MedicalCertificate : {}", id);
         medicalCertificateRepository.deleteById(id);
+    }
+
+    @Override
+    public void sign(Long id) {
+        Optional<MedicalCertificate> medicalCertificate = medicalCertificateRepository.searchByIdAndDoctor(
+            id,
+            SecurityUtils.currentUserLogin()
+        );
+        if (medicalCertificate.isPresent()) {
+            signService.sign(ServiceUtils.getMedicalCertificatePath(medicalCertificate.get()));
+        }
     }
 }

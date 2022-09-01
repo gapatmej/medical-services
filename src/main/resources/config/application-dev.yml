@@ -108,4 +108,9 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:
+application:
+  paths:
+    docs: /home/aperalta/Documents/pp/docs/
+  urls:
+    validateCertificateRevoked: https://api.firmadigital.gob.ec/api/certificado/fechaRevocado
+    dateToSign: https://api.firmadigital.gob.ec/api/fecha-hora

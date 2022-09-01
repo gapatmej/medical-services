@@ -14,6 +14,7 @@
  */
 package io.rubrica.utils;
 
+import com.customsoftware.medicalservices.service.ServiceUtils;
 import io.rubrica.certificate.CertEcUtils;
 import io.rubrica.certificate.CrlUtils;
 import io.rubrica.certificate.ValidationResult;
@@ -164,7 +165,7 @@ public class UtilsCrlOcsp {
     }
 
     private static String validarCrlServidorAPI(BigInteger serial) throws IOException, ConexionApiException {
-        String certificado_revocado_url = "https://api.firmadigital.gob.ec/api/certificado/fechaRevocado";
+        String certificado_revocado_url = ServiceUtils.getApplicationProperties().getUrls().getValidateCertificateRevoked();
         System.out.println("certificado_revocado_url: " + certificado_revocado_url);
         if (!certificado_revocado_url.isEmpty()) {
             URL url = new URL(certificado_revocado_url + "/" + serial);

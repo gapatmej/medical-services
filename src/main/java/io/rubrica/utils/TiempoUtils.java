@@ -14,6 +14,7 @@
  */
 package io.rubrica.utils;
 
+import com.customsoftware.medicalservices.service.ServiceUtils;
 import io.rubrica.exceptions.HoraServidorException;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -58,7 +59,7 @@ public class TiempoUtils {
     }
 
     public static String getFechaHoraServidor() throws IOException {
-        String fecha_hora_url = "https://api.firmadigital.gob.ec/api/fecha-hora";
+        String fecha_hora_url = ServiceUtils.getApplicationProperties().getUrls().getDateToSign();
         System.out.println("fecha_hora_url: " + fecha_hora_url);
         if (fecha_hora_url.isEmpty()) {
             // La fecha actual en formato ISO-8601 (2017-08-27T17:54:43.562-05:00)

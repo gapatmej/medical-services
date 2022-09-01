@@ -1,57 +1,60 @@
 package com.customsoftware.medicalservices.service.impl;
 
-import com.customsoftware.medicalservices.service.POCSignService;
+import com.customsoftware.medicalservices.service.SignService;
+import com.customsoftware.medicalservices.web.rest.errors.MedicalServicesRuntimeException;
 import ec.gob.firmadigital.cliente.FirmaDigital;
-import io.rubrica.certificate.CertEcUtils;
 import io.rubrica.certificate.CertUtils;
 import io.rubrica.keystore.FileKeyStoreProvider;
 import io.rubrica.keystore.KeyStoreProvider;
-import io.rubrica.sign.cms.DatosUsuario;
 import io.rubrica.utils.FileUtils;
 import io.rubrica.utils.X509CertificateUtils;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class POCSignServiceImpl implements POCSignService {
+public class SignServiceImpl extends AbstractServiceImpl implements SignService {
 
+    private static final Logger LOGGER = Logger.getLogger(SignService.class.getName());
     private final String passwordFinal = "K0rea4k1978";
+    private final int page = 0;
     X509CertificateUtils x509CertificateUtils = null;
     private String alias;
-    private File documento;
-
-    private int pagina;
-    private String tipoFirma;
+    private String signType = "Firma Visible";
     private String razonFirma;
 
+    public SignServiceImpl() {
+        super(SignServiceImpl.class);
+    }
+
     @Override
-    public void sign() {
-        List<String> rutaDocumentos = existeDocumentos();
-        if (rutaDocumentos.size() > 0) {
-            firmarDocumento(rutaDocumentos);
-        }
+    public void sign(String path) {
+        List<String> paths = validatePath(path);
+        signDocuments(paths);
     }
 
-    private List<String> existeDocumentos() {
-        List<String> documentos = new ArrayList<>();
-
-        String rutaDocumento = "/home/aperalta/Documents/pp/medical-services/files/doc3.pdf";
-        if (rutaDocumento != null) {
-            documento = new File(rutaDocumento);
-            documentos.add(rutaDocumento);
+    private List<String> validatePath(String pathString) {
+        Path path = Paths.get(pathString);
+        if (!Files.exists(path)) {
+            throw new MedicalServicesRuntimeException("File to sign not exists");
         }
 
-        return documentos;
+        List<String> documents = new ArrayList<>();
+        documents.add(pathString);
+        return documents;
     }
 
-    private void firmarDocumento(List<String> rutaDocumentos) {
+    private void signDocuments(List<String> paths) {
         List<String> documentosFirmados = new ArrayList<>();
         try {
             // Vemos si es un documento permitido primero
@@ -67,12 +70,12 @@ public class POCSignServiceImpl implements POCSignService {
                 x509CertificateUtils = new X509CertificateUtils();
                 if (x509CertificateUtils.validarX509Certificate(x509Certificate)) {
                     if (x509Certificate != null && alias != null) {
-                        if (FileUtils.getFileExtension(documento).toLowerCase().equals("pdf")) {
+                        /*  if (FileUtils.getFileExtension(documento).toLowerCase().equals("pdf")) {
                             tipoFirma = "Firma Visible";
                             //    previewPdf();
                             //  validacionPdf();
 
-                        }
+                        }*/
                         razonFirma = razonFirma == null ? "" : razonFirma;
                         char[] password = passwordFinal.toCharArray();
 
@@ -81,12 +84,10 @@ public class POCSignServiceImpl implements POCSignService {
                                 //enableControles(false);
                                 //creating ProgressMonitor instance
                                 // ProgressMonitor pm = new ProgressMonitor(this, "Firmando", "Task starting", 1, rutaDocumentos.size());
-                                int i = 0;
-                                for (String rutaDocumento : rutaDocumentos) {
+                                for (String rutaDocumento : paths) {
                                     try {
-                                        i++;
-                                        File documento = new File(rutaDocumento);
-                                        String extDocumento = FileUtils.getFileExtension(documento);
+                                        File doc = new File(rutaDocumento);
+                                        String extDocumento = FileUtils.getFileExtension(doc);
                                         //updating ProgressMonitor note
                                         /*   pm.setNote("<html><b>" + i + " de " + rutaDocumentos.size() + " documento(s)</b>"
                                             + "<br>" + documento.toString() + "</html>");*/
@@ -97,17 +98,17 @@ public class POCSignServiceImpl implements POCSignService {
                                         break;
                                     }*/
                                         byte[] docSigned = null;
-                                        docSigned = FirmaDigital.firmar(ks, alias, documento, password, pagina, razonFirma, tipoFirma);
+                                        docSigned = FirmaDigital.firmar(ks, alias, doc, password, page, razonFirma, signType);
                                         if (docSigned != null) {
                                             if (extDocumento == "pdf") {
                                                 String nombreDocFirmado = FileUtils.crearNombreFirmado(
-                                                    documento,
-                                                    FileUtils.getExtension(FileUtils.fileConvertToByteArray(documento))
+                                                    doc,
+                                                    FileUtils.getExtension(FileUtils.fileConvertToByteArray(doc))
                                                 );
                                                 FileUtils.saveByteArrayToDisc(docSigned, nombreDocFirmado);
                                                 documentosFirmados.add(nombreDocFirmado);
                                             } else {
-                                                String nombreDocFirmado = FileUtils.crearNombreFirmado(documento, "." + extDocumento);
+                                                String nombreDocFirmado = FileUtils.crearNombreFirmado(doc, "." + extDocumento);
                                                 FileUtils.saveByteArrayToDisc(docSigned, nombreDocFirmado);
                                                 documentosFirmados.add(nombreDocFirmado);
                                             }
@@ -115,23 +116,17 @@ public class POCSignServiceImpl implements POCSignService {
 
                                         }
                                     } catch (Exception e) {
-                                        System.out.println(e.getMessage());
+                                        log.error(e.getMessage());
                                     }
                                 }
                             }
                         )
                             .start();
-                        //información firmante
-                        DatosUsuario datosUsuario = CertEcUtils.getDatosUsuarios(x509Certificate);
-                        System.out.println("datosUsuario: " + datosUsuario.toString());
-                        //información firmante
                     }
                 }
             }
-        } catch (KeyStoreException e) {
-            System.out.println(e.getMessage());
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            log.error(ex.getMessage());
         }
     }
 
@@ -145,7 +140,7 @@ public class POCSignServiceImpl implements POCSignService {
                 ks = ksp.getKeystore(passwordFinal.toCharArray());
             }
         } catch (KeyStoreException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
         }
         return ks;
     }

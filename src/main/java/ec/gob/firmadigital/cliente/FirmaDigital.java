@@ -14,10 +14,6 @@
  */
 package ec.gob.firmadigital.cliente;
 
-import com.lowagie.text.ExceptionConverter;
-import com.lowagie.text.exceptions.BadPasswordException;
-import com.lowagie.text.exceptions.InvalidPdfException;
-import ec.gob.firmadigital.utils.PropertiesUtils;
 import io.rubrica.sign.SignConstants;
 import io.rubrica.sign.Signer;
 import io.rubrica.sign.pdf.PDFSigner;
@@ -94,12 +90,7 @@ public class FirmaDigital {
             key = (PrivateKey) keyStore.getKey(alias, clave);
         } catch (java.security.UnrecoverableKeyException uke) {
             //certificado digital mal generado
-            javax.swing.JOptionPane.showMessageDialog(
-                null,
-                PropertiesUtils.getMessages().getProperty("mensaje.error.certificado_problemas") + "\n" + documento,
-                "Error",
-                javax.swing.JOptionPane.ERROR_MESSAGE
-            );
+            System.out.println(uke.getMessage());
         }
 
         // Obtener el certificate chain:
@@ -108,27 +99,8 @@ public class FirmaDigital {
         if (key != null) {
             try {
                 return signer.sign(docByteArry, SignConstants.SIGN_ALGORITHM_SHA1WITHRSA, key, certChain, params);
-            } catch (InvalidPdfException ipe) {
-                javax.swing.JOptionPane.showMessageDialog(
-                    null,
-                    PropertiesUtils.getMessages().getProperty("mensaje.error.documento_problemas") + "\n" + documento,
-                    "Error",
-                    javax.swing.JOptionPane.ERROR_MESSAGE
-                );
-            } catch (io.rubrica.exceptions.RubricaException | ExceptionConverter ec) {
-                javax.swing.JOptionPane.showMessageDialog(
-                    null,
-                    PropertiesUtils.getMessages().getProperty("mensaje.error.driver_problemas") + "\n" + documento,
-                    "Error",
-                    javax.swing.JOptionPane.ERROR_MESSAGE
-                );
-            } catch (BadPasswordException bpe) {
-                javax.swing.JOptionPane.showMessageDialog(
-                    null,
-                    "Documento protegido con contraseña" + "\n" + documento,
-                    "Error",
-                    javax.swing.JOptionPane.ERROR_MESSAGE
-                );
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
         }
         return null;

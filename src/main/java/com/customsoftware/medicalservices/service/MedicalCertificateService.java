@@ -14,4 +14,5 @@ public interface MedicalCertificateService {
     Optional<MedicalCertificateDTO> searchById(Long id);
 
     void delete(Long id);
+    void sign(Long id);
 }

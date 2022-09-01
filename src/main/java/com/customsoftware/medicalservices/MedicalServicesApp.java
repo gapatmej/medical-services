@@ -1,6 +1,7 @@
 package com.customsoftware.medicalservices;
 
 import com.customsoftware.medicalservices.config.ApplicationProperties;
+import com.customsoftware.medicalservices.service.ServiceUtils;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
@@ -23,10 +24,11 @@ import tech.jhipster.config.JHipsterConstants;
 public class MedicalServicesApp {
 
     private static final Logger log = LoggerFactory.getLogger(MedicalServicesApp.class);
-
+    private final ApplicationProperties applicationProperties;
     private final Environment env;
 
-    public MedicalServicesApp(Environment env) {
+    public MedicalServicesApp(ApplicationProperties applicationProperties, Environment env) {
+        this.applicationProperties = applicationProperties;
         this.env = env;
     }
 
@@ -56,6 +58,7 @@ public class MedicalServicesApp {
                 "You have misconfigured your application! It should not " + "run with both the 'dev' and 'cloud' profiles at the same time."
             );
         }
+        ServiceUtils.setApplicationProperties(applicationProperties);
     }
 
     /**

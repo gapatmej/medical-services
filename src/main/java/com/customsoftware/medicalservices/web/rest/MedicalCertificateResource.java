@@ -40,6 +40,7 @@ public class MedicalCertificateResource extends AbstractResource {
     }
 
     @PostMapping("/medical-certificates")
+    @PreAuthorize(AccessConstants.DOCTOR)
     public ResponseEntity<MedicalCertificateDTO> createMedicalCertificate(@RequestBody MedicalCertificateDTO medicalCertificateDTO)
         throws URISyntaxException {
         log.debug("REST request to save MedicalCertificate : {}", medicalCertificateDTO);
@@ -54,6 +55,7 @@ public class MedicalCertificateResource extends AbstractResource {
     }
 
     @PutMapping("/medical-certificates")
+    @PreAuthorize(AccessConstants.DOCTOR)
     public ResponseEntity<MedicalCertificateDTO> updateMedicalCertificate(@RequestBody MedicalCertificateDTO medicalCertificateDTO) {
         log.debug("REST request to update MedicalCertificate : {}, {}", medicalCertificateDTO.getId(), medicalCertificateDTO);
         if (medicalCertificateDTO.getId() == null) {
@@ -114,9 +116,17 @@ public class MedicalCertificateResource extends AbstractResource {
     }
 
     @DeleteMapping("/medical-certificates/{id}")
+    @PreAuthorize(AccessConstants.DOCTOR)
     public ResponseEntity<Void> deleteMedicalCertificate(@PathVariable Long id) {
         log.debug("REST request to delete MedicalCertificate : {}", id);
         medicalCertificateService.delete(id);
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(true, entityName, id.toString())).build();
+    }
+
+    @PostMapping("/medical-certificates/sign/{id}")
+    @PreAuthorize(AccessConstants.DOCTOR)
+    public ResponseEntity<List<MedicalCertificateDTO>> sign(@PathVariable Long id) {
+        medicalCertificateService.sign(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(true, entityName, id.toString())).build();
     }
 }

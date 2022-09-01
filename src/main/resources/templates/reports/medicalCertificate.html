@@ -1,0 +1,30 @@
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <style>
+      .table {
+        width: 100%;
+      }
+
+      .column-legend {
+        width: 40%;
+        font-weight: bold;
+      }
+
+      .column-text {
+        width: 60%;
+      }
+    </style>
+  </head>
+  <body>
+    <h3 style="text-align: center">
+      <span th:text="#{medicalCertificate.title}"></span>
+    </h3>
+
+    <table class="table">
+      <tr>
+        <td class="column-legend" th:text="#{medicalCertificate.patient.name} + ':'"></td>
+        <td class="column-text" th:text="${medicalCertificate.patient.firstName} + ' ' + ${medicalCertificate.patient.lastName}"></td>
+      </tr>
+    </table>
+  </body>
+</html>
