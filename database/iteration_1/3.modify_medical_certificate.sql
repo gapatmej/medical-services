@@ -30,6 +30,7 @@ ALTER TABLE medical_certificate ADD COLUMN disease_description character varying
 ALTER TABLE medical_certificate ADD COLUMN insulation boolean NOT NULL;
 ALTER TABLE medical_certificate ADD COLUMN insulation_description character varying(255) NOT NULL CHECK (insulation_description <> '');
 ALTER TABLE medical_certificate ADD COLUMN total_days_off integer NOT NULL;
+ALTER TABLE medical_certificate ADD COLUMN status character varying(20) NOT NULL CHECK (status <> '');
 
 /* Audit columns */
 alter table medical_certificate add created_date timestamp not null default CURRENT_TIMESTAMP;

@@ -44,6 +44,17 @@ export class MedicalCertificateService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  sign(id: number): Observable<HttpResponse<{}>> {
+    return this.http.post(`${this.resourceUrl}/sign/${id}`, null, { observe: 'response' });
+  }
+
+  downloadSignedCertificate(id: number): Observable<HttpResponse<Blob>> {
+    return this.http.get<Blob>(`${this.resourceUrl}/download-signed-certificate/${id}`, {
+      responseType: 'blob' as 'json',
+      observe: 'response',
+    });
+  }
+
   protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
     if (res.body) {
       res.body.forEach((medicalCertificate: IMedicalCertificate) => {

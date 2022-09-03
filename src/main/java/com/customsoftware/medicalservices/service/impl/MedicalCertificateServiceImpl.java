@@ -1,19 +1,31 @@
 package com.customsoftware.medicalservices.service.impl;
 
 import com.customsoftware.medicalservices.domain.MedicalCertificate;
+import com.customsoftware.medicalservices.domain.enumeration.MedicalCertificateStatus;
 import com.customsoftware.medicalservices.repository.MedicalCertificateRepository;
 import com.customsoftware.medicalservices.security.SecurityUtils;
 import com.customsoftware.medicalservices.service.*;
 import com.customsoftware.medicalservices.service.dto.MedicalCertificateDTO;
 import com.customsoftware.medicalservices.service.dto.search.SearchMedicalCertificateDTO;
 import com.customsoftware.medicalservices.service.mapper.MedicalCertificateMapper;
+import com.customsoftware.medicalservices.service.mapper.ReportService;
 import com.customsoftware.medicalservices.service.mapper.UserMapper;
+import com.customsoftware.medicalservices.web.rest.errors.BadRequestAlertException;
+import com.customsoftware.medicalservices.web.rest.errors.MedicalServicesRuntimeException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
+import javax.activation.MimetypesFileTypeMap;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +44,9 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
 
     private final ReportService reportService;
     private final SignService signService;
+
+    public static final Supplier<RuntimeException> SUPPLIER_NOT_FOUND = () ->
+        new MedicalServicesRuntimeException("Medical Certificate not Found");
 
     public MedicalCertificateServiceImpl(
         MedicalCertificateMapper medicalCertificateMapper,
@@ -58,9 +73,9 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
             userService.findOneByLogin(SecurityUtils.currentUserLogin()).orElseThrow(UserService.SUPPLIER_NOT_FOUND)
         );
         medicalCertificate.setPatient(userMapper.userDTOToUser(medicalCertificateDTO.getPatient()));
+        medicalCertificate.setStatus(MedicalCertificateStatus.CREATED);
         medicalCertificate = medicalCertificateRepository.save(medicalCertificate);
 
-        reportService.generateMedicalCertificate(medicalCertificate);
         return medicalCertificateMapper.toDto(medicalCertificate);
     }
 
@@ -105,12 +120,41 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
 
     @Override
     public void sign(Long id) {
-        Optional<MedicalCertificate> medicalCertificate = medicalCertificateRepository.searchByIdAndDoctor(
-            id,
-            SecurityUtils.currentUserLogin()
-        );
-        if (medicalCertificate.isPresent()) {
-            signService.sign(ServiceUtils.getMedicalCertificatePath(medicalCertificate.get()));
+        medicalCertificateRepository
+            .searchByIdAndDoctor(id, SecurityUtils.currentUserLogin())
+            .ifPresent(
+                mC -> {
+                    try {
+                        reportService.generateMedicalCertificate(mC);
+                    } catch (IOException e) {
+                        log.error(e.getMessage());
+                        throw new BadRequestAlertException("Error trying to sign document", null, "internalServerError");
+                    }
+                    signService.sign(ServiceUtils.getMedicalCertificatePath(mC));
+                    mC.setStatus(MedicalCertificateStatus.SIGNED);
+                    medicalCertificateRepository.save(mC);
+                }
+            );
+    }
+
+    @Override
+    public ResponseEntity<InputStreamResource> getSignedCertificate(Long id) {
+        MedicalCertificate medicalCertificate = medicalCertificateRepository
+            .searchByIdAndDoctor(id, SecurityUtils.currentUserLogin())
+            .orElseThrow(SUPPLIER_NOT_FOUND);
+        InputStream in = null;
+        try {
+            in = new FileInputStream(ServiceUtils.getMedicalCertificatePath(medicalCertificate));
+        } catch (FileNotFoundException e) {
+            log.error(e.getMessage());
+            throw new MedicalServicesRuntimeException("File not founded");
         }
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_PDF);
+        httpHeaders.add("Content-Disposition", "attachment; filename=" + ServiceUtils.getMedicalCertificateName(medicalCertificate));
+        httpHeaders.add("filename", ServiceUtils.getMedicalCertificateName(medicalCertificate));
+
+        return ResponseEntity.ok().headers(httpHeaders).contentType(MediaType.APPLICATION_PDF).body(new InputStreamResource(in));
     }
 }

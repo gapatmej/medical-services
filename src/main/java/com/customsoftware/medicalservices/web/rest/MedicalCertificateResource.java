@@ -12,6 +12,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -128,5 +130,12 @@ public class MedicalCertificateResource extends AbstractResource {
     public ResponseEntity<List<MedicalCertificateDTO>> sign(@PathVariable Long id) {
         medicalCertificateService.sign(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(true, entityName, id.toString())).build();
+    }
+
+    @GetMapping("/medical-certificates/download-signed-certificate/{id}")
+    @PreAuthorize(AccessConstants.DOCTOR)
+    public ResponseEntity<InputStreamResource> downloadSignedCertificate(@PathVariable Long id) {
+        ResponseEntity<InputStreamResource> result = medicalCertificateService.getSignedCertificate(id);
+        return result;
     }
 }

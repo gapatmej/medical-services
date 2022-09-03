@@ -1,5 +1,6 @@
 package com.customsoftware.medicalservices.service.dto;
 
+import com.customsoftware.medicalservices.domain.enumeration.MedicalCertificateStatus;
 import java.io.Serializable;
 import java.time.Instant;
 
@@ -34,6 +35,8 @@ public class MedicalCertificateDTO implements Serializable {
     private Instant fromDate;
 
     private Instant untilDate;
+
+    private MedicalCertificateStatus status;
 
     public Long getId() {
         return id;
@@ -153,5 +156,13 @@ public class MedicalCertificateDTO implements Serializable {
 
     public void setUntilDate(Instant untilDate) {
         this.untilDate = untilDate;
+    }
+
+    public MedicalCertificateStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(MedicalCertificateStatus status) {
+        this.status = status;
     }
 }

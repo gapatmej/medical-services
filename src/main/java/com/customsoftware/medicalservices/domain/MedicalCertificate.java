@@ -1,5 +1,7 @@
 package com.customsoftware.medicalservices.domain;
 
+import com.customsoftware.medicalservices.domain.enumeration.IdentificationType;
+import com.customsoftware.medicalservices.domain.enumeration.MedicalCertificateStatus;
 import java.time.Instant;
 import javax.persistence.*;
 import org.hibernate.annotations.Cache;
@@ -63,6 +65,10 @@ public class MedicalCertificate extends AbstractAuditingEntity {
 
     @Column(name = "until_date", nullable = false)
     private Instant untilDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", length = 10, nullable = false)
+    private MedicalCertificateStatus status;
 
     public Long getId() {
         return id;
@@ -182,5 +188,13 @@ public class MedicalCertificate extends AbstractAuditingEntity {
 
     public void setUntilDate(Instant untilDate) {
         this.untilDate = untilDate;
+    }
+
+    public MedicalCertificateStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(MedicalCertificateStatus status) {
+        this.status = status;
     }
 }

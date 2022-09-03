@@ -28,6 +28,7 @@
     "insulationDescription": "Descripción del aislamiento",
     "totalDaysOff": "Total de días concedidos",
     "fromDate": "Fecha desde",
-    "untilDate": "Fecha hasta"
+    "untilDate": "Fecha hasta",
+    "status": "Status"
   }
 }

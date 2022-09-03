@@ -45,7 +45,7 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
-    public static final Supplier<RuntimeException> SUPPLIER_NOT_FOUND = () -> new MedicalServicesRuntimeException("Post not Found");
+    public static final Supplier<RuntimeException> SUPPLIER_NOT_FOUND = () -> new MedicalServicesRuntimeException("User not Found");
 
     public UserService(
         UserRepository userRepository,

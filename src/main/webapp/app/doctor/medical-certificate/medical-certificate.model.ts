@@ -17,6 +17,7 @@ export interface IMedicalCertificate {
   totalDaysOff?: number;
   fromDate?: dayjs.Dayjs | null;
   untilDate?: dayjs.Dayjs | null;
+  status?: string | null;
 }
 
 export class MedicalCertificate implements IMedicalCertificate {
@@ -35,6 +36,7 @@ export class MedicalCertificate implements IMedicalCertificate {
     public insulationDescription?: string | null,
     public totalDaysOff?: number,
     public fromDate?: dayjs.Dayjs | null,
-    public untilDate?: dayjs.Dayjs | null
+    public untilDate?: dayjs.Dayjs | null,
+    public status?: string | null
   ) {}
 }

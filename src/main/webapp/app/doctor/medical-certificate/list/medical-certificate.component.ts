@@ -80,6 +80,26 @@ export class MedicalCertificateComponent implements OnInit {
     return patientLabel(patient);
   }
 
+  sign(medicalCertificate: IMedicalCertificate): void {
+    this.medicalCertificateService.sign(medicalCertificate.id!).subscribe(() => {
+      this.loadPage();
+    });
+  }
+
+  download(medicalCertificate: IMedicalCertificate): void {
+    this.medicalCertificateService.downloadSignedCertificate(medicalCertificate.id!).subscribe(({ headers, body }) => {
+      if (body) {
+        const blobUrl = URL.createObjectURL(body);
+        const aLink = document.createElement('a');
+        aLink.href = blobUrl;
+        aLink.download = headers.get('filename')!;
+        document.body.appendChild(aLink);
+        aLink.click();
+        document.body.removeChild(aLink);
+      }
+    });
+  }
+
   get ROUTES(): typeof ROUTES {
     return ROUTES;
   }
@@ -111,7 +131,7 @@ export class MedicalCertificateComponent implements OnInit {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     if (navigate) {
-      this.router.navigate(['/medical-certificate'], {
+      this.router.navigate([ROUTES.DOCTOR.MEDICAL_CERTIFICATE], {
         queryParams: {
           page: this.page,
           size: this.itemsPerPage,
