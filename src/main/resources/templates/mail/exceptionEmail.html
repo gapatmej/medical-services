@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title th:text="#{email.exception.title}">JHipster notification</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="shortcut icon" th:href="@{|${baseUrl}/favicon.ico|}" />
+  </head>
+  <body>
+    <p th:text="#{email.exception.at(${minuteHourNotification}, ${dateNotification})}">At</p>
+
+    <p th:utext="#{email.exception.url(${notification.url})}">Url</p>
+
+    <p th:utext="#{email.exception.user(${emailNotification})}">Email Notification</p>
+
+    <p th:utext="#{email.exception.message.error(${notification.errorMessage})}">Get Message</p>
+
+    <strong th:text="#{email.exception.cause}">Cause:</strong>
+    <div th:text="(${notification.errorCause})">Cause</div>
+    <br />
+    <strong th:text="#{email.exception.stackTrace}">Stack Trace:</strong>
+    <div th:utext="(${notification.errorStack})">Stack Trace:</div>
+  </body>
+</html>

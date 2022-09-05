@@ -15,5 +15,7 @@ public final class ErrorConstants {
 
     public static final URI DNI_ALREADY_USED_TYPE = URI.create(PROBLEM_BASE_URL + "/dni-already-used");
 
+    public static final String ERR_EXCEPTION = "error.exception";
+
     private ErrorConstants() {}
 }

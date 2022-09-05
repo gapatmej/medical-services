@@ -109,6 +109,9 @@ jhipster:
 # ===================================================================
 
 application:
+  staffEmail: gapatmej@gmail.com
+  exceptionEmail:
+    enabled: true
   paths:
     docs: /home/aperalta/Documents/pp/docs/
   urls:

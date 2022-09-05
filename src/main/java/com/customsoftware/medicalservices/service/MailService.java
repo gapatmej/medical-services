@@ -1,13 +1,17 @@
 package com.customsoftware.medicalservices.service;
 
 import com.customsoftware.medicalservices.domain.User;
+import com.customsoftware.medicalservices.service.dto.NotificationExceptionDTO;
 import java.nio.charset.StandardCharsets;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -27,6 +31,9 @@ public class MailService {
 
     private final Logger log = LoggerFactory.getLogger(MailService.class);
 
+    @Autowired
+    private Environment env;
+
     private static final String USER = "user";
 
     private static final String BASE_URL = "baseUrl";
@@ -38,6 +45,11 @@ public class MailService {
     private final MessageSource messageSource;
 
     private final SpringTemplateEngine templateEngine;
+    private static final String NOTIFICATION = "notification";
+    private static final String MM_HH_NOTIFICATION = "minuteHourNotification";
+
+    private static final String DATE_NOTIFICATION = "dateNotification";
+    private static final String EMAIL_NOTIFICATION = "emailNotification";
 
     public MailService(
         JHipsterProperties jHipsterProperties,
@@ -108,5 +120,42 @@ public class MailService {
     public void sendPasswordResetMail(User user) {
         log.debug("Sending password reset email to '{}'", user.getEmail());
         sendEmailFromTemplate(user, "mail/passwordResetEmail", "email.reset.title");
+    }
+
+    @Async
+    public void sendNotificationMail(NotificationExceptionDTO notificationException) {
+        String usernameNotification = env.getProperty("application.staffEmail");
+        sendEmailFromTemplateForNotification(notificationException, usernameNotification, "mail/exceptionEmail", "email.exception.subject");
+    }
+
+    @Async
+    public void sendEmailFromTemplateForNotification(
+        NotificationExceptionDTO notificationException,
+        String to,
+        String templateName,
+        String titleKey
+    ) {
+        Context context = new Context(Locale.ENGLISH);
+        context.setVariable(NOTIFICATION, notificationException);
+        context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+
+        String time = DateTimeFormatter.ofPattern("hh:mm").format(notificationException.getDate());
+        String date = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(notificationException.getDate());
+
+        context.setVariable(MM_HH_NOTIFICATION, time);
+        context.setVariable(DATE_NOTIFICATION, date);
+
+        String email = "N/A";
+
+        if (notificationException.getUser() != null && notificationException.getUser().getEmail() != null) {
+            email = notificationException.getUser().getEmail();
+        }
+
+        context.setVariable(EMAIL_NOTIFICATION, email);
+
+        String content = templateEngine.process(templateName, context);
+        String subject = messageSource.getMessage(titleKey, null, Locale.ENGLISH);
+
+        sendEmail(to, subject, content, false, true);
     }
 }

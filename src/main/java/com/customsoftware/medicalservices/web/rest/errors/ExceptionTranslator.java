@@ -1,6 +1,12 @@
 package com.customsoftware.medicalservices.web.rest.errors;
 
+import com.customsoftware.medicalservices.config.ApplicationProperties;
+import com.customsoftware.medicalservices.config.Constants;
+import com.customsoftware.medicalservices.service.MailService;
+import com.customsoftware.medicalservices.service.dto.AdminUserDTO;
+import com.customsoftware.medicalservices.service.dto.NotificationExceptionDTO;
 import java.net.URI;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -10,6 +16,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.ConcurrencyFailureException;
@@ -48,6 +55,12 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     private String applicationName;
 
     private final Environment env;
+
+    @Autowired
+    private ApplicationProperties config;
+
+    @Autowired
+    private MailService mailService;
 
     public ExceptionTranslator(Environment env) {
         this.env = env;
@@ -229,5 +242,66 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
             "de.",
             "com.customsoftware.medicalservices"
         );
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Problem> handleException(Exception exception, NativeWebRequest request) {
+        callSendNotificationEmail(exception, request);
+
+        Problem problem = Problem.builder().withStatus(Status.INTERNAL_SERVER_ERROR).with("message", ErrorConstants.ERR_EXCEPTION).build();
+        return create(exception, problem, request);
+    }
+
+    private void callSendNotificationEmail(Exception ex, NativeWebRequest request) {
+        ApplicationProperties.ExceptionEmail exceptionEmail = config.getExceptionEmail();
+        if (exceptionEmail == null || !Boolean.TRUE.equals(exceptionEmail.getEnabled())) {
+            return;
+        }
+        String fullStackExceptionMsg = ex.getMessage() + "\n" + getFullStackTrace(ex);
+
+        String errorCause = getCause(ex);
+
+        NotificationExceptionDTO notificationException = new NotificationExceptionDTO();
+        notificationException.setDate(ZonedDateTime.now());
+        notificationException.setErrorMessage(ex.getMessage());
+        notificationException.setErrorCause(errorCause);
+        notificationException.setErrorStack(fullStackExceptionMsg);
+        notificationException.setUser(new AdminUserDTO());
+        notificationException.getUser().setEmail(getNameOfUserRequest(request));
+        notificationException.setUrl(request.getDescription(false));
+
+        mailService.sendNotificationMail(notificationException);
+    }
+
+    /**
+     * Get full stack exception
+     *
+     * @param throwable
+     * @return String
+     */
+    private String getFullStackTrace(Throwable throwable) {
+        StringBuilder sb = new StringBuilder();
+        for (StackTraceElement ste : throwable.getStackTrace()) {
+            sb.append("<br/> at " + ste);
+        }
+        Throwable cause = throwable.getCause();
+        if (cause != null) {
+            sb.append("<br/> Caused by ").append(getFullStackTrace(cause));
+        }
+        return sb.toString();
+    }
+
+    private String getCause(Exception ex) {
+        if (ex != null && ex.getCause() != null) {
+            return ex.getCause().getCause() != null ? ex.getCause().getCause().getMessage() : ex.getCause().getMessage();
+        }
+        return Constants.NO_CAUSE_PROVIDED;
+    }
+
+    private String getNameOfUserRequest(NativeWebRequest request) {
+        if (request != null && request.getUserPrincipal() != null) {
+            return request.getUserPrincipal().getName();
+        }
+        return Constants.ANONYMOUS_USER;
     }
 }

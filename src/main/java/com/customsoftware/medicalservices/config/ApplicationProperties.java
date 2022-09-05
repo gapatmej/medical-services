@@ -11,8 +11,18 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
 
+    private String staffEmail;
     private Paths paths = new Paths();
     private Urls urls = new Urls();
+    private final ExceptionEmail exceptionEmail = new ExceptionEmail();
+
+    public String getStaffEmail() {
+        return staffEmail;
+    }
+
+    public void setStaffEmail(String staffEmail) {
+        this.staffEmail = staffEmail;
+    }
 
     public Paths getPaths() {
         return paths;
@@ -28,6 +38,10 @@ public class ApplicationProperties {
 
     public void setUrls(Urls urls) {
         this.urls = urls;
+    }
+
+    public ExceptionEmail getExceptionEmail() {
+        return exceptionEmail;
     }
 
     public class Paths {
@@ -62,6 +76,19 @@ public class ApplicationProperties {
 
         public void setDateToSign(String dateToSign) {
             this.dateToSign = dateToSign;
+        }
+    }
+
+    public static class ExceptionEmail {
+
+        private Boolean enabled;
+
+        public Boolean getEnabled() {
+            return enabled;
+        }
+
+        public void setEnabled(Boolean enabled) {
+            this.enabled = enabled;
         }
     }
 }
