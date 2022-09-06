@@ -133,4 +133,7 @@ application:
   exceptionEmail:
     enabled: true
   paths:
-    docs: /home/ec2-user/docs/
+    docs: /home/docs/
+  urls:
+    validateCertificateRevoked: https://api.firmadigital.gob.ec/api/certificado/fechaRevocado
+    dateToSign: https://api.firmadigital.gob.ec/api/fecha-hora

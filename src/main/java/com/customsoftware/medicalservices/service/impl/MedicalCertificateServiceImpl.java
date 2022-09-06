@@ -10,15 +10,12 @@ import com.customsoftware.medicalservices.service.dto.search.SearchMedicalCertif
 import com.customsoftware.medicalservices.service.mapper.MedicalCertificateMapper;
 import com.customsoftware.medicalservices.service.mapper.ReportService;
 import com.customsoftware.medicalservices.service.mapper.UserMapper;
-import com.customsoftware.medicalservices.web.rest.errors.BadRequestAlertException;
 import com.customsoftware.medicalservices.web.rest.errors.MedicalServicesRuntimeException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
-import javax.activation.MimetypesFileTypeMap;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -69,9 +66,7 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
     public MedicalCertificateDTO save(MedicalCertificateDTO medicalCertificateDTO) {
         log.debug("Request to save MedicalCertificate : {}", medicalCertificateDTO);
         MedicalCertificate medicalCertificate = medicalCertificateMapper.toEntity(medicalCertificateDTO);
-        medicalCertificate.setDoctor(
-            userService.findOneByLogin(SecurityUtils.currentUserLogin()).orElseThrow(UserService.SUPPLIER_NOT_FOUND)
-        );
+        medicalCertificate.setDoctor(userService.currentUserLogin());
         medicalCertificate.setPatient(userMapper.userDTOToUser(medicalCertificateDTO.getPatient()));
         medicalCertificate.setStatus(MedicalCertificateStatus.CREATED);
         medicalCertificate = medicalCertificateRepository.save(medicalCertificate);
@@ -128,9 +123,9 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
                         reportService.generateMedicalCertificate(mC);
                     } catch (IOException e) {
                         log.error(e.getMessage());
-                        throw new BadRequestAlertException("Error trying to sign document", null, "internalServerError");
+                        throw new MedicalServicesRuntimeException(e.getMessage());
                     }
-                    signService.sign(ServiceUtils.getMedicalCertificatePath(mC));
+                    signService.sign(ServiceUtils.getMedicalCertificatePath(mC), mC.getDoctor());
                     mC.setStatus(MedicalCertificateStatus.SIGNED);
                     medicalCertificateRepository.save(mC);
                 }

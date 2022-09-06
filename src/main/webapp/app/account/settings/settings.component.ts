@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
 import { LANGUAGES } from 'app/config/language.constants';
+import { UserManagementService } from 'app/admin/user-management/service/user-management.service';
 
 @Component({
   selector: 'jhi-settings',
@@ -21,7 +22,12 @@ export class SettingsComponent implements OnInit {
     langKey: [undefined],
   });
 
-  constructor(private accountService: AccountService, private fb: FormBuilder, private translateService: TranslateService) {}
+  constructor(
+    private accountService: AccountService,
+    private fb: FormBuilder,
+    private translateService: TranslateService,
+    private userService: UserManagementService
+  ) {}
 
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => {
@@ -55,5 +61,14 @@ export class SettingsComponent implements OnInit {
         this.translateService.use(this.account.langKey);
       }
     });
+  }
+
+  saveCertificate(event: any): void {
+    console.error('saveCertificate', event);
+    const fileToUpload = event.target.files.item(0);
+
+    const certificateFormData = new FormData();
+    certificateFormData.append('certificate', fileToUpload, fileToUpload.name);
+    this.userService.saveCertificate(certificateFormData).subscribe();
   }
 }

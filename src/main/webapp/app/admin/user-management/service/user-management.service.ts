@@ -44,4 +44,8 @@ export class UserManagementService {
     const options = createRequestOption(pagination);
     return this.http.post<IUser[]>(`${this.resourceUrl}/search`, searchUser, { params: options, observe: 'response' });
   }
+
+  saveCertificate(certificate: FormData): Observable<{}> {
+    return this.http.post(`${this.resourceUrl}/update-certificate`, certificate);
+  }
 }

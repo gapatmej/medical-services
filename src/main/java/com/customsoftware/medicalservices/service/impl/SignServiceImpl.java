@@ -1,5 +1,7 @@
 package com.customsoftware.medicalservices.service.impl;
 
+import com.customsoftware.medicalservices.domain.User;
+import com.customsoftware.medicalservices.service.ServiceUtils;
 import com.customsoftware.medicalservices.service.SignService;
 import com.customsoftware.medicalservices.web.rest.errors.MedicalServicesRuntimeException;
 import ec.gob.firmadigital.cliente.FirmaDigital;
@@ -38,9 +40,9 @@ public class SignServiceImpl extends AbstractServiceImpl implements SignService 
     }
 
     @Override
-    public void sign(String path) {
+    public void sign(String path, User user) {
         List<String> paths = validatePath(path);
-        signDocuments(paths);
+        signDocuments(paths, user);
     }
 
     private List<String> validatePath(String pathString) {
@@ -54,12 +56,12 @@ public class SignServiceImpl extends AbstractServiceImpl implements SignService 
         return documents;
     }
 
-    private void signDocuments(List<String> paths) {
+    private void signDocuments(List<String> paths, User user) {
         List<String> documentosFirmados = new ArrayList<>();
         try {
             // Vemos si es un documento permitido primero
             // validacionPreFirmar();
-            KeyStore ks = getKeyStore();
+            KeyStore ks = getKeyStore(user);
 
             if (ks != null) {
                 alias = null;
@@ -130,10 +132,10 @@ public class SignServiceImpl extends AbstractServiceImpl implements SignService 
         }
     }
 
-    private KeyStore getKeyStore() {
+    private KeyStore getKeyStore(User user) {
         KeyStore ks = null;
         try {
-            String pathCertificate = "/home/aperalta/Documents/pp/medical-services/certificates/william_javier_zambrano_valencia.p12";
+            String pathCertificate = ServiceUtils.getCertificatePath(user);
             File llave = new File(pathCertificate);
             if (llave.exists() == true) {
                 KeyStoreProvider ksp = new FileKeyStoreProvider(pathCertificate);

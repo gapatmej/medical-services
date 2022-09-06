@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
         path: 'medical-certificate',
         loadChildren: () => import('app/doctor/medical-certificate/medical-certificate.module').then(m => m.MedicalCertificateModule),
         data: {
-          pageTitle: 'medicalServicesApp.medicalCertificate.home.title',
+          pageTitle: 'medicalCertificate.home.title',
         },
       },
     ]),

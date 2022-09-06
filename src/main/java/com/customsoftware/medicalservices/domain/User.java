@@ -117,6 +117,11 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "medical_history_number", length = 10, nullable = false)
     private String medicalHistoryNumber;
 
+    @Size(max = 100)
+    @Column(length = 100)
+    @JsonIgnore
+    private String certificate;
+
     public Long getId() {
         return id;
     }
@@ -270,6 +275,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.medicalHistoryNumber = medicalHistoryNumber;
     }
 
+    public String getCertificate() {
+        return certificate;
+    }
+
+    public void setCertificate(String certificate) {
+        this.certificate = certificate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -285,20 +298,5 @@ public class User extends AbstractAuditingEntity implements Serializable {
     public int hashCode() {
         // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
         return getClass().hashCode();
-    }
-
-    // prettier-ignore
-    @Override
-    public String toString() {
-        return "User{" +
-            "login='" + login + '\'' +
-            ", firstName='" + firstName + '\'' +
-            ", lastName='" + lastName + '\'' +
-            ", email='" + email + '\'' +
-            ", imageUrl='" + imageUrl + '\'' +
-            ", activated='" + activated + '\'' +
-            ", langKey='" + langKey + '\'' +
-            ", activationKey='" + activationKey + '\'' +
-            "}";
     }
 }

@@ -151,6 +151,11 @@
           </select>
         </div>
 
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="userManagement.certificate"></label>
+          <input type="file" class="form-control" (change)="saveCertificate($event)" />
+        </div>
+
         <button
           type="submit"
           [disabled]="settingsForm.invalid"

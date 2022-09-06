@@ -12,6 +12,10 @@ import com.customsoftware.medicalservices.service.dto.UserDTO;
 import com.customsoftware.medicalservices.service.dto.search.SearchUserDTO;
 import com.customsoftware.medicalservices.web.rest.errors.MedicalServicesRuntimeException;
 import io.micrometer.core.instrument.search.Search;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -26,6 +30,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 import tech.jhipster.security.RandomUtil;
 
 /**
@@ -338,6 +344,28 @@ public class UserService {
     @Transactional(readOnly = true)
     public Optional<User> findOneByLogin(String login) {
         return userRepository.findOneByLogin(login);
+    }
+
+    public void updateCertificate(MultipartFile certificate) throws IOException {
+        User user = currentUserLogin();
+        String path = ServiceUtils.getCertificatePath(user, certificate.getOriginalFilename());
+
+        File file = new File(path);
+
+        file.getParentFile().mkdirs();
+        file.createNewFile();
+
+        try (OutputStream os = new FileOutputStream(file)) {
+            os.write(certificate.getBytes());
+        }
+
+        user.setCertificate(certificate.getOriginalFilename());
+        userRepository.save(user);
+        clearUserCaches(user);
+    }
+
+    public User currentUserLogin() {
+        return findOneByLogin(SecurityUtils.currentUserLogin()).orElseThrow(UserService.SUPPLIER_NOT_FOUND);
     }
 
     private void clearUserCaches(User user) {

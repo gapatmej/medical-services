@@ -10,6 +10,7 @@ import com.customsoftware.medicalservices.service.dto.search.SearchUserDTO;
 import com.customsoftware.medicalservices.web.rest.errors.BadRequestAlertException;
 import com.customsoftware.medicalservices.web.rest.errors.EmailAlreadyUsedException;
 import com.customsoftware.medicalservices.web.rest.errors.LoginAlreadyUsedException;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -28,6 +29,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
@@ -199,5 +201,12 @@ public class UserResource {
         Page<AdminUserDTO> page = userService.search(searchUserDTO, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @PreAuthorize(AccessConstants.DOCTOR)
+    @PostMapping("/users/update-certificate")
+    public ResponseEntity<Void> updateCertificate(@RequestBody MultipartFile certificate) throws IOException {
+        userService.updateCertificate(certificate);
+        return ResponseEntity.noContent().build();
     }
 }
