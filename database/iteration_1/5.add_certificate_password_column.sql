@@ -1,1 +1,1 @@
-ALTER TABLE jhi_user ADD COLUMN certificate character varying(100)
+ALTER TABLE jhi_user ADD COLUMN certificate_password character varying(50)

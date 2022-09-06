@@ -28,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class SignServiceImpl extends AbstractServiceImpl implements SignService {
 
     private static final Logger LOGGER = Logger.getLogger(SignService.class.getName());
-    private final String passwordFinal = "K0rea4k1978";
     private final int page = 0;
     X509CertificateUtils x509CertificateUtils = null;
     private String alias;
@@ -79,7 +78,7 @@ public class SignServiceImpl extends AbstractServiceImpl implements SignService 
 
                         }*/
                         razonFirma = razonFirma == null ? "" : razonFirma;
-                        char[] password = passwordFinal.toCharArray();
+                        char[] password = user.getCertificatePassword().toCharArray();
 
                         new Thread(
                             () -> {
@@ -114,8 +113,6 @@ public class SignServiceImpl extends AbstractServiceImpl implements SignService 
                                                 FileUtils.saveByteArrayToDisc(docSigned, nombreDocFirmado);
                                                 documentosFirmados.add(nombreDocFirmado);
                                             }
-                                            // Información del documento firmado y firmante
-
                                         }
                                     } catch (Exception e) {
                                         log.error(e.getMessage());
@@ -139,7 +136,7 @@ public class SignServiceImpl extends AbstractServiceImpl implements SignService 
             File llave = new File(pathCertificate);
             if (llave.exists() == true) {
                 KeyStoreProvider ksp = new FileKeyStoreProvider(pathCertificate);
-                ks = ksp.getKeystore(passwordFinal.toCharArray());
+                ks = ksp.getKeystore(user.getCertificatePassword().toCharArray());
             }
         } catch (KeyStoreException e) {
             log.error(e.getMessage());

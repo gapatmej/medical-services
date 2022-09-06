@@ -2,9 +2,13 @@ package com.customsoftware.medicalservices.service;
 
 import com.customsoftware.medicalservices.domain.User;
 import com.customsoftware.medicalservices.service.dto.NotificationExceptionDTO;
+import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import org.slf4j.Logger;
@@ -12,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -65,6 +70,11 @@ public class MailService {
 
     @Async
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
+        sendEmail(to, subject, content, isMultipart, isHtml, null);
+    }
+
+    @Async
+    public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml, List<File> attachments) {
         log.debug(
             "Send email[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}",
             isMultipart,
@@ -82,11 +92,39 @@ public class MailService {
             message.setFrom(jHipsterProperties.getMail().getFrom());
             message.setSubject(subject);
             message.setText(content, isHtml);
+            if (attachments != null) {
+                attachments.forEach(
+                    a -> {
+                        try {
+                            message.addAttachment(a.getName(), a);
+                        } catch (MessagingException e) {
+                            log.error("File not attachment");
+                        }
+                    }
+                );
+            }
             javaMailSender.send(mimeMessage);
             log.debug("Sent email to User '{}'", to);
         } catch (MailException | MessagingException e) {
             log.warn("Email could not be sent to user '{}'", to, e);
         }
+    }
+
+    @Async
+    public void sendEmailMedicalCertificate(User user, File medicalCertificate) {
+        if (user.getEmail() == null) {
+            log.debug("Email doesn't exist for user '{}'", user.getLogin());
+            return;
+        }
+        Locale locale = Locale.forLanguageTag(user.getLangKey());
+        Context context = new Context(locale);
+        context.setVariable(USER, user);
+        context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+        String content = templateEngine.process("mail/medicalCertificateEmail", context);
+        String subject = messageSource.getMessage("email.medicalCertificate.title", null, locale);
+        List<File> attachments = new ArrayList<>();
+        attachments.add(medicalCertificate);
+        sendEmail(user.getEmail(), subject, content, true, true, attachments);
     }
 
     @Async

@@ -42,6 +42,8 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
     private final ReportService reportService;
     private final SignService signService;
 
+    private final MailService mailService;
+
     public static final Supplier<RuntimeException> SUPPLIER_NOT_FOUND = () ->
         new MedicalServicesRuntimeException("Medical Certificate not Found");
 
@@ -51,7 +53,8 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
         UserService userService,
         MedicalCertificateRepository medicalCertificateRepository,
         ReportService reportService,
-        SignService signService
+        SignService signService,
+        MailService mailService
     ) {
         super(MedicalCertificateServiceImpl.class);
         this.medicalCertificateMapper = medicalCertificateMapper;
@@ -60,6 +63,7 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
         this.medicalCertificateRepository = medicalCertificateRepository;
         this.reportService = reportService;
         this.signService = signService;
+        this.mailService = mailService;
     }
 
     @Override
@@ -128,8 +132,14 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
                     signService.sign(ServiceUtils.getMedicalCertificatePath(mC), mC.getDoctor());
                     mC.setStatus(MedicalCertificateStatus.SIGNED);
                     medicalCertificateRepository.save(mC);
+                    sendMedicalCertificate(mC);
                 }
             );
+    }
+
+    private void sendMedicalCertificate(MedicalCertificate medicalCertificate) {
+        File medicalCertificateDoc = new File(ServiceUtils.getMedicalCertificatePath(medicalCertificate));
+        mailService.sendEmailMedicalCertificate(medicalCertificate.getPatient(), medicalCertificateDoc);
     }
 
     @Override

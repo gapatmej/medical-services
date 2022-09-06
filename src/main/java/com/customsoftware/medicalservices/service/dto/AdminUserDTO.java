@@ -68,6 +68,9 @@ public class AdminUserDTO {
     @Size(min = 1, max = 10)
     private String medicalHistoryNumber;
 
+    @Size(max = 50)
+    private String certificatePassword;
+
     public AdminUserDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -246,22 +249,11 @@ public class AdminUserDTO {
         this.medicalHistoryNumber = medicalHistoryNumber;
     }
 
-    // prettier-ignore
-    @Override
-    public String toString() {
-        return "AdminUserDTO{" +
-            "login='" + login + '\'' +
-            ", firstName='" + firstName + '\'' +
-            ", lastName='" + lastName + '\'' +
-            ", email='" + email + '\'' +
-            ", imageUrl='" + imageUrl + '\'' +
-            ", activated=" + activated +
-            ", langKey='" + langKey + '\'' +
-            ", createdBy=" + createdBy +
-            ", createdDate=" + createdDate +
-            ", lastModifiedBy='" + lastModifiedBy + '\'' +
-            ", lastModifiedDate=" + lastModifiedDate +
-            ", authorities=" + authorities +
-            "}";
+    public String getCertificatePassword() {
+        return certificatePassword;
+    }
+
+    public void setCertificatePassword(String certificatePassword) {
+        this.certificatePassword = certificatePassword;
     }
 }

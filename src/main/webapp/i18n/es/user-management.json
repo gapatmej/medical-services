@@ -29,6 +29,8 @@
     "deactivated": "Desactivado",
     "profiles": "Perfiles",
     "langKey": "Idioma",
+    "certificate": "Certificado",
+    "certificatePassword": "Clave del certificado",
     "createdBy": "Creado por",
     "createdDate": "Fecha de creación",
     "lastModifiedBy": "Modificado por",

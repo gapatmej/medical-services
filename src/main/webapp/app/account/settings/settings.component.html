@@ -12,7 +12,7 @@
 
       <jhi-alert-error></jhi-alert-error>
 
-      <form name="form" role="form" (ngSubmit)="save()" [formGroup]="settingsForm" *ngIf="account" novalidate>
+      <form name="form" role="form" (ngSubmit)="save()" [formGroup]="settingsForm" *ngIf="account" novalidate autocomplete="off">
         <div class="form-group">
           <label class="form-control-label" for="firstName" jhiTranslate="settings.form.firstname">First Name</label>
           <input
@@ -22,7 +22,6 @@
             name="firstName"
             placeholder="{{ 'settings.form.firstname.placeholder' | translate }}"
             formControlName="firstName"
-            data-cy="firstname"
           />
 
           <div
@@ -65,7 +64,6 @@
             name="lastName"
             placeholder="{{ 'settings.form.lastname.placeholder' | translate }}"
             formControlName="lastName"
-            data-cy="lastname"
           />
 
           <div
@@ -106,7 +104,6 @@
             name="email"
             placeholder="{{ 'global.form.email.placeholder' | translate }}"
             formControlName="email"
-            data-cy="email"
           />
 
           <div *ngIf="settingsForm.get('email')!.invalid && (settingsForm.get('email')!.dirty || settingsForm.get('email')!.touched)">
@@ -146,7 +143,7 @@
 
         <div class="form-group" *ngIf="languages && languages.length > 0">
           <label for="langKey" jhiTranslate="settings.form.language">Language</label>
-          <select class="form-control" id="langKey" name="langKey" formControlName="langKey" data-cy="langKey">
+          <select class="form-control" id="langKey" name="langKey" formControlName="langKey">
             <option *ngFor="let language of languages" [value]="language">{{ language | findLanguageFromKey }}</option>
           </select>
         </div>
@@ -156,15 +153,12 @@
           <input type="file" class="form-control" (change)="saveCertificate($event)" />
         </div>
 
-        <button
-          type="submit"
-          [disabled]="settingsForm.invalid"
-          class="btn btn-primary"
-          jhiTranslate="settings.form.button"
-          data-cy="submit"
-        >
-          Save
-        </button>
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="userManagement.certificatePassword"></label>
+          <input type="password" class="form-control" name="certificatePassword" formControlName="certificatePassword" autocomplete="off" />
+        </div>
+
+        <button type="submit" [disabled]="settingsForm.invalid" class="btn btn-primary" jhiTranslate="settings.form.button">Save</button>
       </form>
     </div>
   </div>

@@ -2,6 +2,8 @@ package com.customsoftware.medicalservices.web.rest;
 
 import com.customsoftware.medicalservices.domain.User;
 import com.customsoftware.medicalservices.repository.UserRepository;
+import com.customsoftware.medicalservices.security.AccessConstants;
+import com.customsoftware.medicalservices.security.AuthoritiesConstants;
 import com.customsoftware.medicalservices.security.SecurityUtils;
 import com.customsoftware.medicalservices.service.MailService;
 import com.customsoftware.medicalservices.service.UserService;
@@ -18,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -114,6 +117,7 @@ public class AccountResource {
      * @throws RuntimeException {@code 500 (Internal Server Error)} if the user login wasn't found.
      */
     @PostMapping("/account")
+    @PreAuthorize(AccessConstants.ADMIN_DOCTOR_PATIENT)
     public void saveAccount(@Valid @RequestBody AdminUserDTO userDTO) {
         String userLogin = SecurityUtils
             .getCurrentUserLogin()
@@ -131,7 +135,8 @@ public class AccountResource {
             userDTO.getLastName(),
             userDTO.getEmail(),
             userDTO.getLangKey(),
-            userDTO.getImageUrl()
+            userDTO.getImageUrl(),
+            userDTO.getCertificatePassword()
         );
     }
 

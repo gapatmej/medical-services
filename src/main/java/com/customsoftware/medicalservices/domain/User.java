@@ -122,6 +122,11 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @JsonIgnore
     private String certificate;
 
+    @Size(max = 50)
+    @Column(name = "certificate_password", length = 50)
+    @JsonIgnore
+    private String certificatePassword;
+
     public Long getId() {
         return id;
     }
@@ -281,6 +286,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setCertificate(String certificate) {
         this.certificate = certificate;
+    }
+
+    public String getCertificatePassword() {
+        return certificatePassword;
+    }
+
+    public void setCertificatePassword(String certificatePassword) {
+        this.certificatePassword = certificatePassword;
     }
 
     @Override
