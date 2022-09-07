@@ -10,7 +10,8 @@
         "medicalCertificate": "Certificado Médico"
       },
       "patient": {
-        "main": "Pasciente"
+        "main": "Pasciente",
+        "medicalCertificate": "Certificado Médico"
       },
       "account": {
         "main": "Cuenta",

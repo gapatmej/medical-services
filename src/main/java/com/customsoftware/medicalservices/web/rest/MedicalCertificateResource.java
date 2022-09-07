@@ -133,7 +133,7 @@ public class MedicalCertificateResource extends AbstractResource {
     }
 
     @GetMapping("/medical-certificates/download-signed-certificate/{id}")
-    @PreAuthorize(AccessConstants.DOCTOR)
+    @PreAuthorize(AccessConstants.DOCTOR_PATIENT)
     public ResponseEntity<InputStreamResource> downloadSignedCertificate(@PathVariable Long id) {
         ResponseEntity<InputStreamResource> result = medicalCertificateService.getSignedCertificate(id);
         return result;

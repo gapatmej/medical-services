@@ -17,4 +17,10 @@ public interface MedicalCertificateRepository extends JpaRepository<MedicalCerti
         " select mC from MedicalCertificate mC join fetch mC.doctor join fetch mC.patient where mC.id = :id and mC.doctor.login = :loginDoctor "
     )
     Optional<MedicalCertificate> searchByIdAndDoctor(@Param("id") Long id, @Param("loginDoctor") String loginDoctor);
+
+    @Query(
+        " select mC from MedicalCertificate mC join fetch mC.doctor join fetch mC.patient where mC.id = :id " +
+        " and (mC.doctor.login = :login or mC.patient.login = :login) "
+    )
+    Optional<MedicalCertificate> searchByIdAndDoctorOrPatient(@Param("id") Long id, @Param("login") String login);
 }

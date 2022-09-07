@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { User } from '../user-management.model';
-import { UserManagementService } from '../service/user-management.service';
+import { UserManagementService } from '../../../services/user-management.service';
 
 @Component({
   selector: 'jhi-user-mgmt-delete-dialog',

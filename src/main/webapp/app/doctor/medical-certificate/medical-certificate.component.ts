@@ -4,14 +4,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { IMedicalCertificate } from '../medical-certificate.model';
+import { IMedicalCertificate } from 'app/models/medical-certificate.model';
 
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { ROUTES } from 'app/config/routes.constants';
-import { MedicalCertificateService } from '../service/medical-certificate.service';
-import { MedicalCertificateDeleteDialogComponent } from '../delete/medical-certificate-delete-dialog.component';
-import { Pagination } from 'app/core/request/pagination.model';
-import { SearchMedicalCertificate } from '../search-medical-certificate.model';
+import { MedicalCertificateService } from 'app/services/medical-certificate.service';
+import { MedicalCertificateDeleteDialogComponent } from 'app/doctor/medical-certificate/delete/medical-certificate-delete-dialog.component';
+import { Pagination } from 'app/models/pagination.model';
+import { SearchMedicalCertificate } from 'app/models/search-medical-certificate.model';
 import { patientLabel } from 'app/core/util/selectors-util';
 import { IUser } from 'app/admin/user-management/user-management.model';
 
@@ -45,7 +45,7 @@ export class MedicalCertificateComponent implements OnInit {
       ...new SearchMedicalCertificate(),
       query: '',
     };
-    this.medicalCertificateService.searchDoctor(pagination, searchMedicalCertificate).subscribe(
+    this.medicalCertificateService.searchDoctorsCertificate(pagination, searchMedicalCertificate).subscribe(
       (res: HttpResponse<IMedicalCertificate[]>) => {
         this.isLoading = false;
         this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);

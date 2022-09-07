@@ -4,9 +4,9 @@ import { Observable } from 'rxjs';
 
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { IUser } from '../user-management.model';
-import { ISearchUser } from '../search-user.model';
-import { Pagination } from 'app/core/request/pagination.model';
+import { IUser } from '../admin/user-management/user-management.model';
+import { ISearchUser } from '../admin/user-management/search-user.model';
+import { Pagination } from 'app/models/pagination.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserManagementService {

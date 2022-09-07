@@ -5,9 +5,10 @@ import { SessionStorageService } from 'ngx-webstorage';
 
 import { VERSION } from 'app/app.constants';
 import { LANGUAGES } from 'app/config/language.constants';
-import { AccountService } from 'app/core/auth/account.service';
-import { LoginService } from 'app/login/login.service';
+import { AccountService } from 'app/services/account.service';
+import { LoginService } from 'app/services/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
+import { ROUTES } from 'app/config/routes.constants';
 
 @Component({
   selector: 'jhi-navbar',
@@ -70,5 +71,9 @@ export class NavbarComponent implements OnInit {
 
   getImageUrl(): string {
     return this.isAuthenticated() ? this.accountService.getImageUrl() : '';
+  }
+
+  get ROUTES(): typeof ROUTES {
+    return ROUTES;
   }
 }

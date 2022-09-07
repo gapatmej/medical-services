@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
-import { AccountService } from 'app/core/auth/account.service';
-import { Account } from 'app/core/auth/account.model';
+import { AccountService } from 'app/services/account.service';
+import { Account } from 'app/models/account.model';
 import { LANGUAGES } from 'app/config/language.constants';
-import { UserManagementService } from 'app/admin/user-management/service/user-management.service';
+import { UserManagementService } from 'app/services/user-management.service';
 
 @Component({
   selector: 'jhi-settings',

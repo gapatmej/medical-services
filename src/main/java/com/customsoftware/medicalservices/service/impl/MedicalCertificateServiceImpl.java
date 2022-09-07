@@ -145,7 +145,7 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
     @Override
     public ResponseEntity<InputStreamResource> getSignedCertificate(Long id) {
         MedicalCertificate medicalCertificate = medicalCertificateRepository
-            .searchByIdAndDoctor(id, SecurityUtils.currentUserLogin())
+            .searchByIdAndDoctorOrPatient(id, SecurityUtils.currentUserLogin())
             .orElseThrow(SUPPLIER_NOT_FOUND);
         InputStream in = null;
         try {

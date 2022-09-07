@@ -6,9 +6,9 @@ import * as dayjs from 'dayjs';
 
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
-import { IMedicalCertificate } from '../medical-certificate.model';
-import { ISearchMedicalCertificate } from '../search-medical-certificate.model';
-import { Pagination } from 'app/core/request/pagination.model';
+import { IMedicalCertificate } from '../models/medical-certificate.model';
+import { ISearchMedicalCertificate } from '../models/search-medical-certificate.model';
+import { Pagination } from 'app/models/pagination.model';
 
 export type EntityResponseType = HttpResponse<IMedicalCertificate>;
 export type EntityArrayResponseType = HttpResponse<IMedicalCertificate[]>;
@@ -33,10 +33,23 @@ export class MedicalCertificateService {
     return this.http.get<IMedicalCertificate>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  searchDoctor(pagination: Pagination, searchMedicalCertificate: ISearchMedicalCertificate): Observable<EntityArrayResponseType> {
+  searchDoctorsCertificate(
+    pagination: Pagination,
+    searchMedicalCertificate: ISearchMedicalCertificate
+  ): Observable<EntityArrayResponseType> {
     const options = createRequestOption(pagination);
     return this.http
       .post<IMedicalCertificate[]>(`${this.resourceUrl}/doctor/search`, searchMedicalCertificate, { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
+  searchPatientCertificate(
+    pagination: Pagination,
+    searchMedicalCertificate: ISearchMedicalCertificate
+  ): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(pagination);
+    return this.http
+      .post<IMedicalCertificate[]>(`${this.resourceUrl}/patient/search`, searchMedicalCertificate, { params: options, observe: 'response' })
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 

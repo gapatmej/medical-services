@@ -2,8 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { AccountService } from 'app/core/auth/account.service';
-import { Account } from 'app/core/auth/account.model';
+import { AccountService } from 'app/services/account.service';
+import { Account } from 'app/models/account.model';
 
 @Component({
   selector: 'jhi-home',

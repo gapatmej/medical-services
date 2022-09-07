@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { IMedicalCertificate } from '../medical-certificate.model';
-import { MedicalCertificateService } from '../service/medical-certificate.service';
+import { IMedicalCertificate } from '../../../models/medical-certificate.model';
+import { MedicalCertificateService } from '../../../services/medical-certificate.service';
 
 @Component({
   templateUrl: './medical-certificate-delete-dialog.component.html',

@@ -4,9 +4,9 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
-import { LoginService } from 'app/login/login.service';
+import { LoginService } from 'app/services/login.service';
 import { StateStorageService } from 'app/core/auth/state-storage.service';
-import { AccountService } from 'app/core/auth/account.service';
+import { AccountService } from 'app/services/account.service';
 
 @Injectable()
 export class AuthExpiredInterceptor implements HttpInterceptor {

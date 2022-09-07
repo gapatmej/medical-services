@@ -1,8 +1,8 @@
 import { Component, ViewChild, OnInit, AfterViewInit, ElementRef } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginService } from 'app/login/login.service';
-import { AccountService } from 'app/core/auth/account.service';
+import { LoginService } from 'app/services/login.service';
+import { AccountService } from 'app/services/account.service';
 
 @Component({
   selector: 'jhi-login',

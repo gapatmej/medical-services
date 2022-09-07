@@ -4,7 +4,7 @@ import { Router, ActivatedRouteSnapshot, NavigationEnd, NavigationError } from '
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import * as dayjs from 'dayjs';
 
-import { AccountService } from 'app/core/auth/account.service';
+import { AccountService } from 'app/services/account.service';
 
 @Component({
   selector: 'jhi-main',

@@ -6,5 +6,7 @@ export const ROUTES = {
   DOCTOR: {
     MEDICAL_CERTIFICATE: '/doctor/medical-certificate',
   },
-  PATIENT: {},
+  PATIENT: {
+    MEDICAL_CERTIFICATE: '/patient/medical-certificate',
+  },
 };

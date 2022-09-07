@@ -4,8 +4,8 @@ import { Resolve, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Observable, of, EMPTY } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
-import { IMedicalCertificate, MedicalCertificate } from '../medical-certificate.model';
-import { MedicalCertificateService } from '../service/medical-certificate.service';
+import { IMedicalCertificate, MedicalCertificate } from '../../../models/medical-certificate.model';
+import { MedicalCertificateService } from '../../../services/medical-certificate.service';
 
 @Injectable({ providedIn: 'root' })
 export class MedicalCertificateRoutingResolveService implements Resolve<IMedicalCertificate> {

@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
-import { MedicalCertificateComponent } from '../list/medical-certificate.component';
+import { MedicalCertificateComponent } from 'app/doctor/medical-certificate/medical-certificate.component';
+import { MedicalCertificateRoutingResolveService } from 'app/doctor/medical-certificate/route/medical-certificate-routing-resolve.service';
 import { MedicalCertificateUpdateComponent } from '../update/medical-certificate-update.component';
-import { MedicalCertificateRoutingResolveService } from './medical-certificate-routing-resolve.service';
 
 const medicalCertificateRoute: Routes = [
   {

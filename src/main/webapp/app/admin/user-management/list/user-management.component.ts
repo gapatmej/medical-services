@@ -5,12 +5,12 @@ import { combineLatest } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
-import { AccountService } from 'app/core/auth/account.service';
-import { Account } from 'app/core/auth/account.model';
-import { UserManagementService } from '../service/user-management.service';
+import { AccountService } from 'app/services/account.service';
+import { Account } from 'app/models/account.model';
+import { UserManagementService } from '../../../services/user-management.service';
 import { User } from '../user-management.model';
 import { UserManagementDeleteDialogComponent } from '../delete/user-management-delete-dialog.component';
-import { Pagination } from 'app/core/request/pagination.model';
+import { Pagination } from 'app/models/pagination.model';
 
 @Component({
   selector: 'jhi-user-mgmt',

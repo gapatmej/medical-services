@@ -69,6 +69,20 @@
             <span jhiTranslate="global.menu.patient.main"></span>
           </span>
         </a>
+        <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="admin-menu">
+          <li>
+            <a
+              class="dropdown-item"
+              [routerLink]="ROUTES.PATIENT.MEDICAL_CERTIFICATE"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="collapseNavbar()"
+            >
+              <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.patient.medicalCertificate"></span>
+            </a>
+          </li>
+        </ul>
       </li>
       <li
         *jhiHasAnyAuthority="'ROLE_ADMIN'"

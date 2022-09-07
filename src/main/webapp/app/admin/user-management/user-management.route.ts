@@ -3,7 +3,7 @@ import { Resolve, ActivatedRouteSnapshot, Routes } from '@angular/router';
 import { Observable, of } from 'rxjs';
 
 import { User, IUser } from './user-management.model';
-import { UserManagementService } from './service/user-management.service';
+import { UserManagementService } from '../../services/user-management.service';
 import { UserManagementComponent } from './list/user-management.component';
 import { UserManagementUpdateComponent } from './update/user-management-update.component';
 
