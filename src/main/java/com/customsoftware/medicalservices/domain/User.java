@@ -1,6 +1,5 @@
 package com.customsoftware.medicalservices.domain;
 
-import com.customsoftware.medicalservices.config.Constants;
 import com.customsoftware.medicalservices.domain.enumeration.IdentificationType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
@@ -11,7 +10,6 @@ import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.BatchSize;
@@ -54,7 +52,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @Email
     @Size(min = 5, max = 254)
-    @Column(length = 254, unique = true, nullable = false)
+    @Column(length = 254, nullable = false)
     private String email;
 
     @NotNull

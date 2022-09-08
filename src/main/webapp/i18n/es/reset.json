@@ -6,9 +6,10 @@
         "button": "Restablecer la contraseña"
       },
       "messages": {
-        "info": "Introduzca la dirección de correo electrónico que utilizó para registrarse",
+        "info": "Introduzca su identificación ",
         "success": "Revise su correo electrónico para obtener más información sobre cómo restablecer su contraseña."
-      }
+      },
+      "login": "Login"
     },
     "finish": {
       "title": "Restablecer la contraseña",

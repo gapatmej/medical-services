@@ -97,9 +97,9 @@ public class UserService {
             );
     }
 
-    public Optional<User> requestPasswordReset(String mail) {
+    public Optional<User> requestPasswordReset(String login) {
         return userRepository
-            .findOneByEmailIgnoreCase(mail)
+            .findOneByLogin(login)
             .filter(User::isActivated)
             .map(
                 user -> {
@@ -123,7 +123,7 @@ public class UserService {
                 }
             );
         userRepository
-            .findOneByEmailIgnoreCase(userDTO.getEmail())
+            .findOneByLogin(userDTO.getLogin())
             .ifPresent(
                 existingUser -> {
                     boolean removed = removeNonActivatedUser(existingUser);

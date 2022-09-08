@@ -8,7 +8,7 @@ import com.customsoftware.medicalservices.service.UserService;
 import com.customsoftware.medicalservices.service.dto.AdminUserDTO;
 import com.customsoftware.medicalservices.service.dto.search.SearchUserDTO;
 import com.customsoftware.medicalservices.web.rest.errors.BadRequestAlertException;
-import com.customsoftware.medicalservices.web.rest.errors.EmailAlreadyUsedException;
+import com.customsoftware.medicalservices.web.rest.errors.DniAlreadyUsedException;
 import com.customsoftware.medicalservices.web.rest.errors.LoginAlreadyUsedException;
 import java.io.IOException;
 import java.net.URI;
@@ -101,10 +101,8 @@ public class UserResource {
         if (userDTO.getId() != null) {
             throw new BadRequestAlertException("A new user cannot already have an ID", "userManagement", "idexists");
             // Lowercase the user login before comparing with database
-        } else if (userRepository.findOneByEmailIgnoreCase(userDTO.getEmail()).isPresent()) {
-            throw new EmailAlreadyUsedException();
         } else if (userRepository.findOneByDni(userDTO.getDni()).isPresent()) {
-            throw new EmailAlreadyUsedException();
+            throw new DniAlreadyUsedException();
         } else {
             User newUser = userService.createUser(userDTO);
             mailService.sendCreationEmail(newUser);
@@ -120,7 +118,6 @@ public class UserResource {
      *
      * @param userDTO the user to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated user.
-     * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already in use.
      * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already in use.
      */
     @PutMapping("/admin/users")
@@ -128,11 +125,8 @@ public class UserResource {
     public ResponseEntity<AdminUserDTO> updateUser(@Valid @RequestBody AdminUserDTO userDTO) {
         log.debug("REST request to update User : {}", userDTO);
         userDTO.setLogin(userDTO.getDni());
-        Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
-        if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
-            throw new EmailAlreadyUsedException();
-        }
-        existingUser = userRepository.findOneByLogin(userDTO.getLogin());
+
+        Optional<User> existingUser = userRepository.findOneByLogin(userDTO.getLogin());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
             throw new LoginAlreadyUsedException();
         }

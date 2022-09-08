@@ -8,23 +8,23 @@ import { PasswordResetInitService } from './password-reset-init.service';
   templateUrl: './password-reset-init.component.html',
 })
 export class PasswordResetInitComponent implements AfterViewInit {
-  @ViewChild('email', { static: false })
-  email?: ElementRef;
+  @ViewChild('login', { static: false })
+  login?: ElementRef;
 
   success = false;
   resetRequestForm = this.fb.group({
-    email: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email]],
+    login: ['', [Validators.required, Validators.maxLength(50)]],
   });
 
   constructor(private passwordResetInitService: PasswordResetInitService, private fb: FormBuilder) {}
 
   ngAfterViewInit(): void {
-    if (this.email) {
-      this.email.nativeElement.focus();
+    if (this.login) {
+      this.login.nativeElement.focus();
     }
   }
 
   requestReset(): void {
-    this.passwordResetInitService.save(this.resetRequestForm.get(['email'])!.value).subscribe(() => (this.success = true));
+    this.passwordResetInitService.save(this.resetRequestForm.get(['login'])!.value).subscribe(() => (this.success = true));
   }
 }
