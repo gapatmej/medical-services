@@ -7,9 +7,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { AccountService } from 'app/services/account.service';
 import { Account } from 'app/models/account.model';
-import { UserManagementService } from '../../../services/user-management.service';
-import { User } from '../user-management.model';
-import { UserManagementDeleteDialogComponent } from '../delete/user-management-delete-dialog.component';
+import { UserManagementService } from 'app/services/user-management.service';
+import { User } from 'app/models/user-management.model';
+import { UserManagementDeleteDialogComponent } from 'app/admin/user-management/delete/user-management-delete-dialog.component';
 import { Pagination } from 'app/models/pagination.model';
 
 @Component({

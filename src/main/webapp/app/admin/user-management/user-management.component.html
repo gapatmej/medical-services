@@ -78,7 +78,7 @@
             <div class="btn-group">
               <button type="submit" [routerLink]="['./', user.login, 'edit']" queryParamsHandling="merge" class="btn btn-primary btn-sm">
                 <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                <span class="d-none d-md-inline" jhiTranslate="global.actions.edit">Edit</span>
               </button>
 
               <button
@@ -88,7 +88,7 @@
                 [disabled]="!currentAccount || currentAccount.login === user.login"
               >
                 <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                <span class="d-none d-md-inline" jhiTranslate="global.actions.delete">Delete</span>
               </button>
             </div>
           </td>

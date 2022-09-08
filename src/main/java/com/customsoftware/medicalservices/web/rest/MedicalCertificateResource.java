@@ -127,7 +127,7 @@ public class MedicalCertificateResource extends AbstractResource {
 
     @PostMapping("/medical-certificates/sign/{id}")
     @PreAuthorize(AccessConstants.DOCTOR)
-    public ResponseEntity<List<MedicalCertificateDTO>> sign(@PathVariable Long id) {
+    public ResponseEntity<Void> sign(@PathVariable Long id) {
         medicalCertificateService.sign(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(true, entityName, id.toString())).build();
     }

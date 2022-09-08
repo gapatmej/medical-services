@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { User } from '../user-management.model';
+import { User } from '../../../models/user-management.model';
 import { UserManagementService } from '../../../services/user-management.service';
 
 @Component({

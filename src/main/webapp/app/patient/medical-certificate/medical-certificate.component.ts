@@ -12,7 +12,7 @@ import { MedicalCertificateService } from 'app/services/medical-certificate.serv
 import { Pagination } from 'app/models/pagination.model';
 import { SearchMedicalCertificate } from 'app/models/search-medical-certificate.model';
 import { patientLabel } from 'app/core/util/selectors-util';
-import { IUser } from 'app/admin/user-management/user-management.model';
+import { IUser } from 'app/models/user-management.model';
 
 @Component({
   selector: 'jhi-medical-certificate',

@@ -1,4 +1,4 @@
-import { User } from 'app/admin/user-management/user-management.model';
+import { User } from 'app/models/user-management.model';
 import * as dayjs from 'dayjs';
 
 export interface IMedicalCertificate {

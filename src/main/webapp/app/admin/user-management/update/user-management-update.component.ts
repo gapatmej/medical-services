@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import { LANGUAGES } from 'app/config/language.constants';
-import { User } from '../user-management.model';
+import { User } from '../../../models/user-management.model';
 import { UserManagementService } from '../../../services/user-management.service';
 import { IdentificationType } from 'app/config/enumeration/identification-type.model';
 import { onlyNumbers, validateDni } from 'app/shared/validations/input-validation.component';

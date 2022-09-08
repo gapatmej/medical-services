@@ -14,6 +14,13 @@ import { RouterModule } from '@angular/router';
         },
       },
       {
+        path: 'organization',
+        loadChildren: () => import('./organization/organization.module').then(m => m.OrganizationModule),
+        data: {
+          pageTitle: 'organizacion.home.title',
+        },
+      },
+      {
         path: 'docs',
         loadChildren: () => import('./docs/docs.module').then(m => m.DocsModule),
       },

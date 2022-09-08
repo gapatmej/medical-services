@@ -106,6 +106,12 @@
             </a>
           </li>
           <li>
+            <a class="dropdown-item" [routerLink]="ROUTES.ADMIN.ORGANIZATION" routerLinkActive="active" (click)="collapseNavbar()">
+              <fa-icon icon="users" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.admin.organization"></span>
+            </a>
+          </li>
+          <li>
             <a class="dropdown-item" routerLink="admin/metrics" routerLinkActive="active" (click)="collapseNavbar()">
               <fa-icon icon="tachometer-alt" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="global.menu.admin.metrics">Metrics</span>

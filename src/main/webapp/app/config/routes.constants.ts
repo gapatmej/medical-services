@@ -3,6 +3,9 @@ export const ROUTES = {
   LOGIN: '/login',
   HOME: '/home',
   RESET_PASSWORD: '/account/reset/request',
+  ADMIN: {
+    ORGANIZATION: '/admin/organization',
+  },
   DOCTOR: {
     MEDICAL_CERTIFICATE: '/doctor/medical-certificate',
   },

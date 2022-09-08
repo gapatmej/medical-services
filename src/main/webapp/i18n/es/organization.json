@@ -1,0 +1,12 @@
+{
+  "organization": {
+    "home": {
+      "title": "Organization",
+      "createOrEditLabel": "Editar organizacion"
+    },
+    "name": "Nombre",
+    "email": "Email",
+    "phoneNumber": "Numero telefónico",
+    "address": "Dirección"
+  }
+}

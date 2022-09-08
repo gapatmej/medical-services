@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, Routes } from '@angular/router';
 import { Observable, of } from 'rxjs';
 
-import { User, IUser } from './user-management.model';
-import { UserManagementService } from '../../services/user-management.service';
-import { UserManagementComponent } from './list/user-management.component';
+import { User, IUser } from '../../models/user-management.model';
+import { UserManagementService } from 'app/services/user-management.service';
+import { UserManagementComponent } from 'app/admin/user-management/user-management.component';
 import { UserManagementUpdateComponent } from './update/user-management-update.component';
 
 @Injectable({ providedIn: 'root' })
