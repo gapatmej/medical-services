@@ -10,7 +10,6 @@ import { IUser } from 'app/models/user-management.model';
 import { UserManagementService } from 'app/services/user-management.service';
 import { Pagination } from 'app/models/pagination.model';
 import { SearchUser } from 'app/models/search-user.model';
-import { Authority } from 'app/config/authority.constants';
 import { patientLabel } from 'app/core/util/selectors-util';
 import { onlyNumbers } from 'app/shared/validations/input-validation.component';
 import _ from 'lodash';
@@ -81,10 +80,9 @@ export class MedicalCertificateUpdateComponent implements OnInit {
     const searchUser = {
       ...new SearchUser(),
       query: patient,
-      roles: [Authority.PATIENT],
     };
 
-    this.userManagementService.search(pagination, searchUser).subscribe(resp => {
+    this.userManagementService.searchPatient(pagination, searchUser).subscribe(resp => {
       this.patients = resp.body!;
     });
   }

@@ -16,7 +16,13 @@
       "title": "Usuario"
     },
     "login": "Login",
-    "identificationType": "Tipo de identificación",
+    "identificationType": {
+      "label": "Tipo de identificación",
+      "names": {
+        "DNI": "Cédula",
+        "PASSPORT": "Pasaporte"
+      }
+    },
     "dni": "Identificación",
     "firstName": "Nombres",
     "lastName": "Apellidos",

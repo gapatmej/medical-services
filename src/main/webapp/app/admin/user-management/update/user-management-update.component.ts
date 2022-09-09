@@ -85,8 +85,6 @@ export class UserManagementUpdateComponent implements OnInit {
     const dniControl = this.editForm.controls['dni']!;
     dniControl.clearValidators();
 
-    console.error('verifyDniValidators', identificationType, this.editForm);
-
     if (IdentificationType.DNI === identificationType) {
       dniControl.setValidators([Validators.required, Validators.maxLength(10), validateDni()]);
     } else {
@@ -96,9 +94,7 @@ export class UserManagementUpdateComponent implements OnInit {
     dniControl.updateValueAndValidity();
   };
 
-  autorityName(authority: string): string {
-    return getAutorityName(authority);
-  }
+  autorityName = (i: string): string => getAutorityName(i);
 
   private updateForm(user: User): void {
     this.editForm.patchValue({

@@ -18,10 +18,12 @@ public class CustomUserRepositoryImpl implements CustomUserRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
+    private static final String UNSORTED = "UNSORTED";
+
     @Override
     public Page<User> search(SearchUserDTO searchUserDTO, Pageable pageable) {
-        StringBuilder sqlCount = new StringBuilder(" select count(distinct u.id ) from User u inner join u.authorities a ");
-        StringBuilder sqlSelect = new StringBuilder(" select u from User u inner join u.authorities a ");
+        StringBuilder sqlCount = new StringBuilder(" select count(distinct u.id ) from User u ");
+        StringBuilder sqlSelect = new StringBuilder(" select distinct u from User u");
         StringBuilder sql = new StringBuilder();
         sql.append(" where 1=1 ");
 
@@ -36,11 +38,17 @@ public class CustomUserRepositoryImpl implements CustomUserRepository {
         }
 
         if (CollectionUtils.isNotEmpty(searchUserDTO.getRoles())) {
-            sql.append(" and a in (select a1 from Authority a1 where a1.name in (:roles)) ");
+            sql.append(" and u.authorities in (select a1 from Authority a1 where a1.name in (:roles)) ");
         }
 
         sqlSelect.append(sql);
         sqlCount.append(sql);
+
+        if (pageable != null && !UNSORTED.equals(pageable.getSort().toString())) {
+            String order = " order by u." + pageable.getSort().toString().replace(":", "").trim();
+            //  sqlSelect.append(" order by u.id desc ");
+            sqlSelect.append(order);
+        }
 
         Query queryCount = entityManager.createQuery(sqlCount.toString());
         Query querySelect = entityManager.createQuery(sqlSelect.toString());

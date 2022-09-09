@@ -3,6 +3,7 @@ package com.customsoftware.medicalservices.web.rest;
 import com.customsoftware.medicalservices.domain.User;
 import com.customsoftware.medicalservices.repository.UserRepository;
 import com.customsoftware.medicalservices.security.AccessConstants;
+import com.customsoftware.medicalservices.security.AuthoritiesConstants;
 import com.customsoftware.medicalservices.service.MailService;
 import com.customsoftware.medicalservices.service.UserService;
 import com.customsoftware.medicalservices.service.dto.AdminUserDTO;
@@ -13,10 +14,7 @@ import com.customsoftware.medicalservices.web.rest.errors.LoginAlreadyUsedExcept
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -188,9 +186,21 @@ public class UserResource {
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName, "userManagement.deleted", login)).build();
     }
 
-    @PostMapping("/users/search")
-    @PreAuthorize(AccessConstants.ADMIN_DOCTOR)
-    public ResponseEntity<List<AdminUserDTO>> findMedicalCertificates(Pageable pageable, @RequestBody SearchUserDTO searchUserDTO) {
+    @PostMapping("/admin/users/search")
+    @PreAuthorize(AccessConstants.ADMIN)
+    public ResponseEntity<List<AdminUserDTO>> searchByAdmin(Pageable pageable, @RequestBody SearchUserDTO searchUserDTO) {
+        return search(pageable, searchUserDTO);
+    }
+
+    @PostMapping("/users/search-patient")
+    @PreAuthorize(AccessConstants.DOCTOR)
+    public ResponseEntity<List<AdminUserDTO>> searchPatient(Pageable pageable, @RequestBody SearchUserDTO searchUserDTO) {
+        List<String> roles = List.of(AuthoritiesConstants.PATIENT);
+        searchUserDTO.setRoles(roles);
+        return search(pageable, searchUserDTO);
+    }
+
+    public ResponseEntity<List<AdminUserDTO>> search(Pageable pageable, @RequestBody SearchUserDTO searchUserDTO) {
         log.debug("REST request to get a page of users");
         Page<AdminUserDTO> page = userService.search(searchUserDTO, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);

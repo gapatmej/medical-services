@@ -40,9 +40,14 @@ export class UserManagementService {
     return this.http.get<string[]>(this.applicationConfigService.getEndpointFor('api/authorities'));
   }
 
-  search(pagination: Pagination, searchUser: ISearchUser): Observable<HttpResponse<IUser[]>> {
+  searchByAdmin(pagination: Pagination, searchUser: ISearchUser): Observable<HttpResponse<IUser[]>> {
     const options = createRequestOption(pagination);
-    return this.http.post<IUser[]>(`${this.resourceUrl}/search`, searchUser, { params: options, observe: 'response' });
+    return this.http.post<IUser[]>(`${this.resourceUrlAdmin}/search`, searchUser, { params: options, observe: 'response' });
+  }
+
+  searchPatient(pagination: Pagination, searchUser: ISearchUser): Observable<HttpResponse<IUser[]>> {
+    const options = createRequestOption(pagination);
+    return this.http.post<IUser[]>(`${this.resourceUrl}/search-patient`, searchUser, { params: options, observe: 'response' });
   }
 
   saveCertificate(certificate: FormData): Observable<{}> {

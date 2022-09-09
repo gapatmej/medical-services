@@ -112,9 +112,9 @@
       "dni": "Este campo no tiene una identificación válida"
     },
     "authorities": {
-      "admin": "Administrador",
-      "doctor": "Doctor",
-      "patient": "Pasciente"
+      "ROLE_ADMIN": "Administrador",
+      "ROLE_DOCTOR": "Doctor",
+      "ROLE_PATIENT": "Pasciente"
     },
     "actions": {
       "addblob": "Añadir fichero",

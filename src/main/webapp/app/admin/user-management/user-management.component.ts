@@ -4,13 +4,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
+import { ITEMS_PER_PAGE, MAX_SIZE } from 'app/config/pagination.constants';
 import { AccountService } from 'app/services/account.service';
 import { Account } from 'app/models/account.model';
 import { UserManagementService } from 'app/services/user-management.service';
 import { User } from 'app/models/user-management.model';
 import { UserManagementDeleteDialogComponent } from 'app/admin/user-management/delete/user-management-delete-dialog.component';
 import { Pagination } from 'app/models/pagination.model';
+import { SearchUser } from 'app/models/search-user.model';
+import { getAutorityName, getIdentifycationTypeName } from 'app/core/util/enumeration-util';
+import { IdentificationType } from 'app/config/enumeration/identification-type.model';
 
 @Component({
   selector: 'jhi-user-mgmt',
@@ -22,6 +25,7 @@ export class UserManagementComponent implements OnInit {
   isLoading = false;
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
+  maxSize = MAX_SIZE;
   page!: number;
   predicate!: string;
   ascending!: boolean;
@@ -38,6 +42,10 @@ export class UserManagementComponent implements OnInit {
     this.accountService.identity().subscribe(account => (this.currentAccount = account));
     this.handleNavigation();
   }
+
+  identificationTypeName = (i: IdentificationType): string => getIdentifycationTypeName(i);
+
+  autorityName = (i: string): string => getAutorityName(i);
 
   setActive(user: User, isActivated: boolean): void {
     this.userService.update({ ...user, activated: isActivated }).subscribe(() => this.loadAll());
@@ -61,10 +69,17 @@ export class UserManagementComponent implements OnInit {
   loadAll(): void {
     this.isLoading = true;
     this.userService
-      .query({
-        ...new Pagination(),
-        sort: this.sort(),
-      })
+      .searchByAdmin(
+        {
+          ...new Pagination(),
+          page: this.page - 1,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        },
+        {
+          ...new SearchUser(),
+        }
+      )
       .subscribe(
         (res: HttpResponse<User[]>) => {
           this.isLoading = false;
@@ -87,7 +102,7 @@ export class UserManagementComponent implements OnInit {
   private handleNavigation(): void {
     combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
       const page = params.get('page');
-      this.page = page !== null ? +page : 1;
+      this.page = page ? +page : 1;
       const sort = (params.get('sort') ?? data['defaultSort']).split(',');
       this.predicate = sort[0];
       this.ascending = sort[1] === 'asc';
