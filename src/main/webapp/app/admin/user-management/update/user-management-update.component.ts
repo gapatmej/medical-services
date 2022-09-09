@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import { LANGUAGES } from 'app/config/language.constants';
@@ -8,6 +8,8 @@ import { UserManagementService } from '../../../services/user-management.service
 import { IdentificationType } from 'app/config/enumeration/identification-type.model';
 import { onlyNumbers, validateDni } from 'app/shared/validations/input-validation.component';
 import { getAutorityName } from 'app/core/util/enumeration-util';
+import { Authority } from 'app/config/authority.constants';
+import _ from 'lodash';
 
 @Component({
   selector: 'jhi-user-mgmt-update',
@@ -30,7 +32,6 @@ export class UserManagementUpdateComponent implements OnInit {
     address: ['', [Validators.required, Validators.maxLength(100)]],
     contactPhoneNumber: ['', [Validators.required, Validators.maxLength(10), onlyNumbers()]],
     occupation: ['', [Validators.required, Validators.maxLength(100)]],
-    medicalHistoryNumber: ['', [Validators.required, Validators.maxLength(10)]],
     activated: [],
     langKey: [],
     authorities: [[], [Validators.required]],
@@ -45,7 +46,8 @@ export class UserManagementUpdateComponent implements OnInit {
         if (this.user.id === undefined) {
           this.user.activated = true;
         }
-        this.updateForm(user);
+        this.updateForm();
+        this.verifyAuthorities();
       }
     });
     this.userService.authorities().subscribe(authorities => (this.authorities = authorities));
@@ -77,7 +79,20 @@ export class UserManagementUpdateComponent implements OnInit {
   }
 
   onSelectAuthority(): void {
-    console.error('');
+    this.verifyAuthorities();
+  }
+
+  verifyAuthorities(): void {
+    const { authorities } = this.editForm.value;
+
+    if (_.includes(authorities, Authority.PATIENT)) {
+      this.editForm.addControl(
+        'medicalHistoryNumber',
+        new FormControl(this.user.medicalHistoryNumber, [Validators.required, Validators.maxLength(10)])
+      );
+    } else {
+      this.editForm.removeControl('medicalHistoryNumber');
+    }
   }
 
   verifyDniValidators = (): void => {
@@ -96,25 +111,25 @@ export class UserManagementUpdateComponent implements OnInit {
 
   autorityName = (i: string): string => getAutorityName(i);
 
-  private updateForm(user: User): void {
+  private updateForm(): void {
     this.editForm.patchValue({
-      identificationType: user.identificationType,
-      dni: user.dni,
-      id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      address: user.address,
-      contactPhoneNumber: user.contactPhoneNumber,
-      occupation: user.occupation,
-      medicalHistoryNumber: user.medicalHistoryNumber,
-      activated: user.activated,
-      langKey: user.langKey,
-      authorities: user.authorities,
+      identificationType: this.user.identificationType,
+      dni: this.user.dni,
+      id: this.user.id,
+      firstName: this.user.firstName,
+      lastName: this.user.lastName,
+      email: this.user.email,
+      address: this.user.address,
+      contactPhoneNumber: this.user.contactPhoneNumber,
+      occupation: this.user.occupation,
+      activated: this.user.activated,
+      langKey: this.user.langKey,
+      authorities: this.user.authorities,
     });
   }
 
   private updateUser(user: User): void {
+    const { medicalHistoryNumber } = this.editForm.value;
     user.identificationType = this.editForm.get(['identificationType'])!.value;
     user.dni = this.editForm.get(['dni'])!.value;
     user.firstName = this.editForm.get(['firstName'])!.value;
@@ -123,7 +138,7 @@ export class UserManagementUpdateComponent implements OnInit {
     user.address = this.editForm.get(['address'])!.value;
     user.contactPhoneNumber = this.editForm.get(['contactPhoneNumber'])!.value;
     user.occupation = this.editForm.get(['occupation'])!.value;
-    user.medicalHistoryNumber = this.editForm.get(['medicalHistoryNumber'])!.value;
+    user.medicalHistoryNumber = medicalHistoryNumber;
     user.activated = this.editForm.get(['activated'])!.value;
     user.langKey = this.editForm.get(['langKey'])!.value;
     user.authorities = this.editForm.get(['authorities'])!.value;

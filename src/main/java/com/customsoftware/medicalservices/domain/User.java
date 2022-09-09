@@ -112,7 +112,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     private IdentificationType identificationType;
 
     @Size(min = 1, max = 10)
-    @Column(name = "medical_history_number", length = 10, nullable = false)
+    @Column(name = "medical_history_number", length = 10)
     private String medicalHistoryNumber;
 
     @Size(max = 100)

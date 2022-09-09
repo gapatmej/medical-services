@@ -21,6 +21,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -225,12 +226,22 @@ public class UserService {
                     user.setLogin(userDTO.getLogin());
                     user.setFirstName(userDTO.getFirstName());
                     user.setLastName(userDTO.getLastName());
-                    if (userDTO.getEmail() != null) {
-                        user.setEmail(userDTO.getEmail().toLowerCase());
+                    user.setEmail(userDTO.getEmail().toLowerCase());
+                    String medicalHistoryNumber = null;
+                    if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.PATIENT)) {
+                        if (StringUtils.isBlank(userDTO.getMedicalHistoryNumber())) {
+                            throw new MedicalServicesRuntimeException("user must has medical history number");
+                        }
+                        medicalHistoryNumber = userDTO.getMedicalHistoryNumber();
                     }
+
+                    user.setMedicalHistoryNumber(medicalHistoryNumber);
                     user.setImageUrl(userDTO.getImageUrl());
                     user.setActivated(userDTO.isActivated());
                     user.setLangKey(userDTO.getLangKey());
+                    user.setContactPhoneNumber(userDTO.getContactPhoneNumber());
+                    user.setAddress(userDTO.getAddress());
+                    user.setOccupation(userDTO.getOccupation());
                     Set<Authority> managedAuthorities = user.getAuthorities();
                     managedAuthorities.clear();
                     userDTO

@@ -90,7 +90,7 @@
           </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" *ngIf="editForm.get('medicalHistoryNumber')">
           <label class="form-control-label" jhiTranslate="userManagement.medicalHistoryNumber"></label>
           <input type="text" class="form-control" name="medicalHistoryNumber" formControlName="medicalHistoryNumber" />
           <jhi-input-validation [control]="editForm.get('medicalHistoryNumber')"></jhi-input-validation>

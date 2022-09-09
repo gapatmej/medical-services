@@ -33,6 +33,10 @@ public class CustomMedicalCertificateRepositoryImpl implements CustomMedicalCert
             sql.append(" and mC.doctor.login = :doctorLogin");
         }
 
+        if (!StringUtils.isBlank(searchMedicalCertificateDTO.getPatientLogin())) {
+            sql.append(" and mC.patient.login = :patientLogin");
+        }
+
         sqlSelect.append(sql);
         sqlCount.append(sql);
 
@@ -47,6 +51,11 @@ public class CustomMedicalCertificateRepositoryImpl implements CustomMedicalCert
         if (!StringUtils.isBlank(searchMedicalCertificateDTO.getDoctorLogin())) {
             queryCount.setParameter("doctorLogin", searchMedicalCertificateDTO.getDoctorLogin());
             querySelect.setParameter("doctorLogin", searchMedicalCertificateDTO.getDoctorLogin());
+        }
+
+        if (!StringUtils.isBlank(searchMedicalCertificateDTO.getPatientLogin())) {
+            queryCount.setParameter("patientLogin", searchMedicalCertificateDTO.getPatientLogin());
+            querySelect.setParameter("patientLogin", searchMedicalCertificateDTO.getPatientLogin());
         }
 
         querySelect.setFirstResult((pageable.getPageNumber()) * pageable.getPageSize());
