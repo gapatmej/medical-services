@@ -13,7 +13,7 @@ import { UserManagementDeleteDialogComponent } from 'app/admin/user-management/d
 import { Pagination } from 'app/models/pagination.model';
 import { SearchUser } from 'app/models/search-user.model';
 import { getAutorityName, getIdentifycationTypeName } from 'app/core/util/enumeration-util';
-import { IdentificationType } from 'app/config/enumeration/identification-type.model';
+import { IdentificationType } from 'app/models/enumeration/identification-type.model';
 
 @Component({
   selector: 'jhi-user-mgmt',

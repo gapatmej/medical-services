@@ -33,19 +33,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class MedicalCertificateServiceImpl extends AbstractServiceImpl implements MedicalCertificateService {
 
+    public static final Supplier<RuntimeException> SUPPLIER_NOT_FOUND = () ->
+        new MedicalServicesRuntimeException("Medical Certificate not Found");
     private final MedicalCertificateMapper medicalCertificateMapper;
     private final UserMapper userMapper;
     private final UserService userService;
-
     private final MedicalCertificateRepository medicalCertificateRepository;
-
     private final ReportService reportService;
     private final SignService signService;
-
     private final MailService mailService;
-
-    public static final Supplier<RuntimeException> SUPPLIER_NOT_FOUND = () ->
-        new MedicalServicesRuntimeException("Medical Certificate not Found");
 
     public MedicalCertificateServiceImpl(
         MedicalCertificateMapper medicalCertificateMapper,
@@ -69,6 +65,17 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
     @Override
     public MedicalCertificateDTO save(MedicalCertificateDTO medicalCertificateDTO) {
         log.debug("Request to save MedicalCertificate : {}", medicalCertificateDTO);
+
+        medicalCertificateRepository
+            .searchById(medicalCertificateDTO.getId())
+            .ifPresent(
+                mC -> {
+                    if (MedicalCertificateStatus.SIGNED.equals(mC.getStatus())) {
+                        throw new MedicalServicesRuntimeException("Medical certificate signed");
+                    }
+                }
+            );
+
         MedicalCertificate medicalCertificate = medicalCertificateMapper.toEntity(medicalCertificateDTO);
         medicalCertificate.setDoctor(userService.currentUserLogin());
         medicalCertificate.setPatient(userMapper.userDTOToUser(medicalCertificateDTO.getPatient()));
@@ -113,8 +120,16 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
 
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete MedicalCertificate : {}", id);
-        medicalCertificateRepository.deleteById(id);
+        medicalCertificateRepository
+            .searchById(id)
+            .ifPresent(
+                mC -> {
+                    if (MedicalCertificateStatus.SIGNED.equals(mC.getStatus())) {
+                        throw new MedicalServicesRuntimeException("Medical certificate signed");
+                    }
+                    medicalCertificateRepository.deleteById(id);
+                }
+            );
     }
 
     @Override
@@ -123,6 +138,10 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
             .searchByIdAndDoctor(id, SecurityUtils.currentUserLogin())
             .ifPresent(
                 mC -> {
+                    if (MedicalCertificateStatus.SIGNED.equals(mC.getStatus())) {
+                        throw new MedicalServicesRuntimeException("Medical certificate signed");
+                    }
+
                     try {
                         reportService.generateMedicalCertificate(mC);
                     } catch (IOException e) {
@@ -147,6 +166,11 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
         MedicalCertificate medicalCertificate = medicalCertificateRepository
             .searchByIdAndDoctorOrPatient(id, SecurityUtils.currentUserLogin())
             .orElseThrow(SUPPLIER_NOT_FOUND);
+
+        if (!MedicalCertificateStatus.SIGNED.equals(medicalCertificate.getStatus())) {
+            throw new MedicalServicesRuntimeException("Medical certificate not signed yet");
+        }
+
         InputStream in = null;
         try {
             in = new FileInputStream(ServiceUtils.getMedicalCertificatePath(medicalCertificate));

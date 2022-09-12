@@ -14,6 +14,7 @@ import { Pagination } from 'app/models/pagination.model';
 import { SearchMedicalCertificate } from 'app/models/search-medical-certificate.model';
 import { patientLabel } from 'app/core/util/selectors-util';
 import { IUser } from 'app/models/user-management.model';
+import { MedicalCertificateStatus } from 'app/models/enumeration/medical-certificate-status.model';
 
 @Component({
   selector: 'jhi-medical-certificate',
@@ -108,6 +109,10 @@ export class MedicalCertificateComponent implements OnInit {
         document.body.removeChild(aLink);
       }
     });
+  }
+
+  get MedicalCertificateStatus(): typeof MedicalCertificateStatus {
+    return MedicalCertificateStatus;
   }
 
   get ROUTES(): typeof ROUTES {

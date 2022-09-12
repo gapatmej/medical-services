@@ -58,20 +58,36 @@
               type="submit"
               [routerLink]="[ROUTES.DOCTOR.MEDICAL_CERTIFICATE, medicalCertificate.id, 'edit']"
               class="btn btn-primary btn-sm"
+              [disabled]="medicalCertificate.status === MedicalCertificateStatus.SIGNED"
             >
               <fa-icon icon="pencil-alt"></fa-icon>
               <span class="d-none d-md-inline" jhiTranslate="global.actions.edit"></span>
             </button>
-            <button type="submit" (click)="sign(medicalCertificate)" class="btn btn-secondary btn-sm">
+            <button
+              type="submit"
+              (click)="sign(medicalCertificate)"
+              class="btn btn-secondary btn-sm"
+              [disabled]="medicalCertificate.status === MedicalCertificateStatus.SIGNED"
+            >
               <fa-icon icon="file-signature"></fa-icon>
               <span class="d-none d-md-inline" jhiTranslate="global.actions.sign"></span>
             </button>
 
-            <button type="submit" (click)="download(medicalCertificate)" class="btn btn-secondary btn-sm">
+            <button
+              type="submit"
+              (click)="download(medicalCertificate)"
+              class="btn btn-secondary btn-sm"
+              [disabled]="medicalCertificate.status !== MedicalCertificateStatus.SIGNED"
+            >
               <fa-icon icon="file-download"></fa-icon>
               <span class="d-none d-md-inline" jhiTranslate="global.actions.download"></span>
             </button>
-            <button type="submit" (click)="delete(medicalCertificate)" class="btn btn-danger btn-sm">
+            <button
+              type="submit"
+              (click)="delete(medicalCertificate)"
+              class="btn btn-danger btn-sm"
+              [disabled]="medicalCertificate.status === MedicalCertificateStatus.SIGNED"
+            >
               <fa-icon icon="times"></fa-icon>
               <span class="d-none d-md-inline" jhiTranslate="global.actions.delete"></span>
             </button>

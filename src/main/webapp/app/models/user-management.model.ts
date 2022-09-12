@@ -1,4 +1,4 @@
-import { IdentificationType } from 'app/config/enumeration/identification-type.model';
+import { IdentificationType } from 'app/models/enumeration/identification-type.model';
 
 export interface IUser {
   id?: number;

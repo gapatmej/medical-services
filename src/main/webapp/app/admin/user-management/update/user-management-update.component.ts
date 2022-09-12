@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { LANGUAGES } from 'app/config/language.constants';
 import { User } from '../../../models/user-management.model';
 import { UserManagementService } from '../../../services/user-management.service';
-import { IdentificationType } from 'app/config/enumeration/identification-type.model';
+import { IdentificationType } from 'app/models/enumeration/identification-type.model';
 import { onlyNumbers, validateDni } from 'app/shared/validations/input-validation.component';
 import { getAutorityName } from 'app/core/util/enumeration-util';
 import { Authority } from 'app/config/authority.constants';

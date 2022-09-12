@@ -1,4 +1,4 @@
-import { IdentificationType } from 'app/config/enumeration/identification-type.model';
+import { IdentificationType } from 'app/models/enumeration/identification-type.model';
 
 export const getAutorityName = (authority: string): string => `global.authorities.${authority}`;
 
