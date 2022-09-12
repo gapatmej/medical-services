@@ -228,7 +228,7 @@ public class UserService {
                     user.setLastName(userDTO.getLastName());
                     user.setEmail(userDTO.getEmail().toLowerCase());
                     String medicalHistoryNumber = null;
-                    if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.PATIENT)) {
+                    if (userDTO.getAuthorities().contains(AuthoritiesConstants.PATIENT)) {
                         if (StringUtils.isBlank(userDTO.getMedicalHistoryNumber())) {
                             throw new MedicalServicesRuntimeException("user must has medical history number");
                         }
@@ -271,30 +271,27 @@ public class UserService {
             );
     }
 
-    /**
-     * Update basic information (first name, last name, email, language) for the current user.
-     *
-     * @param firstName first name of user.
-     * @param lastName  last name of user.
-     * @param email     email id of user.
-     * @param langKey   language key.
-     * @param imageUrl  image URL of user.
-     */
-    public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl, String certificatePassword) {
+    public void updateAccount(AdminUserDTO userDTO) {
         SecurityUtils
             .getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
             .ifPresent(
                 user -> {
-                    user.setFirstName(firstName);
-                    user.setLastName(lastName);
-                    if (email != null) {
-                        user.setEmail(email.toLowerCase());
+                    user.setFirstName(userDTO.getFirstName());
+                    user.setLastName(userDTO.getLastName());
+                    user.setAddress(userDTO.getAddress());
+                    user.setOccupation(userDTO.getOccupation());
+                    user.setContactPhoneNumber(userDTO.getMedicalHistoryNumber());
+                    if (userDTO.getEmail() != null) {
+                        user.setEmail(userDTO.getEmail().toLowerCase());
                     }
-                    user.setLangKey(langKey);
-                    user.setImageUrl(imageUrl);
-                    if (certificatePassword != null && SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.DOCTOR)) {
-                        user.setCertificatePassword(certificatePassword);
+                    user.setLangKey(userDTO.getLangKey());
+                    user.setImageUrl(userDTO.getImageUrl());
+                    if (
+                        StringUtils.isNotBlank(userDTO.getCertificatePassword()) &&
+                        SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.DOCTOR)
+                    ) {
+                        user.setCertificatePassword(userDTO.getCertificatePassword());
                     }
                     this.clearUserCaches(user);
                     log.debug("Changed Information for User: {}", user);

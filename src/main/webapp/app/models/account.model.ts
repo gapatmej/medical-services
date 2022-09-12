@@ -2,6 +2,9 @@ export class Account {
   constructor(
     public activated: boolean,
     public authorities: string[],
+    public contactPhoneNumber: string,
+    public occupation: string,
+    public address: string,
     public email: string,
     public firstName: string | null,
     public langKey: string,
