@@ -1,6 +1,7 @@
 package com.customsoftware.medicalservices.repository.custom.impl;
 
 import com.customsoftware.medicalservices.domain.MedicalCertificate;
+import com.customsoftware.medicalservices.repository.RepositoryConstants;
 import com.customsoftware.medicalservices.repository.custom.CustomMedicalCertificateRepository;
 import com.customsoftware.medicalservices.service.dto.search.SearchMedicalCertificateDTO;
 import java.util.List;
@@ -39,6 +40,11 @@ public class CustomMedicalCertificateRepositoryImpl implements CustomMedicalCert
 
         sqlSelect.append(sql);
         sqlCount.append(sql);
+
+        if (pageable != null && !RepositoryConstants.UNSORTED.equals(pageable.getSort().toString())) {
+            String order = " order by mC." + pageable.getSort().toString().replace(":", "").trim();
+            sqlSelect.append(order);
+        }
 
         Query queryCount = entityManager.createQuery(sqlCount.toString());
         Query querySelect = entityManager.createQuery(sqlSelect.toString());

@@ -30,7 +30,7 @@
         </tr>
       </thead>
       <tbody *ngIf="users">
-        <tr *ngFor="let user of users; trackBy: trackIdentity">
+        <tr *ngFor="let user of users">
           <td [jhiTranslate]="identificationTypeName(user.identificationType!)"></td>
           <td>{{ user.dni }}</td>
           <td>{{ user.firstName }}</td>

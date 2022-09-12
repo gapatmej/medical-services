@@ -7,7 +7,6 @@ import * as dayjs from 'dayjs';
 })
 export class FormatMediumDatePipe implements PipeTransform {
   transform(day: dayjs.Dayjs | null | undefined): string {
-    console.error('transform', day);
     return day ? day.format('D MMM YYYY') : '';
   }
 }

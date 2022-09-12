@@ -50,7 +50,6 @@ export class MedicalCertificateUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ medicalCertificate }) => {
-      console.error('ngo', medicalCertificate);
       if (!_.isNil(medicalCertificate.id)) {
         this.updateForm(medicalCertificate);
       }

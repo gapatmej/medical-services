@@ -21,12 +21,16 @@
   <div class="table-responsive" *ngIf="medicalCertificates && medicalCertificates.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="transition.bind(this)">
           <th scope="col" jhiSortBy="emissionDate">
             <span jhiTranslate="medicalCertificate.emissionDate"></span> <fa-icon icon="sort"></fa-icon>
           </th>
+          <th scope="col" jhiSortBy="patient.dni"><span jhiTranslate="medicalCertificate.dni"></span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="patient.firstName">
-            <span jhiTranslate="medicalCertificate.patient"></span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="medicalCertificate.firstName"></span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="patient.lastName">
+            <span jhiTranslate="medicalCertificate.lastName"></span> <fa-icon icon="sort"></fa-icon>
           </th>
           <th scope="col" jhiSortBy="fromDate"><span jhiTranslate="medicalCertificate.fromDate"></span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="untilDate">
@@ -35,46 +39,42 @@
           <th scope="col" jhiSortBy="totalDaysOff">
             <span jhiTranslate="medicalCertificate.totalDaysOff"></span> <fa-icon icon="sort"></fa-icon>
           </th>
-          <th scope="col" jhiSortBy="totalDaysOff">
-            <span jhiTranslate="medicalCertificate.status"></span> <fa-icon icon="sort"></fa-icon>
-          </th>
+          <th scope="col" jhiSortBy="status"><span jhiTranslate="medicalCertificate.status"></span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let medicalCertificate of medicalCertificates; trackBy: trackId">
+        <tr *ngFor="let medicalCertificate of medicalCertificates">
           <td>{{ medicalCertificate.emissionDate | formatMediumDate }}</td>
-          <td>{{ patientLabel(medicalCertificate.patient!) }}</td>
+          <td>{{ medicalCertificate.patient?.dni }}</td>
+          <td>{{ medicalCertificate.patient?.firstName }}</td>
+          <td>{{ medicalCertificate.patient?.lastName }}</td>
           <td>{{ medicalCertificate.fromDate | formatMediumDate }}</td>
           <td>{{ medicalCertificate.untilDate | formatMediumDate }}</td>
           <td>{{ medicalCertificate.totalDaysOff }}</td>
           <td>{{ medicalCertificate.status }}</td>
           <td class="text-right">
-            <div class="btn-group">
-              <button
-                type="submit"
-                [routerLink]="[ROUTES.DOCTOR.MEDICAL_CERTIFICATE, medicalCertificate.id, 'edit']"
-                class="btn btn-primary btn-sm"
-              >
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="global.actions.edit"></span>
-              </button>
+            <button
+              type="submit"
+              [routerLink]="[ROUTES.DOCTOR.MEDICAL_CERTIFICATE, medicalCertificate.id, 'edit']"
+              class="btn btn-primary btn-sm"
+            >
+              <fa-icon icon="pencil-alt"></fa-icon>
+              <span class="d-none d-md-inline" jhiTranslate="global.actions.edit"></span>
+            </button>
+            <button type="submit" (click)="sign(medicalCertificate)" class="btn btn-secondary btn-sm">
+              <fa-icon icon="file-signature"></fa-icon>
+              <span class="d-none d-md-inline" jhiTranslate="global.actions.sign"></span>
+            </button>
 
-              <button type="submit" (click)="delete(medicalCertificate)" class="btn btn-danger btn-sm">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="global.actions.delete"></span>
-              </button>
-
-              <button type="submit" (click)="sign(medicalCertificate)" class="btn btn-danger btn-sm">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="global.actions.sign"></span>
-              </button>
-
-              <button type="submit" (click)="download(medicalCertificate)" class="btn btn-danger btn-sm">
-                <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="global.actions.download"></span>
-              </button>
-            </div>
+            <button type="submit" (click)="download(medicalCertificate)" class="btn btn-secondary btn-sm">
+              <fa-icon icon="file-download"></fa-icon>
+              <span class="d-none d-md-inline" jhiTranslate="global.actions.download"></span>
+            </button>
+            <button type="submit" (click)="delete(medicalCertificate)" class="btn btn-danger btn-sm">
+              <fa-icon icon="times"></fa-icon>
+              <span class="d-none d-md-inline" jhiTranslate="global.actions.delete"></span>
+            </button>
           </td>
         </tr>
       </tbody>
@@ -89,12 +89,12 @@
     <div class="row justify-content-center">
       <ngb-pagination
         [collectionSize]="totalItems"
-        [(page)]="ngbPaginationPage"
+        [(page)]="page"
         [pageSize]="itemsPerPage"
-        [maxSize]="5"
+        [maxSize]="maxSize"
         [rotate]="true"
         [boundaryLinks]="true"
-        (pageChange)="loadPage($event)"
+        (pageChange)="transition()"
       ></ngb-pagination>
     </div>
   </div>

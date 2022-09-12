@@ -18,7 +18,7 @@
           <div class="form-group col-6">
             <label class="form-control-label" jhiTranslate="settings.form.lastname"></label>
             <input type="text" class="form-control" name="lastName" formControlName="lastName" />
-            <jhi-input-validation [control]="settingsForm.get('lastname')"></jhi-input-validation>
+            <jhi-input-validation [control]="settingsForm.get('lastName')"></jhi-input-validation>
           </div>
         </div>
 
@@ -60,7 +60,7 @@
         <div class="row" *ngIf="hasAnyAuthority([Authority.DOCTOR])">
           <div class="form-group col-6">
             <label class="form-control-label" jhiTranslate="userManagement.certificate"></label>
-            <input type="file" class="form-control" name="certificate" formControlName="certificate" (change)="saveCertificate($event)" />
+            <input type="file" class="form-control" (change)="saveCertificate($event)" />
           </div>
 
           <div class="form-group col-6">

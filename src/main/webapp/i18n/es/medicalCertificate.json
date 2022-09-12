@@ -1,7 +1,7 @@
 {
   "medicalCertificate": {
     "home": {
-      "title": "Medical Certificates",
+      "title": "Certificados médicos",
       "refreshListLabel": "Refrescar lista",
       "createLabel": "Crear nuevo Medical Certificate",
       "createOrEditLabel": "Crear o editar Medical Certificate",
@@ -14,10 +14,13 @@
       "question": "¿Seguro que quiere eliminar Medical Certificate {{ id }}?"
     },
     "detail": {
-      "title": "Medical Certificate"
+      "title": "Certificados médicos"
     },
     "emissionDate": "Fecha de emisión",
-    "patient": "Pasciente",
+    "dni": "Identificación",
+    "patient": "Paciente",
+    "firstName": "Nombres",
+    "lastName": "Apellidos",
     "emissionPlace": "Lugar de emisión",
     "diagnosis": "Diagnóstico",
     "cie10Cod": "Código CIE10",
@@ -26,7 +29,7 @@
     "diseaseDescription": "Descripción de la enfermedad",
     "insulation": "Aislamiento",
     "insulationDescription": "Descripción del aislamiento",
-    "totalDaysOff": "Total de días concedidos",
+    "totalDaysOff": "Días concedidos",
     "fromDate": "Fecha desde",
     "untilDate": "Fecha hasta",
     "status": "Status"

@@ -6,7 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IMedicalCertificate } from 'app/models/medical-certificate.model';
 
-import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
+import { ITEMS_PER_PAGE, MAX_SIZE } from 'app/config/pagination.constants';
 import { ROUTES } from 'app/config/routes.constants';
 import { MedicalCertificateService } from 'app/services/medical-certificate.service';
 import { MedicalCertificateDeleteDialogComponent } from 'app/doctor/medical-certificate/delete/medical-certificate-delete-dialog.component';
@@ -24,7 +24,8 @@ export class MedicalCertificateComponent implements OnInit {
   isLoading = false;
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
-  page?: number;
+  maxSize = MAX_SIZE;
+  page!: number;
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
@@ -36,33 +37,42 @@ export class MedicalCertificateComponent implements OnInit {
     protected modalService: NgbModal
   ) {}
 
-  loadPage(page?: number, dontNavigate?: boolean): void {
+  loadAll(): void {
     this.isLoading = true;
-    const pageToLoad: number = page ?? this.page ?? 1;
-
-    const pagination = new Pagination();
-    const searchMedicalCertificate = {
-      ...new SearchMedicalCertificate(),
-      query: '',
-    };
-    this.medicalCertificateService.searchDoctorsCertificate(pagination, searchMedicalCertificate).subscribe(
-      (res: HttpResponse<IMedicalCertificate[]>) => {
-        this.isLoading = false;
-        this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
-      },
-      () => {
-        this.isLoading = false;
-        this.onError();
-      }
-    );
+    this.medicalCertificateService
+      .searchDoctorsCertificate(
+        {
+          ...new Pagination(),
+          page: this.page - 1,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        },
+        {
+          ...new SearchMedicalCertificate(),
+          query: '',
+        }
+      )
+      .subscribe(
+        (res: HttpResponse<IMedicalCertificate[]>) => {
+          this.isLoading = false;
+          this.onSuccess(res.body, res.headers);
+        },
+        () => (this.isLoading = false)
+      );
   }
 
   ngOnInit(): void {
     this.handleNavigation();
   }
 
-  trackId(index: number, item: IMedicalCertificate): number {
-    return item.id!;
+  transition(): void {
+    this.router.navigate(['./'], {
+      relativeTo: this.activatedRoute.parent,
+      queryParams: {
+        page: this.page,
+        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc'),
+      },
+    });
   }
 
   delete(medicalCertificate: IMedicalCertificate): void {
@@ -71,7 +81,7 @@ export class MedicalCertificateComponent implements OnInit {
     // unsubscribe not needed because closed completes on modal close
     modalRef.closed.subscribe(reason => {
       if (reason === 'deleted') {
-        this.loadPage();
+        this.loadAll();
       }
     });
   }
@@ -82,7 +92,7 @@ export class MedicalCertificateComponent implements OnInit {
 
   sign(medicalCertificate: IMedicalCertificate): void {
     this.medicalCertificateService.sign(medicalCertificate.id!).subscribe(() => {
-      this.loadPage();
+      this.loadAll();
     });
   }
 
@@ -106,44 +116,22 @@ export class MedicalCertificateComponent implements OnInit {
 
   protected sort(): string[] {
     const result = [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
-    if (this.predicate !== 'id') {
-      result.push('id');
-    }
     return result;
   }
 
   protected handleNavigation(): void {
     combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
       const page = params.get('page');
-      const pageNumber = page !== null ? +page : 1;
+      this.page = page ? +page : 1;
       const sort = (params.get('sort') ?? data['defaultSort']).split(',');
-      const predicate = sort[0];
-      const ascending = sort[1] === 'asc';
-      if (pageNumber !== this.page || predicate !== this.predicate || ascending !== this.ascending) {
-        this.predicate = predicate;
-        this.ascending = ascending;
-        this.loadPage(pageNumber, true);
-      }
+      this.predicate = sort[0];
+      this.ascending = sort[1] === 'asc';
+      this.loadAll();
     });
   }
 
-  protected onSuccess(data: IMedicalCertificate[] | null, headers: HttpHeaders, page: number, navigate: boolean): void {
+  private onSuccess(medicalCertificates: IMedicalCertificate[] | null, headers: HttpHeaders): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
-    this.page = page;
-    if (navigate) {
-      this.router.navigate([ROUTES.DOCTOR.MEDICAL_CERTIFICATE], {
-        queryParams: {
-          page: this.page,
-          size: this.itemsPerPage,
-          sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc'),
-        },
-      });
-    }
-    this.medicalCertificates = data ?? [];
-    this.ngbPaginationPage = this.page;
-  }
-
-  protected onError(): void {
-    this.ngbPaginationPage = this.page ?? 1;
+    this.medicalCertificates = medicalCertificates!;
   }
 }
