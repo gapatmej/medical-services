@@ -281,7 +281,7 @@ public class UserService {
                     user.setLastName(userDTO.getLastName());
                     user.setAddress(userDTO.getAddress());
                     user.setOccupation(userDTO.getOccupation());
-                    user.setContactPhoneNumber(userDTO.getMedicalHistoryNumber());
+                    user.setContactPhoneNumber(userDTO.getContactPhoneNumber());
                     if (userDTO.getEmail() != null) {
                         user.setEmail(userDTO.getEmail().toLowerCase());
                     }
