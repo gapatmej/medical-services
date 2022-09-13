@@ -61,11 +61,15 @@ export class MedicalCertificateService {
     return this.http.post(`${this.resourceUrl}/sign/${id}`, null, { observe: 'response' });
   }
 
-  downloadSignedCertificate(id: number): Observable<HttpResponse<Blob>> {
-    return this.http.get<Blob>(`${this.resourceUrl}/download-signed-certificate/${id}`, {
+  download(id: number): Observable<HttpResponse<Blob>> {
+    return this.http.get<Blob>(`${this.resourceUrl}/download/${id}`, {
       responseType: 'blob' as 'json',
       observe: 'response',
     });
+  }
+
+  resend(id: number): Observable<HttpResponse<{}>> {
+    return this.http.post(`${this.resourceUrl}/resend/${id}`, null, { observe: 'response' });
   }
 
   protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {

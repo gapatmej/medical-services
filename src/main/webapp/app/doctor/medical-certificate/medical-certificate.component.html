@@ -53,44 +53,58 @@
           <td>{{ medicalCertificate.untilDate | formatMediumDate }}</td>
           <td>{{ medicalCertificate.totalDaysOff }}</td>
           <td>{{ medicalCertificate.status }}</td>
-          <td class="text-right">
-            <button
-              type="submit"
-              [routerLink]="[ROUTES.DOCTOR.MEDICAL_CERTIFICATE, medicalCertificate.id, 'edit']"
-              class="btn btn-primary btn-sm"
-              [disabled]="medicalCertificate.status === MedicalCertificateStatus.SIGNED"
-            >
-              <fa-icon icon="pencil-alt"></fa-icon>
-              <span class="d-none d-md-inline" jhiTranslate="global.actions.edit"></span>
-            </button>
-            <button
-              type="submit"
-              (click)="sign(medicalCertificate)"
-              class="btn btn-secondary btn-sm"
-              [disabled]="medicalCertificate.status === MedicalCertificateStatus.SIGNED"
-            >
-              <fa-icon icon="file-signature"></fa-icon>
-              <span class="d-none d-md-inline" jhiTranslate="global.actions.sign"></span>
-            </button>
+          <td class="overflow-hidden d-flex justify-content-end">
+            <div ngbDropdown container="body">
+              <button type="button" class="btn btn-outline-primary" ngbDropdownToggle jhiTranslate="global.actions.options"></button>
+              <div ngbDropdownMenu>
+                <button
+                  ngbDropdownItem
+                  type="submit"
+                  [routerLink]="[ROUTES.DOCTOR.MEDICAL_CERTIFICATE, medicalCertificate.id, 'edit']"
+                  *ngIf="medicalCertificate.status !== MedicalCertificateStatus.SIGNED"
+                >
+                  <fa-icon icon="pencil-alt"></fa-icon>
+                  <span jhiTranslate="global.actions.edit"></span>
+                </button>
+                <button
+                  ngbDropdownItem
+                  type="submit"
+                  (click)="sign(medicalCertificate)"
+                  *ngIf="medicalCertificate.status !== MedicalCertificateStatus.SIGNED"
+                >
+                  <fa-icon icon="file-signature"></fa-icon>
+                  <span jhiTranslate="global.actions.sign"></span>
+                </button>
 
-            <button
-              type="submit"
-              (click)="download(medicalCertificate)"
-              class="btn btn-secondary btn-sm"
-              [disabled]="medicalCertificate.status !== MedicalCertificateStatus.SIGNED"
-            >
-              <fa-icon icon="file-download"></fa-icon>
-              <span class="d-none d-md-inline" jhiTranslate="global.actions.download"></span>
-            </button>
-            <button
-              type="submit"
-              (click)="delete(medicalCertificate)"
-              class="btn btn-danger btn-sm"
-              [disabled]="medicalCertificate.status === MedicalCertificateStatus.SIGNED"
-            >
-              <fa-icon icon="times"></fa-icon>
-              <span class="d-none d-md-inline" jhiTranslate="global.actions.delete"></span>
-            </button>
+                <button
+                  ngbDropdownItem
+                  type="submit"
+                  (click)="download(medicalCertificate)"
+                  *ngIf="medicalCertificate.status === MedicalCertificateStatus.SIGNED"
+                >
+                  <fa-icon icon="file-download"></fa-icon>
+                  <span jhiTranslate="global.actions.download"></span>
+                </button>
+                <button
+                  ngbDropdownItem
+                  type="submit"
+                  (click)="resend(medicalCertificate)"
+                  *ngIf="medicalCertificate.status === MedicalCertificateStatus.SIGNED"
+                >
+                  <fa-icon icon="envelope"></fa-icon>
+                  <span jhiTranslate="global.actions.resend"></span>
+                </button>
+                <button
+                  ngbDropdownItem
+                  type="submit"
+                  (click)="delete(medicalCertificate)"
+                  *ngIf="medicalCertificate.status !== MedicalCertificateStatus.SIGNED"
+                >
+                  <fa-icon icon="times"></fa-icon>
+                  <span jhiTranslate="global.actions.delete"></span>
+                </button>
+              </div>
+            </div>
           </td>
         </tr>
       </tbody>

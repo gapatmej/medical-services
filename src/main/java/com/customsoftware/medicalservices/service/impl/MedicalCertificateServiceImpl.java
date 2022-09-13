@@ -186,4 +186,17 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
 
         return ResponseEntity.ok().headers(httpHeaders).contentType(MediaType.APPLICATION_PDF).body(new InputStreamResource(in));
     }
+
+    @Override
+    public void resend(Long id) {
+        MedicalCertificate medicalCertificate = medicalCertificateRepository
+            .searchByIdAndDoctorOrPatient(id, SecurityUtils.currentUserLogin())
+            .orElseThrow(SUPPLIER_NOT_FOUND);
+
+        if (!MedicalCertificateStatus.SIGNED.equals(medicalCertificate.getStatus())) {
+            throw new MedicalServicesRuntimeException("Medical certificate not signed yet");
+        }
+
+        sendMedicalCertificate(medicalCertificate);
+    }
 }

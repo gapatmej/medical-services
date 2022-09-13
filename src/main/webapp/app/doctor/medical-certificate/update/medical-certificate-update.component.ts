@@ -12,7 +12,7 @@ import { Pagination } from 'app/models/pagination.model';
 import { SearchUser } from 'app/models/search-user.model';
 import { patientLabel } from 'app/core/util/selectors-util';
 import { onlyNumbers } from 'app/shared/validations/input-validation.component';
-import _ from 'lodash';
+import _ from 'lodash-es';
 import { ITEMS_SEARCH } from 'app/config/pagination.constants';
 @Component({
   selector: 'jhi-medical-certificate-update',

@@ -98,7 +98,7 @@ export class MedicalCertificateComponent implements OnInit {
   }
 
   download(medicalCertificate: IMedicalCertificate): void {
-    this.medicalCertificateService.downloadSignedCertificate(medicalCertificate.id!).subscribe(({ headers, body }) => {
+    this.medicalCertificateService.download(medicalCertificate.id!).subscribe(({ headers, body }) => {
       if (body) {
         const blobUrl = URL.createObjectURL(body);
         const aLink = document.createElement('a');
@@ -109,6 +109,10 @@ export class MedicalCertificateComponent implements OnInit {
         document.body.removeChild(aLink);
       }
     });
+  }
+
+  resend(medicalCertificate: IMedicalCertificate): void {
+    this.medicalCertificateService.resend(medicalCertificate.id!).subscribe();
   }
 
   get MedicalCertificateStatus(): typeof MedicalCertificateStatus {

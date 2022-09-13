@@ -9,7 +9,7 @@ import { IdentificationType } from 'app/models/enumeration/identification-type.m
 import { onlyNumbers, validateDni } from 'app/shared/validations/input-validation.component';
 import { getAutorityName } from 'app/core/util/enumeration-util';
 import { Authority } from 'app/config/authority.constants';
-import _ from 'lodash';
+import _ from 'lodash-es';
 
 @Component({
   selector: 'jhi-user-mgmt-update',

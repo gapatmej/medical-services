@@ -127,7 +127,9 @@
       "save": "Guardar",
       "create": "Crear",
       "sign": "Firmar",
-      "download": "Descargar"
+      "download": "Descargar",
+      "resend": "Reenviar",
+      "options": "Opciones"
     }
   },
   "error": {

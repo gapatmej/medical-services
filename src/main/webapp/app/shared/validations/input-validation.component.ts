@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
 import { REGEX } from 'app/config/regex.constants';
-import _ from 'lodash';
+import _ from 'lodash-es';
 
 @Component({
   selector: 'jhi-input-validation',

@@ -20,4 +20,6 @@ public interface MedicalCertificateService {
     void sign(Long id);
 
     ResponseEntity<InputStreamResource> getSignedCertificate(Long id);
+
+    void resend(Long id);
 }

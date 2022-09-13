@@ -131,10 +131,17 @@ public class MedicalCertificateResource extends AbstractResource {
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(true, entityName, id.toString())).build();
     }
 
-    @GetMapping("/medical-certificates/download-signed-certificate/{id}")
+    @GetMapping("/medical-certificates/download/{id}")
     @PreAuthorize(AccessConstants.DOCTOR_PATIENT)
-    public ResponseEntity<InputStreamResource> downloadSignedCertificate(@PathVariable Long id) {
+    public ResponseEntity<InputStreamResource> download(@PathVariable Long id) {
         ResponseEntity<InputStreamResource> result = medicalCertificateService.getSignedCertificate(id);
         return result;
+    }
+
+    @PostMapping("/medical-certificates/resend/{id}")
+    @PreAuthorize(AccessConstants.DOCTOR)
+    public ResponseEntity<InputStreamResource> resend(@PathVariable Long id) {
+        medicalCertificateService.resend(id);
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(true, entityName, id.toString())).build();
     }
 }
