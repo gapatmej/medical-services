@@ -31,7 +31,7 @@ public class OrganizationResource extends AbstractResource {
     @GetMapping("/organization")
     @PreAuthorize(AccessConstants.ADMIN)
     public ResponseEntity<OrganizationDTO> getOrganization() {
-        OrganizationDTO result = organizationService.getOrganization();
+        OrganizationDTO result = organizationService.getOrganizationDTO();
         return ResponseEntity.ok().body(result);
     }
 }

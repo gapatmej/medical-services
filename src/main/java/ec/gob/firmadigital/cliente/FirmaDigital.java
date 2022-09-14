@@ -67,8 +67,14 @@ public class FirmaDigital {
             */
 
             //INFERIOR CENTRADO
-            String llx = "260";
+            /* String llx = "260";
             String lly = "91";
+            String urx = null;
+            String ury = null;*/
+
+            //CUSTOM
+            String llx = "280";
+            String lly = "280";
             String urx = null;
             String ury = null;
 

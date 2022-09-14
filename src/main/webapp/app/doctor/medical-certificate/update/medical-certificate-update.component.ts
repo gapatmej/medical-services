@@ -10,7 +10,7 @@ import { IUser } from 'app/models/user-management.model';
 import { UserManagementService } from 'app/services/user-management.service';
 import { Pagination } from 'app/models/pagination.model';
 import { SearchUser } from 'app/models/search-user.model';
-import { patientLabel } from 'app/core/util/selectors-util';
+import { userLabel } from 'app/core/util/selectors-util';
 import { onlyNumbers } from 'app/shared/validations/input-validation.component';
 import _ from 'lodash-es';
 import { ITEMS_SEARCH } from 'app/config/pagination.constants';
@@ -88,13 +88,13 @@ export class MedicalCertificateUpdateComponent implements OnInit {
 
   displayPatient(patient: any): string {
     if (patient) {
-      return patientLabel(patient);
+      return userLabel(patient);
     }
     return '';
   }
 
   patientLabelSelector(patient: IUser): string {
-    return patientLabel(patient);
+    return userLabel(patient);
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IMedicalCertificate>>): void {

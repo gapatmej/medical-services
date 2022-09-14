@@ -1,6 +1,7 @@
 package com.customsoftware.medicalservices.service.impl;
 
 import com.customsoftware.medicalservices.domain.MedicalCertificate;
+import com.customsoftware.medicalservices.domain.Organization;
 import com.customsoftware.medicalservices.domain.enumeration.MedicalCertificateStatus;
 import com.customsoftware.medicalservices.repository.MedicalCertificateRepository;
 import com.customsoftware.medicalservices.security.SecurityUtils;
@@ -43,6 +44,8 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
     private final SignService signService;
     private final MailService mailService;
 
+    private final OrganizationService organizationService;
+
     public MedicalCertificateServiceImpl(
         MedicalCertificateMapper medicalCertificateMapper,
         UserMapper userMapper,
@@ -50,7 +53,8 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
         MedicalCertificateRepository medicalCertificateRepository,
         ReportService reportService,
         SignService signService,
-        MailService mailService
+        MailService mailService,
+        OrganizationService organizationService
     ) {
         super(MedicalCertificateServiceImpl.class);
         this.medicalCertificateMapper = medicalCertificateMapper;
@@ -60,6 +64,7 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
         this.reportService = reportService;
         this.signService = signService;
         this.mailService = mailService;
+        this.organizationService = organizationService;
     }
 
     @Override
@@ -141,9 +146,9 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
                     if (MedicalCertificateStatus.SIGNED.equals(mC.getStatus())) {
                         throw new MedicalServicesRuntimeException("Medical certificate signed");
                     }
-
+                    Organization organization = organizationService.getOrganization();
                     try {
-                        reportService.generateMedicalCertificate(mC);
+                        reportService.generateMedicalCertificate(organization, mC);
                     } catch (IOException e) {
                         log.error(e.getMessage());
                         throw new MedicalServicesRuntimeException(e.getMessage());

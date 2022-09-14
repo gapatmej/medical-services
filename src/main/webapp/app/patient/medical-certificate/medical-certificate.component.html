@@ -14,12 +14,15 @@
   <div class="table-responsive" *ngIf="medicalCertificates && medicalCertificates.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="transition.bind(this)">
           <th scope="col" jhiSortBy="emissionDate">
             <span jhiTranslate="medicalCertificate.emissionDate"></span> <fa-icon icon="sort"></fa-icon>
           </th>
-          <th scope="col" jhiSortBy="patient.firstName">
-            <span jhiTranslate="medicalCertificate.patient"></span> <fa-icon icon="sort"></fa-icon>
+          <th scope="col" jhiSortBy="doctor.firstName">
+            <span jhiTranslate="medicalCertificate.firstNameDoctor"></span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="doctor.lastName">
+            <span jhiTranslate="medicalCertificate.lastNameDoctor"></span> <fa-icon icon="sort"></fa-icon>
           </th>
           <th scope="col" jhiSortBy="fromDate"><span jhiTranslate="medicalCertificate.fromDate"></span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="untilDate">
@@ -32,16 +35,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let medicalCertificate of medicalCertificates; trackBy: trackId">
+        <tr *ngFor="let medicalCertificate of medicalCertificates">
           <td>{{ medicalCertificate.emissionDate | formatMediumDate }}</td>
-          <td>{{ patientLabel(medicalCertificate.patient!) }}</td>
+          <td>{{ medicalCertificate.doctor!.firstName }}</td>
+          <td>{{ medicalCertificate.doctor!.lastName }}</td>
           <td>{{ medicalCertificate.fromDate | formatMediumDate }}</td>
           <td>{{ medicalCertificate.untilDate | formatMediumDate }}</td>
           <td>{{ medicalCertificate.totalDaysOff }}</td>
           <td class="text-right">
             <div class="btn-group">
-              <button type="submit" (click)="download(medicalCertificate)" class="btn btn-danger btn-sm">
-                <fa-icon icon="times"></fa-icon>
+              <button type="submit" (click)="download(medicalCertificate)" class="btn btn-secondary btn-sm">
+                <fa-icon icon="file-download"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="global.actions.download"></span>
               </button>
             </div>
@@ -59,12 +63,12 @@
     <div class="row justify-content-center">
       <ngb-pagination
         [collectionSize]="totalItems"
-        [(page)]="ngbPaginationPage"
+        [(page)]="page"
         [pageSize]="itemsPerPage"
-        [maxSize]="5"
+        [maxSize]="maxSize"
         [rotate]="true"
         [boundaryLinks]="true"
-        (pageChange)="loadPage($event)"
+        (pageChange)="transition()"
       ></ngb-pagination>
     </div>
   </div>

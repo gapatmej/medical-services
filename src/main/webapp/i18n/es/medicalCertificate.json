@@ -18,6 +18,8 @@
     },
     "emissionDate": "Fecha de emisión",
     "dni": "Identificación",
+    "firstNameDoctor": "Nombres del Doctor",
+    "lastNameDoctor": "Apellidos del Doctor",
     "patient": "Paciente",
     "firstName": "Nombres",
     "lastName": "Apellidos",

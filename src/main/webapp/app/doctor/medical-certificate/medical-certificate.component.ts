@@ -12,7 +12,7 @@ import { MedicalCertificateService } from 'app/services/medical-certificate.serv
 import { MedicalCertificateDeleteDialogComponent } from 'app/doctor/medical-certificate/delete/medical-certificate-delete-dialog.component';
 import { Pagination } from 'app/models/pagination.model';
 import { SearchMedicalCertificate } from 'app/models/search-medical-certificate.model';
-import { patientLabel } from 'app/core/util/selectors-util';
+import { userLabel } from 'app/core/util/selectors-util';
 import { IUser } from 'app/models/user-management.model';
 import { MedicalCertificateStatus } from 'app/models/enumeration/medical-certificate-status.model';
 
@@ -88,7 +88,7 @@ export class MedicalCertificateComponent implements OnInit {
   }
 
   patientLabel(patient: IUser): string {
-    return patientLabel(patient);
+    return userLabel(patient);
   }
 
   sign(medicalCertificate: IMedicalCertificate): void {

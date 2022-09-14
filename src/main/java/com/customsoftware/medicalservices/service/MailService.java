@@ -1,5 +1,6 @@
 package com.customsoftware.medicalservices.service;
 
+import com.customsoftware.medicalservices.domain.Organization;
 import com.customsoftware.medicalservices.domain.User;
 import com.customsoftware.medicalservices.service.dto.NotificationExceptionDTO;
 import java.io.File;

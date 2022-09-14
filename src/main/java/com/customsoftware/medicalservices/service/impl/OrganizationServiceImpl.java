@@ -5,8 +5,10 @@ import com.customsoftware.medicalservices.repository.OrganizationRepository;
 import com.customsoftware.medicalservices.service.OrganizationService;
 import com.customsoftware.medicalservices.service.dto.OrganizationDTO;
 import com.customsoftware.medicalservices.service.mapper.OrganizationMapper;
+import com.customsoftware.medicalservices.web.rest.errors.MedicalServicesRuntimeException;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,7 @@ public class OrganizationServiceImpl extends AbstractServiceImpl implements Orga
 
     private final OrganizationRepository organizationRepository;
     private final OrganizationMapper organizationMapper;
+    public static final Supplier<RuntimeException> SUPPLIER_NOT_FOUND = () -> new MedicalServicesRuntimeException("Organization not Found");
 
     public OrganizationServiceImpl(OrganizationRepository organizationRepository, OrganizationMapper organizationMapper) {
         super(OrganizationServiceImpl.class);
@@ -32,7 +35,7 @@ public class OrganizationServiceImpl extends AbstractServiceImpl implements Orga
     }
 
     @Override
-    public OrganizationDTO getOrganization() {
+    public OrganizationDTO getOrganizationDTO() {
         return getFirstOrganization().map(organizationMapper::toDto).orElse(new OrganizationDTO());
     }
 
@@ -44,5 +47,10 @@ public class OrganizationServiceImpl extends AbstractServiceImpl implements Orga
         }
 
         return Optional.empty();
+    }
+
+    @Override
+    public Organization getOrganization() {
+        return getFirstOrganization().orElseThrow(SUPPLIER_NOT_FOUND);
     }
 }

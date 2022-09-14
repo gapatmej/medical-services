@@ -15,7 +15,7 @@ public final class ServiceUtils {
     private static ApplicationProperties applicationProperties;
 
     public static String getCertificatePath(User user, String name) {
-        return (applicationProperties.getPaths().getDocs() + PATH_CERTIFICATES + File.separator + user.getDni() + File.separator + name);
+        return (applicationProperties.getPaths().getDocs() + PATH_CERTIFICATES + File.separator + user.getId() + File.separator + name);
     }
 
     public static String getCertificatePath(User user) {
@@ -27,14 +27,14 @@ public final class ServiceUtils {
             applicationProperties.getPaths().getDocs() +
             PATH_MEDICAL_CERTIFICATE +
             File.separator +
-            medicalCertificate.getDoctor().getDni() +
+            medicalCertificate.getDoctor().getId() +
             File.separator +
             getMedicalCertificateName(medicalCertificate)
         );
     }
 
     public static String getMedicalCertificateName(MedicalCertificate medicalCertificate) {
-        return medicalCertificate.getId() + "_" + medicalCertificate.getPatient().getDni() + ".pdf";
+        return medicalCertificate.getId() + "_" + medicalCertificate.getPatient().getId() + ".pdf";
     }
 
     public static ApplicationProperties getApplicationProperties() {

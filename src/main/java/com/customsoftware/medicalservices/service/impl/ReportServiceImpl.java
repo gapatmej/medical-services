@@ -1,6 +1,7 @@
 package com.customsoftware.medicalservices.service.impl;
 
 import com.customsoftware.medicalservices.domain.MedicalCertificate;
+import com.customsoftware.medicalservices.domain.Organization;
 import com.customsoftware.medicalservices.service.ServiceUtils;
 import com.customsoftware.medicalservices.service.mapper.ReportService;
 import java.io.File;
@@ -19,7 +20,7 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 public class ReportServiceImpl extends AbstractServiceImpl implements ReportService {
 
     private static final String MEDICAL_CERTIFICATE = "medicalCertificate";
-
+    private static final String ORGANIZATION = "organization";
     private final SpringTemplateEngine templateEngine;
 
     public ReportServiceImpl(SpringTemplateEngine templateEngine) {
@@ -27,9 +28,10 @@ public class ReportServiceImpl extends AbstractServiceImpl implements ReportServ
         this.templateEngine = templateEngine;
     }
 
-    public void generateMedicalCertificate(MedicalCertificate medicalCertificate) throws IOException {
+    public void generateMedicalCertificate(Organization organization, MedicalCertificate medicalCertificate) throws IOException {
         Locale locale = Locale.forLanguageTag(medicalCertificate.getDoctor().getLangKey());
         Context context = new Context(locale);
+        context.setVariable(ORGANIZATION, organization);
         context.setVariable(MEDICAL_CERTIFICATE, medicalCertificate);
         String content = templateEngine.process("reports/medicalCertificate", context);
 

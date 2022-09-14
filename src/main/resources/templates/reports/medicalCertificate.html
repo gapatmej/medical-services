@@ -1,30 +1,145 @@
 <html xmlns:th="http://www.thymeleaf.org">
+  <meta charset="utf-8" />
   <head>
     <style>
+      h1,
+      h3 {
+        text-align: center;
+      }
+
       .table {
         width: 100%;
       }
 
       .column-legend {
-        width: 40%;
         font-weight: bold;
+        font-size: small;
       }
 
       .column-text {
-        width: 60%;
+        font-size: small;
+      }
+
+      .doctor-info {
+        margin-top: 370px;
+      }
+
+      .doctor-info li {
+        list-style-type: none;
+        text-align: center;
+      }
+
+      .organization-info {
+        margin-top: 100px;
+      }
+
+      .organization-info li {
+        color: blue;
+        list-style-type: none;
+        text-align: center;
       }
     </style>
   </head>
   <body>
-    <h3 style="text-align: center">
-      <span th:text="#{medicalCertificate.title}"></span>
-    </h3>
+    <h1>
+      <span th:text="#{report.medicalCertificate.title}">Certificado Médico</span>
+    </h1>
 
     <table class="table">
       <tr>
-        <td class="column-legend" th:text="#{medicalCertificate.patient.name} + ':'"></td>
-        <td class="column-text" th:text="${medicalCertificate.patient.firstName} + ' ' + ${medicalCertificate.patient.lastName}"></td>
+        <td class="column-legend" th:text="#{report.medicalCertificate.placeAndEmissionDate} + ':'">Lugar y fecha de emisión:</td>
+        <td
+          class="column-text"
+          th:text="#{report.medicalCertificate.placeAndEmissionDateFormat(${medicalCertificate.emissionPlace},${medicalCertificate.emissionDate})}"
+        >
+          Quito, 18 de Septiembre del 2022
+        </td>
+      </tr>
+      <tr>
+        <td colspan="4">
+          <h3>
+            <span th:text="#{report.medicalCertificate.patientTitle}">Datos del Paciente</span>
+          </h3>
+        </td>
+      </tr>
+      <tr>
+        <td class="column-legend" th:text="#{report.medicalCertificate.patient.medicalHistoryNumber} + ':'">Historia clínica:</td>
+        <td class="column-text" th:text="${medicalCertificate.patient.medicalHistoryNumber}">1253694</td>
+        <td class="column-legend" th:text="#{report.medicalCertificate.patient.dni} + ':'">Identificación:</td>
+        <td class="column-text" th:text="${medicalCertificate.patient.dni}">1720238706</td>
+      </tr>
+      <tr>
+        <td class="column-legend" th:text="#{report.medicalCertificate.patient.name} + ':'">Nombres completos:</td>
+        <td class="column-text" th:text="${medicalCertificate.patient.firstName} + ' ' + ${medicalCertificate.patient.lastName}">
+          Andrés Gabriel Peralta Tomalo
+        </td>
+      </tr>
+      <tr>
+        <td class="column-legend" th:text="#{report.medicalCertificate.patient.address} + ':'">Dirección:</td>
+        <td class="column-text" th:text="${medicalCertificate.patient.address}">Lirios de Carcelén Lote 382</td>
+        <td class="column-legend" th:text="#{report.medicalCertificate.phone} + ':'">Teléfono:</td>
+        <td class="column-text" th:text="${medicalCertificate.patient.contactPhoneNumber}">0987430299</td>
+      </tr>
+      <tr>
+        <td class="column-legend" th:text="#{report.medicalCertificate.patient.company} + ':'">Empresa donde labora:</td>
+        <td class="column-text" th:text="${medicalCertificate.patient.firstName}">Technysis</td>
+        <td class="column-legend" th:text="#{report.medicalCertificate.patient.occupation} + ':'">Ocupación:</td>
+        <td class="column-text" th:text="${medicalCertificate.patient.occupation}">Desarrollador de software</td>
+      </tr>
+      <tr>
+        <td colspan="4">
+          <h3>
+            <span th:text="#{report.medicalCertificate.reasonTitle}">Motivos</span>
+          </h3>
+        </td>
+      </tr>
+      <tr>
+        <td class="column-legend" th:text="#{report.medicalCertificate.cie10CodDiagnosis} + ':'">Código CIE10 y diagnóstico:</td>
+        <td
+          class="column-text"
+          th:text="#{report.medicalCertificate.cie10CodDiagnosisFormat(${medicalCertificate.cie10Cod},${medicalCertificate.diagnosis})}"
+        >
+          J35.3, Hipertrofia de amígdalas y adenoides
+        </td>
+      </tr>
+      <tr>
+        <td class="column-legend" th:text="#{report.medicalCertificate.symptoms} + ':'">Presenta síntomas:</td>
+        <td class="column-text" th:text="${medicalCertificate.symptoms}">SI</td>
+      </tr>
+      <tr>
+        <td class="column-legend" th:text="#{report.medicalCertificate.diseaseDescription} + ':'">Descripción enfermedad:</td>
+        <td class="column-text" th:text="${medicalCertificate.diseaseDescription}">Esta es la Descripción de la enfermedad</td>
+      </tr>
+      <tr>
+        <td class="column-legend" th:text="#{report.medicalCertificate.insulationDescription} + ':'">Descripción del aislamiento:</td>
+        <td class="column-text" th:text="${medicalCertificate.insulationDescription}">Esta es la Descripción del aislamiento</td>
+      </tr>
+      <tr>
+        <td class="column-legend" th:text="#{report.medicalCertificate.fromDate} + ':'">Desde:</td>
+        <td class="column-text" th:text="${medicalCertificate.fromDate}">01 de enero del 2022</td>
+        <td class="column-legend" th:text="#{report.medicalCertificate.untilDate} + ':'">Hasta:</td>
+        <td class="column-text" th:text="${medicalCertificate.untilDate}">03 de enero del 2022</td>
+      </tr>
+      <tr>
+        <td class="column-legend" th:text="#{report.medicalCertificate.totalDaysOff} + ':'">Total de días:</td>
+        <td class="column-text" th:text="${medicalCertificate.totalDaysOff}">5 (cinco) días</td>
       </tr>
     </table>
+
+    <ul class="doctor-info">
+      <li th:text="#{report.medicalCertificate.doctor.name(${medicalCertificate.doctor.firstName},${medicalCertificate.doctor.lastName})}">
+        Dr. Carlos Alberto Reyes Silva
+      </li>
+      <li th:text="${medicalCertificate.doctor.occupation}">Médico General y Especialista en Genética Clínica</li>
+      <li th:text="#{report.medicalCertificate.phone(${medicalCertificate.doctor.contactPhoneNumber})}">Teléfono: 0995519824</li>
+      <li th:text="#{report.medicalCertificate.email(${medicalCertificate.doctor.email})}">Correo: carlosresil@yahoo.com</li>
+    </ul>
+
+    <ul class="organization-info">
+      <li th:text="${organization.name}">Geredity S.A.</li>
+      <li th:text="${organization.address}">Vozandes N39-34 y Juan Diguja, Edificio Livenza Medical Center, 4to Piso, consultorio</li>
+      <li th:text="#{report.medicalCertificate.phone(${organization.phoneNumber})}">Teléfono: (02)3319446 - 0961370553</li>
+      <li th:text="#{report.medicalCertificate.email(${organization.email})}">Correo: carlosresil@yahoo.com</li>
+    </ul>
   </body>
 </html>
