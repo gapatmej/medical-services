@@ -37,6 +37,14 @@ public class HeaderUtil {
         return headers;
     }
 
+    public static HttpHeaders createAlertMessage(String entity, String messageId) {
+        return createAlert(entity + ".messages." + messageId, "");
+    }
+
+    public static HttpHeaders createAlertMessage(String entity, String messageId, String param) {
+        return createAlert(entity + ".messages." + messageId, param);
+    }
+
     /**
      * <p>createEntityCreationAlert.</p>
      *
@@ -50,6 +58,10 @@ public class HeaderUtil {
             ? entityName + ".crudMessages.created"
             : "A new " + entityName + " is created with identifier " + param;
         return createAlert(message, param);
+    }
+
+    public static HttpHeaders createEntityCreationAlert(String entityName) {
+        return createEntityCreationAlert(true, entityName, "");
     }
 
     /**
@@ -67,6 +79,10 @@ public class HeaderUtil {
         return createAlert(message, param);
     }
 
+    public static HttpHeaders createEntityUpdateAlert(String entityName) {
+        return createEntityUpdateAlert(true, entityName, "");
+    }
+
     /**
      * <p>createEntityDeletionAlert.</p>
      *
@@ -80,6 +96,10 @@ public class HeaderUtil {
             ? entityName + ".crudMessages.deleted"
             : "A " + entityName + " is deleted with identifier " + param;
         return createAlert(message, param);
+    }
+
+    public static HttpHeaders createEntityDeletionAlert(String entityName) {
+        return createEntityDeletionAlert(true, entityName, "");
     }
 
     /**

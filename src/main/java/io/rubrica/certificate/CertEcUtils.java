@@ -14,6 +14,7 @@
  */
 package io.rubrica.certificate;
 
+import com.customsoftware.medicalservices.web.rest.errors.BadRequestAlertException;
 import io.rubrica.certificate.ec.*;
 import io.rubrica.certificate.ec.anfac.*;
 import io.rubrica.certificate.ec.bce.BceSubCaCert20112021;
@@ -33,7 +34,7 @@ import java.security.cert.X509Certificate;
  */
 public class CertEcUtils {
 
-    public static X509Certificate getRootCertificate(X509Certificate certificado) throws EntidadCertificadoraNoValidaException {
+    public static X509Certificate getRootCertificate(X509Certificate certificado) {
         String entidadCertStr = getNombreCA(certificado);
 
         switch (entidadCertStr) {
@@ -49,7 +50,7 @@ public class CertEcUtils {
                             return new BceSubCaCert20192029();
                         }
                         return null;
-                    } catch (java.security.InvalidKeyException ex) {
+                    } catch (Exception ex) {
                         //TODO
                     }
                 }
@@ -69,7 +70,7 @@ public class CertEcUtils {
                             return new SecurityDataSubCaCert20202039();
                         }
                         return null;
-                    } catch (java.security.InvalidKeyException ex) {
+                    } catch (Exception ex) {
                         //TODO
                     }
                 }
@@ -86,11 +87,11 @@ public class CertEcUtils {
                         return new AnfAc37442SubCaCert20192029();
                     }
                     return null;
-                } catch (java.security.InvalidKeyException ex) {
+                } catch (Exception ex) {
                     //TODO
                 }
             default:
-                throw new EntidadCertificadoraNoValidaException("Entidad Certificadora no reconocida");
+                throw new BadRequestAlertException("Error trying to get root Certificate", "validations", "certificateEntityNotSupported");
         }
     }
 

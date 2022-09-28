@@ -21,5 +21,5 @@ public interface MedicalCertificateService {
 
     ResponseEntity<InputStreamResource> getSignedCertificate(Long id);
 
-    void resend(Long id);
+    String resend(Long id);
 }

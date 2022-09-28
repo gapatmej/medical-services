@@ -3,6 +3,7 @@ package com.customsoftware.medicalservices.service;
 import com.customsoftware.medicalservices.config.ApplicationProperties;
 import com.customsoftware.medicalservices.domain.MedicalCertificate;
 import com.customsoftware.medicalservices.domain.User;
+import com.customsoftware.medicalservices.web.rest.errors.BadRequestAlertException;
 import java.io.File;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +20,9 @@ public final class ServiceUtils {
     }
 
     public static String getCertificatePath(User user) {
+        if (user.getCertificate() == null) {
+            throw new BadRequestAlertException("Certificate not found", "validations", "certificateNull");
+        }
         return getCertificatePath(user, user.getCertificate());
     }
 

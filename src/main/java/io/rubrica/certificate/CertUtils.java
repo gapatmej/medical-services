@@ -14,6 +14,7 @@
  */
 package io.rubrica.certificate;
 
+import com.customsoftware.medicalservices.web.rest.errors.BadRequestAlertException;
 import io.rubrica.exceptions.RubricaException;
 import io.rubrica.keystore.Alias;
 import io.rubrica.keystore.KeyStoreUtilities;
@@ -192,13 +193,13 @@ public class CertUtils {
         return identities;
     }
 
-    public static String seleccionarAlias(KeyStore keyStore) throws RubricaException {
+    public static String seleccionarAlias(KeyStore keyStore) {
         String aliasString = null;
         // Con que certificado firmar?
         List<Alias> signingAliases = KeyStoreUtilities.getSigningAliases(keyStore);
 
         if (signingAliases.isEmpty()) {
-            throw new RubricaException("No se encuentran certificados para firmar\nPuede estar caducado o revocado");
+            throw new BadRequestAlertException("Not certificate founded", "validations", "certificateNotFound");
         }
 
         if (signingAliases.size() == 1) {
@@ -230,7 +231,7 @@ public class CertUtils {
         }
     }
 
-    public static X509Certificate getCert(KeyStore ks, String alias) throws KeyStoreException, RubricaException {
+    public static X509Certificate getCert(KeyStore ks, String alias) throws KeyStoreException {
         if (alias != null) {
             X509Certificate cert = (X509Certificate) ks.getCertificate(alias);
             return cert;

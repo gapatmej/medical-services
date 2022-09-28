@@ -63,8 +63,7 @@ public class X509CertificateUtils {
         }
     }
 
-    public boolean validarX509Certificate(X509Certificate x509Certificate)
-        throws RubricaException, KeyStoreException, EntidadCertificadoraNoValidaException, InvalidKeyException, CertificadoInvalidoException, IOException, HoraServidorException {
+    public boolean validarX509Certificate(X509Certificate x509Certificate) {
         boolean retorno = false;
         int diasAnticipacion = 30;
         if (x509Certificate != null) {

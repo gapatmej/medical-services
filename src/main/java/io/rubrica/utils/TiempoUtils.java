@@ -15,6 +15,7 @@
 package io.rubrica.utils;
 
 import com.customsoftware.medicalservices.service.ServiceUtils;
+import com.customsoftware.medicalservices.web.rest.errors.BadRequestAlertException;
 import io.rubrica.exceptions.HoraServidorException;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -41,13 +42,13 @@ public class TiempoUtils {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
-    public static Date getFechaHora() throws HoraServidorException {
+    public static Date getFechaHora() {
         String fechaHora;
         try {
             fechaHora = getFechaHoraServidor();
         } catch (IOException e) {
             LOGGER.severe("No se puede obtener la fecha del servidor: " + e.getMessage());
-            throw new HoraServidorException(PropertiesUtils.getMessages().getProperty("mensaje.error.problema_red"));
+            throw new BadRequestAlertException("Error trying to get date from the server", "validations", "dateFromServer");
         }
         try {
             TemporalAccessor accessor = DATE_TIME_FORMATTER.parse(fechaHora);

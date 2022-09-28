@@ -193,7 +193,7 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
     }
 
     @Override
-    public void resend(Long id) {
+    public String resend(Long id) {
         MedicalCertificate medicalCertificate = medicalCertificateRepository
             .searchByIdAndDoctorOrPatient(id, SecurityUtils.currentUserLogin())
             .orElseThrow(SUPPLIER_NOT_FOUND);
@@ -203,5 +203,6 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
         }
 
         sendMedicalCertificate(medicalCertificate);
+        return medicalCertificate.getPatient().getEmail();
     }
 }

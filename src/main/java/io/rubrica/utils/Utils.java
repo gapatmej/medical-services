@@ -32,8 +32,9 @@ import io.rubrica.sign.xades.XAdESSigner;
 import java.io.*;
 import java.net.URI;
 import java.nio.file.Files;
-import java.security.*;
-import java.security.cert.CertificateException;
+import java.security.KeyStoreException;
+import java.security.PublicKey;
+import java.security.SignatureException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.time.Instant;
@@ -43,7 +44,6 @@ import java.time.temporal.TemporalAccessor;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.management.openmbean.InvalidKeyException;
 import org.w3c.dom.Node;
 
 /**
@@ -117,7 +117,7 @@ public class Utils {
      * CN, se devuelve la unidad organizativa (Organization Unit, OU).
      *
      * @param c Certificado X.509 del cual queremos obtener el nombre
-     * com&uacute;n
+     *          com&uacute;n
      * @return Nombre com&uacute;n (Common Name, UID) del titular de un
      * certificado X.509
      */
@@ -133,8 +133,7 @@ public class Utils {
      * X.400. Si no se encuentra el CN, se devuelve la unidad organizativa
      * (Organization Unit, OU).
      *
-     * @param principal
-     * <i>Principal</i> del cual queremos obtener el nombre com&uacute;n
+     * @param principal <i>Principal</i> del cual queremos obtener el nombre com&uacute;n
      * @return Nombre com&uacute;n (Common Name, UID) de un <i>Principal</i>
      * X.400
      */
@@ -164,7 +163,7 @@ public class Utils {
      * organizativa (Organization Unit, OU).
      *
      * @param c Certificado X.509 del cual queremos obtener el nombre
-     * com&uacute;n
+     *          com&uacute;n
      * @return Nombre com&uacute;n (Common Name, CN) del titular de un
      * certificado X.509
      */
@@ -180,8 +179,7 @@ public class Utils {
      * X.400. Si no se encuentra el CN, se devuelve la unidad organizativa
      * (Organization Unit, OU).
      *
-     * @param principal
-     * <i>Principal</i> del cual queremos obtener el nombre com&uacute;n
+     * @param principal <i>Principal</i> del cual queremos obtener el nombre com&uacute;n
      * @return Nombre com&uacute;n (Common Name, CN) de un <i>Principal</i>
      * X.400
      */
@@ -216,9 +214,9 @@ public class Utils {
      * sensible a la capitalizaci&oacute;n del RDN. Si no se encuentra, se
      * devuelve {@code null}.
      *
-     * @param rdn RDN que deseamos encontrar.
+     * @param rdn       RDN que deseamos encontrar.
      * @param principal Principal del que extraer el RDN (seg&uacute;n la
-     * <a href="http://www.ietf.org/rfc/rfc4514.txt">RFC 4514</a>).
+     *                  <a href="http://www.ietf.org/rfc/rfc4514.txt">RFC 4514</a>).
      * @return Valor del RDN indicado o {@code null} si no se encuentra.
      */
     public static String getRDNvalueFromLdapName(final String rdn, final String principal) {
@@ -580,22 +578,18 @@ public class Utils {
      * @throws java.security.InvalidKeyException
      * @throws EntidadCertificadoraNoValidaException
      */
-    public static boolean verifySignature(X509Certificate certificate)
-        throws java.security.InvalidKeyException, EntidadCertificadoraNoValidaException {
+    public static boolean verifySignature(X509Certificate certificate) {
         return verifySignature(certificate, CertEcUtils.getRootCertificate(certificate));
     }
 
-    public static boolean verifySignature(X509Certificate certificate, X509Certificate rootCertificate)
-        throws java.security.InvalidKeyException, EntidadCertificadoraNoValidaException {
+    public static boolean verifySignature(X509Certificate certificate, X509Certificate rootCertificate) {
         if (rootCertificate != null) {
             PublicKey publicKeyForSignature = rootCertificate.getPublicKey();
 
             try {
                 certificate.verify(publicKeyForSignature);
                 return true;
-            } catch (
-                InvalidKeyException | CertificateException | NoSuchAlgorithmException | NoSuchProviderException | SignatureException e
-            ) {
+            } catch (Exception e) {
                 System.out.println(
                     "\n" +
                     "\tSignature verification of certificate having distinguished name \n" +

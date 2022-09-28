@@ -51,7 +51,7 @@ public class MedicalCertificateResource extends AbstractResource {
         MedicalCertificateDTO result = medicalCertificateService.save(medicalCertificateDTO);
         return ResponseEntity
             .created(new URI("/api/medical-certificates/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(true, entityName, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(entityName))
             .body(result);
     }
 
@@ -68,7 +68,7 @@ public class MedicalCertificateResource extends AbstractResource {
         }
 
         MedicalCertificateDTO result = medicalCertificateService.save(medicalCertificateDTO);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(true, entityName, result.getId().toString())).body(result);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(entityName)).body(result);
     }
 
     @PostMapping("/admin/medical-certificates/search")
@@ -121,14 +121,14 @@ public class MedicalCertificateResource extends AbstractResource {
     public ResponseEntity<Void> deleteMedicalCertificate(@PathVariable Long id) {
         log.debug("REST request to delete MedicalCertificate : {}", id);
         medicalCertificateService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(true, entityName, id.toString())).build();
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(entityName)).build();
     }
 
     @PostMapping("/medical-certificates/sign/{id}")
     @PreAuthorize(AccessConstants.DOCTOR)
     public ResponseEntity<Void> sign(@PathVariable Long id) {
         medicalCertificateService.sign(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(true, entityName, id.toString())).build();
+        return ResponseEntity.noContent().headers(HeaderUtil.createAlertMessage(entityName, "signed")).build();
     }
 
     @GetMapping("/medical-certificates/download/{id}")
@@ -141,7 +141,7 @@ public class MedicalCertificateResource extends AbstractResource {
     @PostMapping("/medical-certificates/resend/{id}")
     @PreAuthorize(AccessConstants.DOCTOR)
     public ResponseEntity<InputStreamResource> resend(@PathVariable Long id) {
-        medicalCertificateService.resend(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(true, entityName, id.toString())).build();
+        String email = medicalCertificateService.resend(id);
+        return ResponseEntity.noContent().headers(HeaderUtil.createAlertMessage(entityName, "resend", email)).build();
     }
 }

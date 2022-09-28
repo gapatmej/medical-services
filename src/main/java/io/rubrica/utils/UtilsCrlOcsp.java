@@ -15,6 +15,7 @@
 package io.rubrica.utils;
 
 import com.customsoftware.medicalservices.service.ServiceUtils;
+import com.customsoftware.medicalservices.web.rest.errors.BadRequestAlertException;
 import io.rubrica.certificate.CertEcUtils;
 import io.rubrica.certificate.CrlUtils;
 import io.rubrica.certificate.ValidationResult;
@@ -100,19 +101,17 @@ public class UtilsCrlOcsp {
         return date;
     }
 
-    public static Date validarFechaRevocado(X509Certificate cert) throws CertificadoInvalidoException, IOException {
+    public static Date validarFechaRevocado(X509Certificate cert) {
         Date fechaRevocado = null;
         try {
             fechaRevocado = fechaString_Date(validarCertificado(cert));
-        } catch (
-            ParseException
-            | RubricaException
-            | ConexionValidarCRLException
-            | CRLValidationException
-            | EntidadCertificadoraNoValidaException ex
-        ) {
+        } catch (Exception ex) {
             LOGGER.getLogger(UtilsCrlOcsp.class.getName()).log(Level.SEVERE, null, ex);
-            //            throw new ConexionFirmadorApiException("Fallo la validacion por el servicio del API");
+            throw new BadRequestAlertException(
+                "Error trying to validate certificate with API",
+                "validations",
+                "validateCertificateWithAPI"
+            );
         }
         return fechaRevocado;
     }

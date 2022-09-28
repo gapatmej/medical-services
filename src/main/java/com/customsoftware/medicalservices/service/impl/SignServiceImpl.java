@@ -3,6 +3,7 @@ package com.customsoftware.medicalservices.service.impl;
 import com.customsoftware.medicalservices.domain.User;
 import com.customsoftware.medicalservices.service.ServiceUtils;
 import com.customsoftware.medicalservices.service.SignService;
+import com.customsoftware.medicalservices.web.rest.errors.BadRequestAlertException;
 import com.customsoftware.medicalservices.web.rest.errors.MedicalServicesRuntimeException;
 import ec.gob.firmadigital.cliente.FirmaDigital;
 import io.rubrica.certificate.CertUtils;
@@ -20,6 +21,7 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,15 +59,16 @@ public class SignServiceImpl extends AbstractServiceImpl implements SignService 
 
     private void signDocuments(List<String> paths, User user) {
         List<String> documentosFirmados = new ArrayList<>();
+        // Vemos si es un documento permitido primero
+        // validacionPreFirmar();
+        KeyStore ks = getKeyStore(user);
         try {
-            // Vemos si es un documento permitido primero
-            // validacionPreFirmar();
-            KeyStore ks = getKeyStore(user);
-
             if (ks != null) {
                 alias = null;
                 alias = CertUtils.seleccionarAlias(ks);
-                X509Certificate x509Certificate = CertUtils.getCert(ks, alias);
+                X509Certificate x509Certificate = null;
+
+                x509Certificate = CertUtils.getCert(ks, alias);
 
                 x509CertificateUtils = null;
                 x509CertificateUtils = new X509CertificateUtils();
@@ -125,7 +128,7 @@ public class SignServiceImpl extends AbstractServiceImpl implements SignService 
                 }
             }
         } catch (Exception ex) {
-            log.error(ex.getMessage());
+            throw new BadRequestAlertException("Error trying sing the document", "validations", "errorSignGeneric");
         }
     }
 
@@ -134,12 +137,19 @@ public class SignServiceImpl extends AbstractServiceImpl implements SignService 
         try {
             String pathCertificate = ServiceUtils.getCertificatePath(user);
             File llave = new File(pathCertificate);
+
+            if (StringUtils.isBlank(user.getCertificatePassword())) {
+                throw new BadRequestAlertException("Password certificate not configured", "validations", "certificatePasswordEmpty");
+            }
+
             if (llave.exists() == true) {
                 KeyStoreProvider ksp = new FileKeyStoreProvider(pathCertificate);
                 ks = ksp.getKeystore(user.getCertificatePassword().toCharArray());
+            } else {
+                throw new BadRequestAlertException("Certificate not found", "validations", "certificatePath");
             }
         } catch (KeyStoreException e) {
-            log.error(e.getMessage());
+            throw new BadRequestAlertException("Password certificate wrong", "validations", "certificatePasswordWrong");
         }
         return ks;
     }

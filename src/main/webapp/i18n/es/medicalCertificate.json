@@ -7,9 +7,11 @@
       "createOrEditLabel": "Crear o editar Medical Certificate",
       "notFound": "Ningún Medical Certificates encontrado"
     },
-    "created": "Un nuevo Medical Certificate ha sido creado con el identificador {{ param }}",
-    "updated": "Un Medical Certificate ha sido actualizado con el identificador {{ param }}",
-    "deleted": "Un Medical Certificate ha sido eliminado con el identificador {{ param }}",
+    "crudMessages": {
+      "created": "Certificado Médico creado.",
+      "updated": "Certificado Médico actualizado.",
+      "deleted": "Certificado Médico eliminado."
+    },
     "delete": {
       "question": "¿Seguro que quiere eliminar Medical Certificate {{ id }}?"
     },
@@ -34,6 +36,10 @@
     "totalDaysOff": "Días concedidos",
     "fromDate": "Fecha desde",
     "untilDate": "Fecha hasta",
-    "status": "Status"
+    "status": "Status",
+    "messages": {
+      "signed": "Certificado firmado.",
+      "resend": "Certificado reenviado al correo {{param}}."
+    }
   }
 }

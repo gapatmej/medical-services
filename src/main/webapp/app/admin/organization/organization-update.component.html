@@ -3,8 +3,6 @@
     <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
       <h2 jhiTranslate="organization.home.createOrEditLabel"></h2>
 
-      <jhi-alert-error></jhi-alert-error>
-
       <div class="form-group">
         <label class="form-control-label" jhiTranslate="organization.name"></label>
         <input type="text" class="form-control" name="name" formControlName="name" />
