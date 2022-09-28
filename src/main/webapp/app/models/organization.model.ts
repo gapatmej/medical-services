@@ -4,6 +4,7 @@ export interface IOrganization {
   email?: string | null;
   phoneNumber?: string | null;
   address?: string | null;
+  city?: string | null;
 }
 
 export class Organization implements IOrganization {
@@ -12,6 +13,7 @@ export class Organization implements IOrganization {
     public name?: string | null,
     public email?: string | null,
     public phoneNumber?: string | null,
-    public address?: string | null
+    public address?: string | null,
+    public city?: string | null
   ) {}
 }

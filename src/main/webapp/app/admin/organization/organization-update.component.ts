@@ -16,6 +16,7 @@ export class OrganizationUpdateComponent implements OnInit {
     email: ['', [Validators.required, Validators.maxLength(100), Validators.email]],
     phoneNumber: ['', [Validators.required, Validators.maxLength(20), onlyNumbers()]],
     address: ['', [Validators.required, Validators.maxLength(255)]],
+    city: ['', [Validators.required, Validators.maxLength(50)]],
   });
 
   constructor(private organizationService: OrganizationService, private fb: FormBuilder) {}
@@ -37,6 +38,7 @@ export class OrganizationUpdateComponent implements OnInit {
         email: organization.email,
         phoneNumber: organization.phoneNumber,
         address: organization.address,
+        city: organization.city,
       });
     }
   }
@@ -46,5 +48,6 @@ export class OrganizationUpdateComponent implements OnInit {
     this.organization.email = this.editForm.get(['email'])!.value;
     this.organization.phoneNumber = this.editForm.get(['phoneNumber'])!.value;
     this.organization.address = this.editForm.get(['address'])!.value;
+    this.organization.city = this.editForm.get(['city'])!.value;
   }
 }

@@ -27,7 +27,6 @@ export class MedicalCertificateUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     emissionDate: [new Date(), [Validators.required]],
-    emissionPlace: [null, [Validators.required, Validators.maxLength(50)]],
     patient: [null, [Validators.required]],
     diagnosis: [null, [Validators.required, Validators.maxLength(255)]],
     cie10Cod: [null, [Validators.required, Validators.maxLength(10)]],
@@ -114,7 +113,6 @@ export class MedicalCertificateUpdateComponent implements OnInit {
       id: medicalCertificate.id,
       patient: medicalCertificate.patient,
       emissionDate: medicalCertificate.emissionDate,
-      emissionPlace: medicalCertificate.emissionPlace,
       diagnosis: medicalCertificate.diagnosis,
       cie10Cod: medicalCertificate.cie10Cod,
       symptoms: medicalCertificate.symptoms,
@@ -134,7 +132,6 @@ export class MedicalCertificateUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       patient: this.editForm.get(['patient'])!.value,
       emissionDate: this.editForm.get(['emissionDate'])!.value,
-      emissionPlace: this.editForm.get(['emissionPlace'])!.value,
       diagnosis: this.editForm.get(['diagnosis'])!.value,
       cie10Cod: this.editForm.get(['cie10Cod'])!.value,
       symptoms: this.editForm.get(['symptoms'])!.value,

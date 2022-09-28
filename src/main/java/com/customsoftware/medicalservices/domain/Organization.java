@@ -31,6 +31,9 @@ public class Organization extends AbstractAuditingEntity {
     @Column(nullable = false)
     private String address;
 
+    @Column(nullable = false, length = 50)
+    private String city;
+
     public Long getId() {
         return id;
     }
@@ -69,5 +72,13 @@ public class Organization extends AbstractAuditingEntity {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

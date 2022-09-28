@@ -27,6 +27,12 @@
         <jhi-input-validation [control]="editForm.get('address')"></jhi-input-validation>
       </div>
 
+      <div class="form-group">
+        <label class="form-control-label" jhiTranslate="organization.city"></label>
+        <input type="text" class="form-control" name="city" formControlName="city" />
+        <jhi-input-validation [control]="editForm.get('city')"></jhi-input-validation>
+      </div>
+
       <button type="submit" [disabled]="editForm.invalid" class="btn btn-primary">
         <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="global.actions.save"></span>
       </button>

@@ -33,9 +33,6 @@ public class MedicalCertificate extends AbstractAuditingEntity {
     @Column(name = "emission_date", nullable = false)
     private Instant emissionDate;
 
-    @Column(name = "emission_place", nullable = false, length = 50)
-    private String emissionPlace;
-
     @Column(name = "diagnosis", nullable = false)
     private String diagnosis;
 
@@ -100,14 +97,6 @@ public class MedicalCertificate extends AbstractAuditingEntity {
 
     public void setEmissionDate(Instant emissionDate) {
         this.emissionDate = emissionDate;
-    }
-
-    public String getEmissionPlace() {
-        return emissionPlace;
-    }
-
-    public void setEmissionPlace(String emissionPlace) {
-        this.emissionPlace = emissionPlace;
     }
 
     public String getDiagnosis() {

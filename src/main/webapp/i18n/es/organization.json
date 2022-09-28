@@ -7,6 +7,10 @@
     "name": "Nombre",
     "email": "Email",
     "phoneNumber": "Numero telefónico",
-    "address": "Dirección"
+    "address": "Dirección",
+    "city": "Ciudad",
+    "crudMessages": {
+      "updated": "Organización actualizada"
+    }
   }
 }

@@ -145,7 +145,7 @@
     "idnull": "ID inválido",
     "idinvalid": "Invalid Id",
     "idnotfound": "ID cannot be found",
-    "certificatePath": "No tiene almacenado una firma digital. Por favor administre una firma digital válida",
+    "certificateNull": "No tiene almacenado una firma digital. Por favor administre una firma digital válida",
     "certificatePasswordEmpty": "Clave del certificado no está configurada.",
     "certificatePasswordWrong": "La clave del certificado es incorrecta.",
     "certificateNotFound": "No se encuentran certificados para firmar. Puede estar caducado o revocado",

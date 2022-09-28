@@ -25,7 +25,6 @@
     "patient": "Paciente",
     "firstName": "Nombres",
     "lastName": "Apellidos",
-    "emissionPlace": "Lugar de emisión",
     "diagnosis": "Diagnóstico",
     "cie10Cod": "Código CIE10",
     "symptoms": "Presenta síntomas",

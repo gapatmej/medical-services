@@ -6,7 +6,6 @@ export interface IMedicalCertificate {
   doctor?: User;
   patient?: User | null;
   emissionDate?: dayjs.Dayjs | null;
-  emissionPlace?: string | null;
   diagnosis?: string | null;
   cie10Cod?: string | null;
   symptoms?: boolean;
@@ -26,7 +25,6 @@ export class MedicalCertificate implements IMedicalCertificate {
     public doctor?: User,
     public patient?: User | null,
     public emissionDate?: dayjs.Dayjs | null,
-    public emissionPlace?: string | null,
     public diagnosis?: string | null,
     public cie10Cod?: string | null,
     public symptoms?: boolean,

@@ -14,8 +14,6 @@ public class MedicalCertificateDTO implements Serializable {
 
     private Instant emissionDate;
 
-    private String emissionPlace;
-
     private String diagnosis;
 
     private String cie10Cod;
@@ -68,14 +66,6 @@ public class MedicalCertificateDTO implements Serializable {
 
     public void setEmissionDate(Instant emissionDate) {
         this.emissionDate = emissionDate;
-    }
-
-    public String getEmissionPlace() {
-        return emissionPlace;
-    }
-
-    public void setEmissionPlace(String emissionPlace) {
-        this.emissionPlace = emissionPlace;
     }
 
     public String getDiagnosis() {

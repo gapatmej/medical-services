@@ -14,6 +14,8 @@ public class OrganizationDTO implements Serializable {
 
     private String address;
 
+    private String city;
+
     public Long getId() {
         return id;
     }
@@ -52,5 +54,13 @@ public class OrganizationDTO implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

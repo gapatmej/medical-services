@@ -1,0 +1,1 @@
+ALTER TABLE medical_certificate DROP COLUMN emission_place

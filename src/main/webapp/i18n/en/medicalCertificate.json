@@ -19,7 +19,6 @@
       },
       "emissionDate": "Emission date",
       "patient": "Patient",
-      "emissionPlace": "Emission place",
       "diagnosis": "Diagnosis",
       "cie10Cod": "Code CIE10",
       "symptoms": "Symptoms",
