@@ -74,7 +74,7 @@ public class FirmaDigital {
 
             //CUSTOM
             String llx = "280";
-            String lly = "280";
+            String lly = "280"; // more the QR is moved more up
             String urx = null;
             String ury = null;
 

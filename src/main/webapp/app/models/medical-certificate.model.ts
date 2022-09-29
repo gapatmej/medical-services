@@ -1,3 +1,4 @@
+import { IInternationalDisease } from 'app/models/international-disease.model';
 import { User } from 'app/models/user-management.model';
 import * as dayjs from 'dayjs';
 
@@ -7,7 +8,7 @@ export interface IMedicalCertificate {
   patient?: User | null;
   emissionDate?: dayjs.Dayjs | null;
   diagnosis?: string | null;
-  cie10Cod?: string | null;
+  internationalDisease?: IInternationalDisease | null;
   symptoms?: boolean;
   disease?: boolean;
   diseaseDescription?: string | null;
@@ -26,7 +27,7 @@ export class MedicalCertificate implements IMedicalCertificate {
     public patient?: User | null,
     public emissionDate?: dayjs.Dayjs | null,
     public diagnosis?: string | null,
-    public cie10Cod?: string | null,
+    public internationalDisease?: IInternationalDisease | null,
     public symptoms?: boolean,
     public disease?: boolean,
     public diseaseDescription?: string | null,

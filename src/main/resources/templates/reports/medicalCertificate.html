@@ -21,7 +21,7 @@
       }
 
       .doctor-info {
-        margin-top: 370px;
+        margin-top: 350px;
       }
 
       .doctor-info li {
@@ -94,13 +94,18 @@
         </td>
       </tr>
       <tr>
-        <td class="column-legend" th:text="#{report.medicalCertificate.cie10CodDiagnosis} + ':'">Código CIE10 y diagnóstico:</td>
+        <td class="column-legend" th:text="#{report.medicalCertificate.cie10Cod} + ':'">Código CIE10:</td>
         <td
+          colspan="3"
           class="column-text"
-          th:text="#{report.medicalCertificate.cie10CodDiagnosisFormat(${medicalCertificate.cie10Cod},${medicalCertificate.diagnosis})}"
+          th:text="${medicalCertificate.internationalDisease.cod} + ' - ' + ${medicalCertificate.internationalDisease.description}"
         >
           J35.3, Hipertrofia de amígdalas y adenoides
         </td>
+      </tr>
+      <tr>
+        <td class="column-legend" th:text="#{report.medicalCertificate.diagnosis} + ':'">Diagnóstico:</td>
+        <td class="column-text" th:text="${medicalCertificate.diagnosis}">Texto del diagnostico</td>
       </tr>
       <tr>
         <td class="column-legend" th:text="#{report.medicalCertificate.symptoms} + ':'">Presenta síntomas:</td>

@@ -8,6 +8,7 @@ import com.customsoftware.medicalservices.security.SecurityUtils;
 import com.customsoftware.medicalservices.service.*;
 import com.customsoftware.medicalservices.service.dto.MedicalCertificateDTO;
 import com.customsoftware.medicalservices.service.dto.search.SearchMedicalCertificateDTO;
+import com.customsoftware.medicalservices.service.mapper.InternationalDiseaseMapper;
 import com.customsoftware.medicalservices.service.mapper.MedicalCertificateMapper;
 import com.customsoftware.medicalservices.service.mapper.ReportService;
 import com.customsoftware.medicalservices.service.mapper.UserMapper;
@@ -38,6 +39,7 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
         new MedicalServicesRuntimeException("Medical Certificate not Found");
     private final MedicalCertificateMapper medicalCertificateMapper;
     private final UserMapper userMapper;
+    private final InternationalDiseaseMapper internationalDiseaseMapper;
     private final UserService userService;
     private final MedicalCertificateRepository medicalCertificateRepository;
     private final ReportService reportService;
@@ -49,6 +51,7 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
     public MedicalCertificateServiceImpl(
         MedicalCertificateMapper medicalCertificateMapper,
         UserMapper userMapper,
+        InternationalDiseaseMapper internationalDiseaseMapper,
         UserService userService,
         MedicalCertificateRepository medicalCertificateRepository,
         ReportService reportService,
@@ -59,6 +62,7 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
         super(MedicalCertificateServiceImpl.class);
         this.medicalCertificateMapper = medicalCertificateMapper;
         this.userMapper = userMapper;
+        this.internationalDiseaseMapper = internationalDiseaseMapper;
         this.userService = userService;
         this.medicalCertificateRepository = medicalCertificateRepository;
         this.reportService = reportService;
@@ -118,6 +122,7 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
                     MedicalCertificateDTO medicalCertificateDTO = medicalCertificateMapper.toDto(mC);
                     medicalCertificateDTO.setDoctor(userMapper.toDTOBasicData(mC.getDoctor()));
                     medicalCertificateDTO.setPatient(userMapper.toDTOBasicData(mC.getPatient()));
+                    medicalCertificateDTO.setInternationalDisease(internationalDiseaseMapper.toDto(mC.getInternationalDisease()));
                     return medicalCertificateDTO;
                 }
             );

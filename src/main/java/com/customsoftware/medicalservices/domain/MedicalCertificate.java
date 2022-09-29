@@ -1,6 +1,5 @@
 package com.customsoftware.medicalservices.domain;
 
-import com.customsoftware.medicalservices.domain.enumeration.IdentificationType;
 import com.customsoftware.medicalservices.domain.enumeration.MedicalCertificateStatus;
 import java.time.Instant;
 import javax.persistence.*;
@@ -36,8 +35,9 @@ public class MedicalCertificate extends AbstractAuditingEntity {
     @Column(name = "diagnosis", nullable = false)
     private String diagnosis;
 
-    @Column(name = "cie10_cod", nullable = false, length = 10)
-    private String cie10Cod;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "international_disease_id", nullable = false)
+    private InternationalDisease internationalDisease;
 
     @Column(nullable = false)
     private boolean symptoms;
@@ -107,12 +107,12 @@ public class MedicalCertificate extends AbstractAuditingEntity {
         this.diagnosis = diagnosis;
     }
 
-    public String getCie10Cod() {
-        return cie10Cod;
+    public InternationalDisease getInternationalDisease() {
+        return internationalDisease;
     }
 
-    public void setCie10Cod(String cie10Cod) {
-        this.cie10Cod = cie10Cod;
+    public void setInternationalDisease(InternationalDisease internationalDisease) {
+        this.internationalDisease = internationalDisease;
     }
 
     public boolean isSymptoms() {

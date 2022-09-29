@@ -10,7 +10,9 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface MedicalCertificateRepository extends JpaRepository<MedicalCertificate, Long>, CustomMedicalCertificateRepository {
-    @Query(" select mC from MedicalCertificate mC join fetch mC.doctor join fetch mC.patient where mC.id = :id ")
+    @Query(
+        " select mC from MedicalCertificate mC join fetch mC.doctor join fetch mC.patient join fetch mC.internationalDisease where mC.id = :id "
+    )
     Optional<MedicalCertificate> searchById(@Param("id") Long id);
 
     @Query(

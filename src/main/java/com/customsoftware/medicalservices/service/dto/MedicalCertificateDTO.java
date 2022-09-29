@@ -16,7 +16,7 @@ public class MedicalCertificateDTO implements Serializable {
 
     private String diagnosis;
 
-    private String cie10Cod;
+    private InternationalDiseaseDTO internationalDisease;
 
     private boolean symptoms;
 
@@ -76,12 +76,12 @@ public class MedicalCertificateDTO implements Serializable {
         this.diagnosis = diagnosis;
     }
 
-    public String getCie10Cod() {
-        return cie10Cod;
+    public InternationalDiseaseDTO getInternationalDisease() {
+        return internationalDisease;
     }
 
-    public void setCie10Cod(String cie10Cod) {
-        this.cie10Cod = cie10Cod;
+    public void setInternationalDisease(InternationalDiseaseDTO internationalDisease) {
+        this.internationalDisease = internationalDisease;
     }
 
     public boolean isSymptoms() {

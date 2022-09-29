@@ -10,10 +10,13 @@ import { IUser } from 'app/models/user-management.model';
 import { UserManagementService } from 'app/services/user-management.service';
 import { Pagination } from 'app/models/pagination.model';
 import { SearchUser } from 'app/models/search-user.model';
-import { userLabel } from 'app/core/util/selectors-util';
+import { internationalDiseaseLabel, userLabel } from 'app/core/util/selectors-util';
 import { onlyNumbers } from 'app/shared/validations/input-validation.component';
 import _ from 'lodash-es';
 import { ITEMS_SEARCH } from 'app/config/pagination.constants';
+import { SearchInternationalDisease } from 'app/models/search-international-disease.model';
+import { InternationalDiseaseService } from 'app/services/international-disease.service';
+import { IInternationalDisease } from 'app/models/international-disease.model';
 @Component({
   selector: 'jhi-medical-certificate-update',
   templateUrl: './medical-certificate-update.component.html',
@@ -22,14 +25,14 @@ export class MedicalCertificateUpdateComponent implements OnInit {
   isSaving = false;
 
   patients: IUser[] = [];
-  selectedPatient: IUser | null = null;
+  internationalDiseases: IInternationalDisease[] = [];
 
   editForm = this.fb.group({
     id: [],
     emissionDate: [new Date(), [Validators.required]],
     patient: [null, [Validators.required]],
     diagnosis: [null, [Validators.required, Validators.maxLength(255)]],
-    cie10Cod: [null, [Validators.required, Validators.maxLength(10)]],
+    internationalDisease: [null, [Validators.required]],
     symptoms: [false, [Validators.required]],
     disease: [false, [Validators.required]],
     diseaseDescription: [null, [Validators.required, Validators.maxLength(255)]],
@@ -44,7 +47,8 @@ export class MedicalCertificateUpdateComponent implements OnInit {
     protected medicalCertificateService: MedicalCertificateService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder,
-    protected userManagementService: UserManagementService
+    protected userManagementService: UserManagementService,
+    protected internationalDiseaseService: InternationalDiseaseService
   ) {}
 
   ngOnInit(): void {
@@ -85,6 +89,22 @@ export class MedicalCertificateUpdateComponent implements OnInit {
     });
   }
 
+  searchInternationalDisease(): void {
+    const { internationalDisease } = this.editForm.value;
+    const pagination = {
+      ...new Pagination(),
+      size: ITEMS_SEARCH,
+    };
+    const searchInternationalDisease = {
+      ...new SearchInternationalDisease(),
+      query: internationalDisease,
+    };
+
+    this.internationalDiseaseService.search(pagination, searchInternationalDisease).subscribe(resp => {
+      this.internationalDiseases = resp.body!;
+    });
+  }
+
   displayPatient(patient: any): string {
     if (patient) {
       return userLabel(patient);
@@ -94,6 +114,17 @@ export class MedicalCertificateUpdateComponent implements OnInit {
 
   patientLabelSelector(patient: IUser): string {
     return userLabel(patient);
+  }
+
+  displayInternationalDisease(internationalDisease: any): string {
+    if (internationalDisease) {
+      return internationalDiseaseLabel(internationalDisease);
+    }
+    return '';
+  }
+
+  internationalDiseaseLabelSelector(internationalDisease: IInternationalDisease): string {
+    return internationalDiseaseLabel(internationalDisease);
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IMedicalCertificate>>): void {
@@ -114,7 +145,7 @@ export class MedicalCertificateUpdateComponent implements OnInit {
       patient: medicalCertificate.patient,
       emissionDate: medicalCertificate.emissionDate,
       diagnosis: medicalCertificate.diagnosis,
-      cie10Cod: medicalCertificate.cie10Cod,
+      internationalDisease: medicalCertificate.internationalDisease,
       symptoms: medicalCertificate.symptoms,
       disease: medicalCertificate.disease,
       diseaseDescription: medicalCertificate.diseaseDescription,
@@ -133,7 +164,7 @@ export class MedicalCertificateUpdateComponent implements OnInit {
       patient: this.editForm.get(['patient'])!.value,
       emissionDate: this.editForm.get(['emissionDate'])!.value,
       diagnosis: this.editForm.get(['diagnosis'])!.value,
-      cie10Cod: this.editForm.get(['cie10Cod'])!.value,
+      internationalDisease: this.editForm.get(['internationalDisease'])!.value,
       symptoms: this.editForm.get(['symptoms'])!.value,
       disease: this.editForm.get(['disease'])!.value,
       diseaseDescription: this.editForm.get(['diseaseDescription'])!.value,

@@ -31,9 +31,9 @@
             name="patient"
             (keyup)="searchPatient()"
             formControlName="patient"
-            [matAutocomplete]="auto"
+            [matAutocomplete]="autoPatient"
           />
-          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayPatient">
+          <mat-autocomplete #autoPatient="matAutocomplete" [displayWith]="displayPatient">
             <mat-option *ngFor="let patient of patients" [value]="patient">
               {{ patientLabelSelector(patient) }}
             </mat-option>
@@ -46,8 +46,22 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="medicalCertificate.cie10Cod"></label>
-          <input type="text" class="form-control" name="cie10Cod" formControlName="cie10Cod" />
+          <label class="form-control-label" jhiTranslate="medicalCertificate.internationalDisease"></label>
+          <input
+            class="form-control"
+            type="text"
+            aria-label="Number"
+            matInput
+            name="internationalDisease"
+            (keyup)="searchInternationalDisease()"
+            formControlName="internationalDisease"
+            [matAutocomplete]="internationaDiseaseAutocomplete"
+          />
+          <mat-autocomplete #internationaDiseaseAutocomplete="matAutocomplete" [displayWith]="displayInternationalDisease">
+            <mat-option *ngFor="let internationalDisease of internationalDiseases" [value]="internationalDisease">
+              {{ internationalDiseaseLabelSelector(internationalDisease) }}
+            </mat-option>
+          </mat-autocomplete>
         </div>
 
         <div class="form-group row">
