@@ -45,23 +45,37 @@
           <textarea type="text" class="form-control" rows="4" cols="50" name="diagnosis" formControlName="diagnosis"></textarea>
         </div>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="medicalCertificate.internationalDisease"></label>
-          <input
-            class="form-control"
-            type="text"
-            aria-label="Number"
-            matInput
-            name="internationalDisease"
-            (keyup)="searchInternationalDisease()"
-            formControlName="internationalDisease"
-            [matAutocomplete]="internationaDiseaseAutocomplete"
-          />
-          <mat-autocomplete #internationaDiseaseAutocomplete="matAutocomplete" [displayWith]="displayInternationalDisease">
-            <mat-option *ngFor="let internationalDisease of internationalDiseases" [value]="internationalDisease">
-              {{ internationalDiseaseLabelSelector(internationalDisease) }}
-            </mat-option>
-          </mat-autocomplete>
+        <div class="row">
+          <div class="form-group col-6">
+            <label class="form-control-label" jhiTranslate="medicalCertificate.internationalDisease"></label>
+            <input
+              class="form-control"
+              type="text"
+              aria-label="Number"
+              matInput
+              name="internationalDisease"
+              (keyup)="searchInternationalDisease()"
+              formControlName="internationalDisease"
+              [matAutocomplete]="internationaDiseaseAutocomplete"
+            />
+            <mat-autocomplete #internationaDiseaseAutocomplete="matAutocomplete" [displayWith]="displayInternationalDisease">
+              <mat-option *ngFor="let internationalDisease of internationalDiseases" [value]="internationalDisease">
+                {{ internationalDiseaseLabelSelector(internationalDisease) }}
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+
+          <div class="form-group col-6">
+            <label class="form-control-label" jhiTranslate="medicalCertificate.contingencyType.label"></label>
+
+            <mat-select class="form-control" name="contingencyType" formControlName="contingencyType">
+              <mat-option *ngFor="let contingencyType of ContingencyType | keyvalue" [value]="contingencyType.key">
+                <span [jhiTranslate]="'medicalCertificate.contingencyType.options.' + contingencyType.key"></span>
+              </mat-option>
+            </mat-select>
+
+            <jhi-input-validation [control]="editForm.get('contingencyType')"></jhi-input-validation>
+          </div>
         </div>
 
         <div class="form-group row">

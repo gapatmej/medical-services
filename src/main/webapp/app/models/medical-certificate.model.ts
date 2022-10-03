@@ -1,4 +1,5 @@
 import { IInternationalDisease } from 'app/models/international-disease.model';
+import { ContingencyType } from 'app/models/enumeration/contingency-type.model';
 import { User } from 'app/models/user-management.model';
 import * as dayjs from 'dayjs';
 
@@ -18,6 +19,7 @@ export interface IMedicalCertificate {
   fromDate?: dayjs.Dayjs | null;
   untilDate?: dayjs.Dayjs | null;
   status?: string | null;
+  contingencyType?: ContingencyType;
 }
 
 export class MedicalCertificate implements IMedicalCertificate {
@@ -36,6 +38,7 @@ export class MedicalCertificate implements IMedicalCertificate {
     public totalDaysOff?: number,
     public fromDate?: dayjs.Dayjs | null,
     public untilDate?: dayjs.Dayjs | null,
-    public status?: string | null
+    public status?: string | null,
+    public contingencyType?: ContingencyType
   ) {}
 }

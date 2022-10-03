@@ -5,3 +5,7 @@ ALTER TABLE medical_certificate
     ADD CONSTRAINT fk_medical_certificate__international_disease_id FOREIGN KEY (international_disease_id) REFERENCES international_disease (id);
 
 ALTER TABLE medical_certificate ALTER COLUMN international_disease_id DROP DEFAULT;
+
+ALTER TABLE medical_certificate
+    ADD COLUMN contingency_type varchar(20) NOT NULL default 'GENERAL';
+ALTER TABLE medical_certificate ALTER COLUMN contingency_type DROP DEFAULT;

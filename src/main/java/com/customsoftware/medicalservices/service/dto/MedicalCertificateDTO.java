@@ -1,5 +1,6 @@
 package com.customsoftware.medicalservices.service.dto;
 
+import com.customsoftware.medicalservices.domain.enumeration.ContingencyType;
 import com.customsoftware.medicalservices.domain.enumeration.MedicalCertificateStatus;
 import java.io.Serializable;
 import java.time.Instant;
@@ -35,6 +36,8 @@ public class MedicalCertificateDTO implements Serializable {
     private Instant untilDate;
 
     private MedicalCertificateStatus status;
+
+    private ContingencyType contingencyType;
 
     public Long getId() {
         return id;
@@ -154,5 +157,13 @@ public class MedicalCertificateDTO implements Serializable {
 
     public void setStatus(MedicalCertificateStatus status) {
         this.status = status;
+    }
+
+    public ContingencyType getContingencyType() {
+        return contingencyType;
+    }
+
+    public void setContingencyType(ContingencyType contingencyType) {
+        this.contingencyType = contingencyType;
     }
 }

@@ -1,5 +1,6 @@
 package com.customsoftware.medicalservices.domain;
 
+import com.customsoftware.medicalservices.domain.enumeration.ContingencyType;
 import com.customsoftware.medicalservices.domain.enumeration.MedicalCertificateStatus;
 import java.time.Instant;
 import javax.persistence.*;
@@ -66,6 +67,10 @@ public class MedicalCertificate extends AbstractAuditingEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 10, nullable = false)
     private MedicalCertificateStatus status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "contingency_type", length = 20, nullable = false)
+    private ContingencyType contingencyType;
 
     public Long getId() {
         return id;
@@ -185,5 +190,13 @@ public class MedicalCertificate extends AbstractAuditingEntity {
 
     public void setStatus(MedicalCertificateStatus status) {
         this.status = status;
+    }
+
+    public ContingencyType getContingencyType() {
+        return contingencyType;
+    }
+
+    public void setContingencyType(ContingencyType contingencyType) {
+        this.contingencyType = contingencyType;
     }
 }

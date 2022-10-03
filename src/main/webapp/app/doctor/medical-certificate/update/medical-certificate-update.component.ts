@@ -17,6 +17,7 @@ import { ITEMS_SEARCH } from 'app/config/pagination.constants';
 import { SearchInternationalDisease } from 'app/models/search-international-disease.model';
 import { InternationalDiseaseService } from 'app/services/international-disease.service';
 import { IInternationalDisease } from 'app/models/international-disease.model';
+import { ContingencyType } from 'app/models/enumeration/contingency-type.model';
 @Component({
   selector: 'jhi-medical-certificate-update',
   templateUrl: './medical-certificate-update.component.html',
@@ -41,6 +42,7 @@ export class MedicalCertificateUpdateComponent implements OnInit {
     totalDaysOff: ['', [Validators.required, onlyNumbers]],
     fromDate: [new Date(), [Validators.required]],
     untilDate: [new Date(), [Validators.required]],
+    contingencyType: [null, [Validators.required]],
   });
 
   constructor(
@@ -127,6 +129,10 @@ export class MedicalCertificateUpdateComponent implements OnInit {
     return internationalDiseaseLabel(internationalDisease);
   }
 
+  get ContingencyType(): typeof ContingencyType {
+    return ContingencyType;
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IMedicalCertificate>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe(() => this.onSaveSuccess());
   }
@@ -154,6 +160,7 @@ export class MedicalCertificateUpdateComponent implements OnInit {
       totalDaysOff: medicalCertificate.totalDaysOff,
       fromDate: medicalCertificate.fromDate,
       untilDate: medicalCertificate.untilDate,
+      contingencyType: medicalCertificate.contingencyType,
     });
   }
 
@@ -173,6 +180,7 @@ export class MedicalCertificateUpdateComponent implements OnInit {
       totalDaysOff: this.editForm.get(['totalDaysOff'])!.value,
       fromDate: this.editForm.get(['fromDate'])!.value,
       untilDate: this.editForm.get(['untilDate'])!.value,
+      contingencyType: this.editForm.get(['contingencyType'])!.value,
     };
   }
 }

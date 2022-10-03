@@ -27,6 +27,16 @@
     "lastName": "Apellidos",
     "diagnosis": "Diagnóstico",
     "internationalDisease": "Código CIE10",
+    "contingencyType": {
+      "label": "Tipo de contingencia",
+      "options": {
+        "GENERAL": "Enfermedad General",
+        "CATASTROPHIC": "Enfermedad Catastrófica",
+        "MATERNITY": "Maternidad",
+        "PROFESSIONAL": "Enfermedad Profesional",
+        "WORK_ACCIDENT": "Accidente de Trabajo"
+      }
+    },
     "symptoms": "Presenta síntomas",
     "disease": "Enfermedad",
     "diseaseDescription": "Descripción de la enfermedad",
