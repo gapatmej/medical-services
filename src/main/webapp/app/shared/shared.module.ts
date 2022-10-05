@@ -12,6 +12,8 @@ import { SortByDirective } from './sort/sort-by.directive';
 import { SortDirective } from './sort/sort.directive';
 import { ItemCountComponent } from './pagination/item-count.component';
 import { InputValidationComponent } from './validations/input-validation.component';
+import { LoadingSpinnerComponent } from 'app/shared/loading-spinner/loading-spinner.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [SharedLibsModule],
@@ -28,6 +30,7 @@ import { InputValidationComponent } from './validations/input-validation.compone
     SortDirective,
     ItemCountComponent,
     InputValidationComponent,
+    LoadingSpinnerComponent,
   ],
   exports: [
     SharedLibsModule,
@@ -43,6 +46,9 @@ import { InputValidationComponent } from './validations/input-validation.compone
     SortDirective,
     ItemCountComponent,
     InputValidationComponent,
+    LoadingSpinnerComponent,
+    MatDialogModule,
   ],
+  bootstrap: [LoadingSpinnerComponent],
 })
 export class SharedModule {}

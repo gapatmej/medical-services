@@ -5,6 +5,8 @@ import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import * as dayjs from 'dayjs';
 
 import { AccountService } from 'app/services/account.service';
+import { LoadingService } from 'app/services/loading.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'jhi-main',
@@ -18,7 +20,9 @@ export class MainComponent implements OnInit {
     private titleService: Title,
     private router: Router,
     private translateService: TranslateService,
-    rootRenderer: RendererFactory2
+    rootRenderer: RendererFactory2,
+    private loadingService: LoadingService,
+    public dialog: MatDialog
   ) {
     this.renderer = rootRenderer.createRenderer(document.querySelector('html'), null);
   }
@@ -41,6 +45,10 @@ export class MainComponent implements OnInit {
       dayjs.locale(langChangeEvent.lang);
       this.renderer.setAttribute(document.querySelector('html'), 'lang', langChangeEvent.lang);
     });
+  }
+
+  get loading(): boolean {
+    return this.loadingService.isLoading();
   }
 
   private getPageTitle(routeSnapshot: ActivatedRouteSnapshot): string {

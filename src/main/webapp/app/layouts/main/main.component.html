@@ -5,11 +5,13 @@
 </div>
 
 <div class="container-fluid">
-  <div class="card jh-card">
+  <div *ngIf="!loading" class="card jh-card">
     <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
     <router-outlet></router-outlet>
   </div>
+
+  <jhi-loading-spinner *ngIf="loading"></jhi-loading-spinner>
 
   <jhi-footer></jhi-footer>
 </div>

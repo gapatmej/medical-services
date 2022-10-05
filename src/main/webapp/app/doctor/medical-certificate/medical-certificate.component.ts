@@ -15,6 +15,7 @@ import { SearchMedicalCertificate } from 'app/models/search-medical-certificate.
 import { userLabel } from 'app/core/util/selectors-util';
 import { IUser } from 'app/models/user-management.model';
 import { MedicalCertificateStatus } from 'app/models/enumeration/medical-certificate-status.model';
+import { LoadingService } from 'app/services/loading.service';
 
 @Component({
   selector: 'jhi-medical-certificate',
@@ -35,7 +36,8 @@ export class MedicalCertificateComponent implements OnInit {
     protected medicalCertificateService: MedicalCertificateService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    protected loadingService: LoadingService
   ) {}
 
   loadAll(): void {
@@ -92,9 +94,7 @@ export class MedicalCertificateComponent implements OnInit {
   }
 
   sign(medicalCertificate: IMedicalCertificate): void {
-    this.medicalCertificateService.sign(medicalCertificate.id!).subscribe(() => {
-      this.loadAll();
-    });
+    this.loadingService.wrapper(this.medicalCertificateService.sign(medicalCertificate.id!)).subscribe();
   }
 
   download(medicalCertificate: IMedicalCertificate): void {
