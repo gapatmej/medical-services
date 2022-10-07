@@ -133,7 +133,12 @@
       </tr>
       <tr>
         <td class="column-legend" th:text="#{report.medicalCertificate.totalDaysOff} + ':'">Total de días:</td>
-        <td class="column-text" th:text="${medicalCertificate.totalDaysOff}">5 (cinco) días</td>
+        <td
+          class="column-text"
+          th:text="${T(java.time.temporal.ChronoUnit).DAYS.between(medicalCertificate.fromDate, medicalCertificate.untilDate)}"
+        >
+          5 (cinco) días
+        </td>
       </tr>
     </table>
 

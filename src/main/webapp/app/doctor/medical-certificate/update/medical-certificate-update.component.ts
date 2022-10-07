@@ -18,6 +18,8 @@ import { SearchInternationalDisease } from 'app/models/search-international-dise
 import { InternationalDiseaseService } from 'app/services/international-disease.service';
 import { IInternationalDisease } from 'app/models/international-disease.model';
 import { ContingencyType } from 'app/models/enumeration/contingency-type.model';
+import { calculateDays } from 'app/core/util/common-utils';
+import dayjs from 'dayjs';
 @Component({
   selector: 'jhi-medical-certificate-update',
   templateUrl: './medical-certificate-update.component.html',
@@ -39,7 +41,6 @@ export class MedicalCertificateUpdateComponent implements OnInit {
     diseaseDescription: [null, [Validators.required, Validators.maxLength(255)]],
     insulation: [false, [Validators.required]],
     insulationDescription: [null, [Validators.required, Validators.maxLength(255)]],
-    totalDaysOff: ['', [Validators.required, onlyNumbers]],
     fromDate: [new Date(), [Validators.required]],
     untilDate: [new Date(), [Validators.required]],
     contingencyType: [null, [Validators.required]],
@@ -107,6 +108,27 @@ export class MedicalCertificateUpdateComponent implements OnInit {
     });
   }
 
+  get totalDaysOff(): number {
+    const { fromDate, untilDate } = this.editForm.value;
+    if (fromDate && untilDate) {
+      return calculateDays(dayjs(fromDate), dayjs(untilDate));
+    }
+    return 0;
+  }
+
+  onChangeFromDate(): void {
+    const { fromDate, untilDate } = this.editForm.value;
+    if (fromDate && untilDate) {
+      const f = dayjs(fromDate);
+      const u = dayjs(untilDate);
+      if (u.isBefore(f)) {
+        this.editForm.patchValue({
+          untilDate: fromDate,
+        });
+      }
+    }
+  }
+
   displayPatient(patient: any): string {
     if (patient) {
       return userLabel(patient);
@@ -157,7 +179,6 @@ export class MedicalCertificateUpdateComponent implements OnInit {
       diseaseDescription: medicalCertificate.diseaseDescription,
       insulation: medicalCertificate.insulation,
       insulationDescription: medicalCertificate.insulationDescription,
-      totalDaysOff: medicalCertificate.totalDaysOff,
       fromDate: medicalCertificate.fromDate,
       untilDate: medicalCertificate.untilDate,
       contingencyType: medicalCertificate.contingencyType,
@@ -177,7 +198,6 @@ export class MedicalCertificateUpdateComponent implements OnInit {
       diseaseDescription: this.editForm.get(['diseaseDescription'])!.value,
       insulation: this.editForm.get(['insulation'])!.value,
       insulationDescription: this.editForm.get(['insulationDescription'])!.value,
-      totalDaysOff: this.editForm.get(['totalDaysOff'])!.value,
       fromDate: this.editForm.get(['fromDate'])!.value,
       untilDate: this.editForm.get(['untilDate'])!.value,
       contingencyType: this.editForm.get(['contingencyType'])!.value,

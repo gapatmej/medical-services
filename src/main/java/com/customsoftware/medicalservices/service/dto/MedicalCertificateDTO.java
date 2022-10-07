@@ -29,8 +29,6 @@ public class MedicalCertificateDTO implements Serializable {
 
     private String insulationDescription;
 
-    private Integer totalDaysOff;
-
     private Instant fromDate;
 
     private Instant untilDate;
@@ -125,14 +123,6 @@ public class MedicalCertificateDTO implements Serializable {
 
     public void setInsulationDescription(String insulationDescription) {
         this.insulationDescription = insulationDescription;
-    }
-
-    public Integer getTotalDaysOff() {
-        return totalDaysOff;
-    }
-
-    public void setTotalDaysOff(Integer totalDaysOff) {
-        this.totalDaysOff = totalDaysOff;
     }
 
     public Instant getFromDate() {

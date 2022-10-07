@@ -24,8 +24,8 @@
           <th scope="col" jhiSortBy="untilDate">
             <span jhiTranslate="medicalCertificate.untilDate"></span> <fa-icon icon="sort"></fa-icon>
           </th>
-          <th scope="col" jhiSortBy="totalDaysOff">
-            <span jhiTranslate="medicalCertificate.totalDaysOff"></span> <fa-icon icon="sort"></fa-icon>
+          <th scope="col">
+            <span jhiTranslate="medicalCertificate.totalDaysOff"></span>
           </th>
           <th scope="col"></th>
         </tr>
@@ -37,7 +37,7 @@
           <td>{{ medicalCertificate.doctor!.lastName }}</td>
           <td>{{ medicalCertificate.fromDate | formatMediumDate }}</td>
           <td>{{ medicalCertificate.untilDate | formatMediumDate }}</td>
-          <td>{{ medicalCertificate.totalDaysOff }}</td>
+          <td>{{ getTotalDaysOff(medicalCertificate) }}</td>
           <td class="text-right">
             <div class="btn-group">
               <button type="submit" (click)="download(medicalCertificate)" class="btn btn-secondary btn-sm">

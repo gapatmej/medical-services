@@ -55,9 +55,6 @@ public class MedicalCertificate extends AbstractAuditingEntity {
     @Column(name = "insulation_description")
     private String insulationDescription;
 
-    @Column(name = "total_days_off", nullable = false)
-    private Integer totalDaysOff;
-
     @Column(name = "from_date", nullable = false)
     private Instant fromDate;
 
@@ -158,14 +155,6 @@ public class MedicalCertificate extends AbstractAuditingEntity {
 
     public void setInsulationDescription(String insulationDescription) {
         this.insulationDescription = insulationDescription;
-    }
-
-    public Integer getTotalDaysOff() {
-        return totalDaysOff;
-    }
-
-    public void setTotalDaysOff(Integer totalDaysOff) {
-        this.totalDaysOff = totalDaysOff;
     }
 
     public Instant getFromDate() {

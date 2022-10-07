@@ -133,7 +133,14 @@
           <div class="col-4 form-group">
             <label class="form-control-label" jhiTranslate="medicalCertificate.fromDate"></label>
             <div class="d-flex">
-              <input name="fromDate" class="form-control" formControlName="fromDate" matInput [matDatepicker]="fromDatePicker" />
+              <input
+                name="fromDate"
+                class="form-control"
+                formControlName="fromDate"
+                matInput
+                [matDatepicker]="fromDatePicker"
+                (dateChange)="onChangeFromDate()"
+              />
               <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #fromDatePicker></mat-datepicker>
             </div>
@@ -141,14 +148,23 @@
           <div class="col-4 form-group">
             <label class="form-control-label" jhiTranslate="medicalCertificate.untilDate"></label>
             <div class="d-flex">
-              <input name="untilDate" class="form-control" formControlName="untilDate" matInput [matDatepicker]="untilDatePicker" />
+              <input
+                name="untilDate"
+                [min]="editForm.get('fromDate')!.value"
+                class="form-control"
+                formControlName="untilDate"
+                matInput
+                [matDatepicker]="untilDatePicker"
+              />
               <mat-datepicker-toggle matSuffix [for]="untilDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #untilDatePicker></mat-datepicker>
             </div>
           </div>
           <div class="col-4 form-group">
             <label class="form-control-label" jhiTranslate="medicalCertificate.totalDaysOff"></label>
-            <input type="number" class="form-control" name="totalDaysOff" formControlName="totalDaysOff" />
+            <div>
+              <span>{{ totalDaysOff }}</span>
+            </div>
           </div>
         </div>
       </div>

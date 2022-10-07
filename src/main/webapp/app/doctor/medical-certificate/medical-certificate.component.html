@@ -32,8 +32,8 @@
           <th scope="col" jhiSortBy="untilDate">
             <span jhiTranslate="medicalCertificate.untilDate"></span> <fa-icon icon="sort"></fa-icon>
           </th>
-          <th scope="col" jhiSortBy="totalDaysOff">
-            <span jhiTranslate="medicalCertificate.totalDaysOff"></span> <fa-icon icon="sort"></fa-icon>
+          <th scope="col">
+            <span jhiTranslate="medicalCertificate.totalDaysOff"></span>
           </th>
           <th scope="col" jhiSortBy="status"><span jhiTranslate="medicalCertificate.status"></span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col"></th>
@@ -47,7 +47,7 @@
           <td>{{ medicalCertificate.patient?.lastName }}</td>
           <td>{{ medicalCertificate.fromDate | formatMediumDate }}</td>
           <td>{{ medicalCertificate.untilDate | formatMediumDate }}</td>
-          <td>{{ medicalCertificate.totalDaysOff }}</td>
+          <td>{{ getTotalDaysOff(medicalCertificate) }}</td>
           <td>{{ medicalCertificate.status }}</td>
           <td class="overflow-hidden d-flex justify-content-end">
             <div ngbDropdown container="body">

@@ -9,3 +9,9 @@ ALTER TABLE medical_certificate ALTER COLUMN international_disease_id DROP DEFAU
 ALTER TABLE medical_certificate
     ADD COLUMN contingency_type varchar(20) NOT NULL default 'GENERAL';
 ALTER TABLE medical_certificate ALTER COLUMN contingency_type DROP DEFAULT;
+
+ALTER TABLE medical_certificate
+    ADD COLUMN contingency_type varchar(20) NOT NULL default 'GENERAL';
+ALTER TABLE medical_certificate ALTER COLUMN contingency_type DROP DEFAULT;
+
+ALTER TABLE medical_certificate DROP column total_days_off;

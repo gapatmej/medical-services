@@ -16,6 +16,7 @@ import { userLabel } from 'app/core/util/selectors-util';
 import { IUser } from 'app/models/user-management.model';
 import { MedicalCertificateStatus } from 'app/models/enumeration/medical-certificate-status.model';
 import { LoadingService } from 'app/services/loading.service';
+import { calculateDays } from 'app/core/util/common-utils';
 
 @Component({
   selector: 'jhi-medical-certificate',
@@ -109,6 +110,10 @@ export class MedicalCertificateComponent implements OnInit {
         document.body.removeChild(aLink);
       }
     });
+  }
+
+  getTotalDaysOff(medicalCertificate: IMedicalCertificate): number {
+    return calculateDays(medicalCertificate.fromDate, medicalCertificate.untilDate);
   }
 
   resend(medicalCertificate: IMedicalCertificate): void {
