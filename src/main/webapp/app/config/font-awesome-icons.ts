@@ -40,6 +40,10 @@ import {
   faFileSignature,
   faFileDownload,
   faEnvelope,
+  faReceipt,
+  faBuilding,
+  faUserNurse,
+  faHospitalUser,
   // jhipster-needle-add-icon-import
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -85,5 +89,9 @@ export const fontAwesomeIcons = [
   faFileSignature,
   faFileDownload,
   faEnvelope,
+  faReceipt,
+  faBuilding,
+  faUserNurse,
+  faHospitalUser,
   // jhipster-needle-add-icon-import
 ];

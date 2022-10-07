@@ -36,7 +36,7 @@
       >
         <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu" data-cy="adminMenu">
           <span>
-            <fa-icon icon="users-cog"></fa-icon>
+            <fa-icon icon="user-nurse"></fa-icon>
             <span jhiTranslate="global.menu.doctor.main"></span>
           </span>
         </a>
@@ -44,12 +44,12 @@
           <li>
             <a
               class="dropdown-item"
-              routerLink="doctor/medical-certificate"
+              [routerLink]="ROUTES.DOCTOR.MEDICAL_CERTIFICATE"
               routerLinkActive="active"
               [routerLinkActiveOptions]="{ exact: true }"
               (click)="collapseNavbar()"
             >
-              <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+              <fa-icon icon="receipt" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="global.menu.doctor.medicalCertificate"></span>
             </a>
           </li>
@@ -65,7 +65,7 @@
       >
         <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu" data-cy="adminMenu">
           <span>
-            <fa-icon icon="users-cog"></fa-icon>
+            <fa-icon icon="hospital-user"></fa-icon>
             <span jhiTranslate="global.menu.patient.main"></span>
           </span>
         </a>
@@ -78,7 +78,7 @@
               [routerLinkActiveOptions]="{ exact: true }"
               (click)="collapseNavbar()"
             >
-              <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+              <fa-icon icon="receipt" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="global.menu.patient.medicalCertificate"></span>
             </a>
           </li>
@@ -107,7 +107,7 @@
           </li>
           <li>
             <a class="dropdown-item" [routerLink]="ROUTES.ADMIN.ORGANIZATION" routerLinkActive="active" (click)="collapseNavbar()">
-              <fa-icon icon="users" [fixedWidth]="true"></fa-icon>
+              <fa-icon icon="building" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="global.menu.admin.organization"></span>
             </a>
           </li>
