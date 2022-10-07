@@ -1,5 +1,9 @@
 <div *ngIf="control!.invalid && (control!.dirty || (enableTouched && control!.touched))">
-  <small class="form-text text-danger" *ngIf="control?.errors?.required && showRequired" jhiTranslate="global.inputValidations.required">
+  <small
+    class="form-text text-danger"
+    *ngIf="control?.errors?.required || control?.errors?.forbiddenObjectRequired"
+    jhiTranslate="global.inputValidations.required"
+  >
   </small>
 
   <small

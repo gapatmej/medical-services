@@ -19,6 +19,7 @@ import { IInternationalDisease } from 'app/models/international-disease.model';
 import { ContingencyType } from 'app/models/enumeration/contingency-type.model';
 import { calculateDays } from 'app/core/util/common-utils';
 import dayjs from 'dayjs';
+import { forbiddenObjectRequired } from 'app/shared/validations/input-validation.component';
 @Component({
   selector: 'jhi-medical-certificate-update',
   templateUrl: './medical-certificate-update.component.html',
@@ -32,9 +33,9 @@ export class MedicalCertificateUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     emissionDate: [new Date(), [Validators.required]],
-    patient: [null, [Validators.required]],
+    patient: [null, [forbiddenObjectRequired()]],
     diagnosis: [null, [Validators.required, Validators.maxLength(255)]],
-    internationalDisease: [null, [Validators.required]],
+    internationalDisease: [null, [forbiddenObjectRequired()]],
     symptoms: [false, [Validators.required]],
     disease: [false, [Validators.required]],
     insulation: [false, [Validators.required]],

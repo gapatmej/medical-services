@@ -18,6 +18,7 @@
               <mat-datepicker-toggle matSuffix [for]="emissionDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #emissionDatePicker></mat-datepicker>
             </div>
+            <jhi-input-validation [control]="editForm.get('emissionDate')"></jhi-input-validation>
           </div>
         </div>
 
@@ -29,7 +30,7 @@
             aria-label="Number"
             matInput
             name="patient"
-            (keyup)="searchPatient()"
+            (input)="searchPatient()"
             formControlName="patient"
             [matAutocomplete]="autoPatient"
           />
@@ -38,11 +39,13 @@
               {{ patientLabelSelector(patient) }}
             </mat-option>
           </mat-autocomplete>
+          <jhi-input-validation [control]="editForm.get('patient')"></jhi-input-validation>
         </div>
 
         <div class="form-group">
           <label class="form-control-label" jhiTranslate="medicalCertificate.diagnosis"></label>
           <textarea type="text" class="form-control" rows="4" cols="50" name="diagnosis" formControlName="diagnosis"></textarea>
+          <jhi-input-validation [control]="editForm.get('diagnosis')"></jhi-input-validation>
         </div>
 
         <div class="row">
@@ -54,7 +57,7 @@
               aria-label="Number"
               matInput
               name="internationalDisease"
-              (keyup)="searchInternationalDisease()"
+              (input)="searchInternationalDisease()"
               formControlName="internationalDisease"
               [matAutocomplete]="internationaDiseaseAutocomplete"
             />
@@ -63,6 +66,7 @@
                 {{ internationalDiseaseLabelSelector(internationalDisease) }}
               </mat-option>
             </mat-autocomplete>
+            <jhi-input-validation [control]="editForm.get('internationalDisease')"></jhi-input-validation>
           </div>
 
           <div class="form-group col-6">
@@ -144,6 +148,7 @@
               <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #fromDatePicker></mat-datepicker>
             </div>
+            <jhi-input-validation [control]="editForm.get('fromDate')"></jhi-input-validation>
           </div>
           <div class="col-4 form-group">
             <label class="form-control-label" jhiTranslate="medicalCertificate.untilDate"></label>
@@ -159,6 +164,7 @@
               <mat-datepicker-toggle matSuffix [for]="untilDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #untilDatePicker></mat-datepicker>
             </div>
+            <jhi-input-validation [control]="editForm.get('untilDate')"></jhi-input-validation>
           </div>
           <div class="col-4 form-group">
             <label class="form-control-label" jhiTranslate="medicalCertificate.totalDaysOff"></label>

@@ -10,7 +10,11 @@ import _ from 'lodash-es';
 export class InputValidationComponent {
   @Input() control: AbstractControl | null = null;
   @Input() enableTouched = true;
-  @Input() showRequired = true;
+}
+
+export function forbiddenObjectRequired(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null =>
+    typeof control.value !== 'object' || control.value === null ? { forbiddenObjectRequired: { value: control.value } } : null;
 }
 
 export function onlyNumbers(): ValidatorFn {
