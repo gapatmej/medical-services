@@ -11,7 +11,7 @@ const medicalCertificateRoute: Routes = [
     path: '',
     component: MedicalCertificateComponent,
     data: {
-      defaultSort: 'id,asc',
+      defaultSort: 'id,desc',
     },
     canActivate: [UserRouteAccessService],
   },

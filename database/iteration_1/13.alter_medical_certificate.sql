@@ -15,3 +15,6 @@ ALTER TABLE medical_certificate
 ALTER TABLE medical_certificate ALTER COLUMN contingency_type DROP DEFAULT;
 
 ALTER TABLE medical_certificate DROP column total_days_off;
+
+ALTER TABLE medical_certificate alter column disease_description drop not null;
+ALTER TABLE medical_certificate alter column insulation_description drop not null;

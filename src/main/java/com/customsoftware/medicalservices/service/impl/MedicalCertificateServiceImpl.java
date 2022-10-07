@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -74,6 +75,18 @@ public class MedicalCertificateServiceImpl extends AbstractServiceImpl implement
     @Override
     public MedicalCertificateDTO save(MedicalCertificateDTO medicalCertificateDTO) {
         log.debug("Request to save MedicalCertificate : {}", medicalCertificateDTO);
+
+        if (medicalCertificateDTO.isDisease() && StringUtils.isBlank(medicalCertificateDTO.getDiseaseDescription())) {
+            throw new MedicalServicesRuntimeException("Disease description is null");
+        }
+
+        if (medicalCertificateDTO.isInsulation() && StringUtils.isBlank(medicalCertificateDTO.getInsulationDescription())) {
+            throw new MedicalServicesRuntimeException("Insulation description is null");
+        }
+
+        if (medicalCertificateDTO.isInsulation() && medicalCertificateDTO.isDisease()) {
+            throw new MedicalServicesRuntimeException("Disease and Insulation is not supported");
+        }
 
         medicalCertificateRepository
             .searchById(medicalCertificateDTO.getId())
