@@ -20,14 +20,20 @@ public class CustomMedicalCertificateRepositoryImpl implements CustomMedicalCert
 
     @Override
     public Page<MedicalCertificate> search(SearchMedicalCertificateDTO searchMedicalCertificateDTO, Pageable pageable) {
-        StringBuilder sqlCount = new StringBuilder(" select count(distinct mC.id ) from MedicalCertificate mC ");
+        StringBuilder sqlCount = new StringBuilder(
+            " select count(distinct mC.id ) from MedicalCertificate mC join mC.doctor d join mC.patient p "
+        );
         StringBuilder sqlSelect = new StringBuilder(" select mC from MedicalCertificate mC ");
         sqlSelect.append(" join fetch mC.doctor d join fetch mC.patient p");
         StringBuilder sql = new StringBuilder();
         sql.append(" where 1=1 ");
 
         if (!StringUtils.isBlank(searchMedicalCertificateDTO.getQuery())) {
-            sql.append(" and p.firstName like CONCAT('%',:query,'%') or p.lastName like CONCAT('%',:query,'%')");
+            sql.append(
+                " and (LOWER(p.firstName) like CONCAT('%',:query,'%') or " +
+                " LOWER(p.lastName) like CONCAT('%',:query,'%') or " +
+                " LOWER(p.dni) like CONCAT('%',:query,'%')) "
+            );
         }
 
         if (!StringUtils.isBlank(searchMedicalCertificateDTO.getDoctorLogin())) {
@@ -50,8 +56,8 @@ public class CustomMedicalCertificateRepositoryImpl implements CustomMedicalCert
         Query querySelect = entityManager.createQuery(sqlSelect.toString());
 
         if (!StringUtils.isBlank(searchMedicalCertificateDTO.getQuery())) {
-            queryCount.setParameter("query", searchMedicalCertificateDTO.getQuery());
-            querySelect.setParameter("query", searchMedicalCertificateDTO.getQuery());
+            queryCount.setParameter("query", searchMedicalCertificateDTO.getQuery().toLowerCase());
+            querySelect.setParameter("query", searchMedicalCertificateDTO.getQuery().toLowerCase());
         }
 
         if (!StringUtils.isBlank(searchMedicalCertificateDTO.getDoctorLogin())) {

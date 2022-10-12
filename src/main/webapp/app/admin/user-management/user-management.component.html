@@ -7,7 +7,7 @@
     <div class="form-inline">
       <div class="form-group">
         <label class="form-control-label mr-3" jhiTranslate="userManagement.home.search"></label>
-        <input type="text" class="form-control mr-3" [(ngModel)]="textToSearch" (input)="onSearchUser()" />
+        <input type="text" class="form-control mr-3" [(ngModel)]="textToSearch" (input)="onSearch()" />
       </div>
       <button class="btn btn-secondary" (click)="cleanSearchText()">
         <fa-icon icon="eraser"></fa-icon> <span jhiTranslate="global.actions.clearSearch"></span>

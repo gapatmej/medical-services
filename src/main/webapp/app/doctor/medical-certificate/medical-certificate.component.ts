@@ -32,6 +32,8 @@ export class MedicalCertificateComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
+  textToSearch = '';
+  searchMedicalCertificate = new SearchMedicalCertificate();
 
   constructor(
     protected medicalCertificateService: MedicalCertificateService,
@@ -51,10 +53,7 @@ export class MedicalCertificateComponent implements OnInit {
           size: this.itemsPerPage,
           sort: this.sort(),
         },
-        {
-          ...new SearchMedicalCertificate(),
-          query: '',
-        }
+        this.searchMedicalCertificate
       )
       .subscribe(
         (res: HttpResponse<IMedicalCertificate[]>) => {
@@ -67,6 +66,16 @@ export class MedicalCertificateComponent implements OnInit {
 
   ngOnInit(): void {
     this.handleNavigation();
+  }
+
+  cleanSearchText(): void {
+    this.textToSearch = '';
+    this.onSearch();
+  }
+
+  onSearch(): void {
+    this.searchMedicalCertificate.query = this.textToSearch;
+    this.loadAll();
   }
 
   transition(): void {

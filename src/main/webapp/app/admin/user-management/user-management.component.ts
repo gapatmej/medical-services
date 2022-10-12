@@ -66,11 +66,10 @@ export class UserManagementComponent implements OnInit {
 
   cleanSearchText(): void {
     this.textToSearch = '';
-    this.onSearchUser();
+    this.onSearch();
   }
 
-  onSearchUser(): void {
-    console.log('a', this.textToSearch);
+  onSearch(): void {
     this.searchUser.query = this.textToSearch;
     this.loadAll();
   }

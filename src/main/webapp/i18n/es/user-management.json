@@ -5,7 +5,7 @@
       "refreshListLabel": "Refrescar lista",
       "createLabel": "Crear un nuevo usuario",
       "createOrEditLabel": "Crear o editar un usuario",
-      "search": "Busqueda por Identificación, Nombre o Apellido"
+      "search": "Búsqueda por Identificación, Nombre o Apellido"
     },
     "created": "Se creó un nuevo usuario con identificador {{ param }}",
     "updated": "Se actualizó el usuario con identificador {{ param }}",

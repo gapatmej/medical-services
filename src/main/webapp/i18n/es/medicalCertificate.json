@@ -5,7 +5,8 @@
       "refreshListLabel": "Refrescar lista",
       "createLabel": "Crear nuevo Medical Certificate",
       "createOrEditLabel": "Crear o editar Medical Certificate",
-      "notFound": "Ningún Medical Certificates encontrado"
+      "notFound": "Ningún Medical Certificates encontrado",
+      "search": "Búsqueda por Identificación, Nombre o Apellido del Paciente"
     },
     "crudMessages": {
       "created": "Certificado Médico creado.",

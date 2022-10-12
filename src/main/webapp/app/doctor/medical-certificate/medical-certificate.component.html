@@ -1,14 +1,26 @@
 <div>
   <h2>
     <span jhiTranslate="medicalCertificate.home.title"></span>
+  </h2>
 
-    <div class="d-flex justify-content-end">
+  <div class="d-flex justify-content-between mt-4 mb-4">
+    <div class="form-inline">
+      <div class="form-group">
+        <label class="form-control-label mr-3" jhiTranslate="medicalCertificate.home.search"></label>
+        <input type="text" class="form-control mr-3" [(ngModel)]="textToSearch" (input)="onSearch()" />
+      </div>
+      <button class="btn btn-secondary" (click)="cleanSearchText()">
+        <fa-icon icon="eraser"></fa-icon> <span jhiTranslate="global.actions.clearSearch"></span>
+      </button>
+    </div>
+
+    <div>
       <button class="btn btn-primary jh-create-entity create-medical-certificate" [routerLink]="[ROUTES.DOCTOR.MEDICAL_CERTIFICATE, 'new']">
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="global.actions.create"></span>
       </button>
     </div>
-  </h2>
+  </div>
 
   <div class="alert alert-warning" *ngIf="medicalCertificates?.length === 0">
     <span jhiTranslate="medicalCertificate.home.notFound"></span>
