@@ -29,6 +29,8 @@ export class UserManagementComponent implements OnInit {
   page!: number;
   predicate!: string;
   ascending!: boolean;
+  textToSearch = '';
+  searchUser = new SearchUser();
 
   constructor(
     private userService: UserManagementService,
@@ -51,10 +53,6 @@ export class UserManagementComponent implements OnInit {
     this.userService.update({ ...user, activated: isActivated }).subscribe(() => this.loadAll());
   }
 
-  trackIdentity(index: number, item: User): number {
-    return item.id!;
-  }
-
   deleteUser(user: User): void {
     const modalRef = this.modalService.open(UserManagementDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.user = user;
@@ -64,6 +62,17 @@ export class UserManagementComponent implements OnInit {
         this.loadAll();
       }
     });
+  }
+
+  cleanSearchText(): void {
+    this.textToSearch = '';
+    this.onSearchUser();
+  }
+
+  onSearchUser(): void {
+    console.log('a', this.textToSearch);
+    this.searchUser.query = this.textToSearch;
+    this.loadAll();
   }
 
   loadAll(): void {
@@ -76,9 +85,7 @@ export class UserManagementComponent implements OnInit {
           size: this.itemsPerPage,
           sort: this.sort(),
         },
-        {
-          ...new SearchUser(),
-        }
+        this.searchUser
       )
       .subscribe(
         (res: HttpResponse<User[]>) => {

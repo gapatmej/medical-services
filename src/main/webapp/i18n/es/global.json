@@ -129,7 +129,8 @@
       "sign": "Firmar",
       "download": "Descargar",
       "resend": "Reenviar",
-      "options": "Opciones"
+      "options": "Opciones",
+      "clearSearch": "Limpiar búsqueda"
     }
   },
   "error": {
